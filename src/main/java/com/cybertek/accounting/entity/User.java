@@ -9,20 +9,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
+@Table(name = "users")
 public class User extends BaseEntity{
 
 
+    private String email;
     private String firstname;
     private String lastname;
     private String password;
     private boolean active;
     private String phone;
-    private String email;
 
-    @ManyToMany //(cascade = CascadeType.PERSIST)
+
+    @ManyToMany (cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
@@ -66,7 +67,7 @@ public class User extends BaseEntity{
         roles.remove(role);
     }
 
-        public User(String firstname, String lastname,  String email, boolean active, String phone,
+     public User(String firstname, String lastname,  String email, boolean active, String phone,
                 String password) {
 
         this.firstname = firstname;
