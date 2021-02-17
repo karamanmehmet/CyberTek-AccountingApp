@@ -1,5 +1,6 @@
 package com.cybertek.accounting.entity;
 
+
 import lombok.Getter;
 import lombok.Setter;
 

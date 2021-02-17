@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -39,7 +40,5 @@ public class Company extends BaseEntity{
     private String email;
 
     @Column(name = "establishment_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern="dd.MM.yyyy hh:mm")
-    private Date establishmentDate;
+    private LocalDate establishmentDate;
 }
