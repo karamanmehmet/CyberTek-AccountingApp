@@ -19,25 +19,26 @@ import java.util.Date;
 @NoArgsConstructor
 public class Company extends BaseEntity{
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "address1")
+    @Column(name = "address1", nullable = false)
     private String address1;
     @Column(name = "address2")
     private String address2;
 
-    @Column(name = "state")
+    @Column(name = "state", nullable = false)
     private String state;
-    @Column(name = "zip")
+    @Column(name = "zip", nullable = false)
     private String zip;
 
-    @Column(name = "representative")
+    @Column(name = "representative",nullable = false)
     private String representative;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "establishment_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern="dd.MM.yyyy hh:mm")
     private Date establishmentDate;
