@@ -1,12 +1,9 @@
 package com.cybertek.accounting.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-
+@ToString
 @Entity
 @Setter
 @Getter
@@ -23,11 +20,13 @@ public class SPTable extends BaseEntity {
     @Column(unique = true,nullable = false)
     private String email;
 
-    private String type;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="company_id")
+    @JoinColumn(name="company_id",nullable = false)
     private Company company;
+
+    private String type;
+
 
 
 
