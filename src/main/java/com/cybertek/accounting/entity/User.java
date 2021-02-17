@@ -79,5 +79,9 @@ public class User extends BaseEntity{
 
     }
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+
 
 }
