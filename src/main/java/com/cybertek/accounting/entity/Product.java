@@ -1,12 +1,21 @@
 package com.cybertek.accounting.entity;
 
 import com.cybertek.accounting.enums.Unit;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Entity
+@Table(name = "products")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product extends BaseEntity {
 
     public String name;
