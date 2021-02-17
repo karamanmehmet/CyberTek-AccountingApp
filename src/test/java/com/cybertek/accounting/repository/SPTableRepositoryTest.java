@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 
 import java.time.Instant;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @DataJpaTest
@@ -29,8 +30,8 @@ public class SPTableRepositoryTest {
      */
     @Test
     public void testCreateCompany(){
-        Company company=new Company("Abc","add1","add2","state","06170","representitive","email", Date.from(Instant.parse("2000-01-01T00:00:00.000Z")));
-        Company company2=new Company("Def","add11","add22","state2","06171","representitive2","email", Date.from(Instant.parse("2000-01-01T00:00:00.000Z")));
+        Company company=new Company("Abc","add1","add2","state","06170","representitive","email", Calendar.getInstance().getTime());
+        Company company2=new Company("Def","add11","add22","state2","06171","representitive2","email", Calendar.getInstance().getTime());
         entityManager.persist(company);
         entityManager.persist(company2);
 
@@ -50,7 +51,7 @@ public class SPTableRepositoryTest {
      */
     @Test
     public void testCreateNewSPWithNewCompany(){
-        Company company3=new Company("LastOne","add111","add222","state3","06172","representitive3","email", Date.from(Instant.parse("2000-01-01T00:00:00.000Z")));
+        Company company3=new Company("LastOne","add111","add222","state3","06172","representitive3","email", Calendar.getInstance().getTime());
         SPTable spTable=new SPTable("NewAbc1","55555","newEmail1",company3,"Type");
         spTableRepository.save(spTable);
 
