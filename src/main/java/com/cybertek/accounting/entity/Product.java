@@ -18,13 +18,15 @@ import java.math.RoundingMode;
 @AllArgsConstructor
 public class Product extends BaseEntity {
 
+    @Column(nullable = false)
     public String name;
+
     public String description;
     public Integer qty;
     public BigDecimal price;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @Column(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     public Category category;
 
     @Enumerated(EnumType.STRING)
@@ -36,7 +38,7 @@ public class Product extends BaseEntity {
     public Integer tax;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @Column(name = "company_id", nullable = false)
+    @JoinColumn(name = "company_id", nullable = false)
     public Company company;
 
     public Boolean isAlerted() {
@@ -44,8 +46,7 @@ public class Product extends BaseEntity {
     }
 
     public BigDecimal calculatedTax() {
-
-        return price.multiply(BigDecimal.valueOf(tax)).divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN);
+        return price.multiply(BigDecimal.valueOf(tax)).divide(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_EVEN);
     }
 
 }
