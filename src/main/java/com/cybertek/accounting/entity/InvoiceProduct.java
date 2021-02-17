@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class InvoiceProduct extends BaseEntity{
 
-    Integer qty;
-    BigDecimal unitPrice;
+    int qty;
+    double unitPrice;
 
     @ManyToOne()
     @JoinColumn(name = "product_id", nullable = false)
