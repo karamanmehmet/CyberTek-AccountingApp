@@ -41,4 +41,6 @@ public class Company extends BaseEntity{
 
     @Column(name = "establishment_date", nullable = false)
     private LocalDate establishmentDate;
+
+    private boolean enabled;
 }
