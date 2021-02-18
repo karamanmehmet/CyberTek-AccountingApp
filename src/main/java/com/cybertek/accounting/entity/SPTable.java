@@ -1,5 +1,6 @@
 package com.cybertek.accounting.entity;
 
+import com.cybertek.accounting.enums.Status;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "sp_tables")
+@Table(name = "sp_table")
 public class SPTable extends BaseEntity {
 
     @Column(unique = true)
@@ -39,6 +40,9 @@ public class SPTable extends BaseEntity {
     private String address;
 
     private String state;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 
 
