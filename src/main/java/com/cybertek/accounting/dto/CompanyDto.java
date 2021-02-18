@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +24,7 @@ public class CompanyDto {
     private String email;
     private LocalDate establishmentDate;
 
-    //Should CompanyDto have a List<UserDto>?
+    private List<UserDto> userDtos;
+
 
 }
