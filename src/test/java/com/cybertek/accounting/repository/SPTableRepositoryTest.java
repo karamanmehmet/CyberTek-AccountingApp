@@ -47,6 +47,7 @@ public class SPTableRepositoryTest {
         entityManager.persist(spTable);
 
     }
+
     /**
      * User should create SPTable and Company at same time
      */
@@ -57,6 +58,7 @@ public class SPTableRepositoryTest {
         spTableRepository.save(spTable);
 
     }
+
     /**
      * Related SPTable Should see
      */
