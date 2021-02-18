@@ -2,7 +2,13 @@ package com.cybertek.accounting.enums;
 
 public enum Unit {
 
-    PIECE("Piece"), LB("Pounds(lb)"), KILOS("Kilos(kg)"), METER("Meter(m)"), CM("Centimeter(cm)"), LITER("Liter(l)"), GALLON("Gallon(gal)");
+    PIECE("Piece"),
+    LB("Pounds(lb)"),
+    KILOS("Kilos(kg)"),
+    METER("Meter(m)"),
+    CM("Centimeter(cm)"),
+    LITER("Liter(l)"),
+    GALLON("Gallon(gal)");
 
     private final String value;
 

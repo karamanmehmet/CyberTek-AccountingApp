@@ -1,5 +1,6 @@
 package com.cybertek.accounting.entity;
 
+import com.cybertek.accounting.enums.Status;
 import com.cybertek.accounting.enums.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "product")
@@ -16,7 +18,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Product extends BaseEntity {
 
-    @Column(nullable = false)
+    @NotNull
     private String name;
 
     private String description;
@@ -24,7 +26,8 @@ public class Product extends BaseEntity {
     private double price;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
+    @NotNull
     private Category category;
 
     @Enumerated(EnumType.STRING)
@@ -36,7 +39,11 @@ public class Product extends BaseEntity {
     private double tax;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "company_id")
+    @NotNull
     private Company company;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }
