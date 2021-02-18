@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,34 +17,26 @@ import java.math.RoundingMode;
 public class Product extends BaseEntity {
 
     @Column(nullable = false)
-    public String name;
+    private String name;
 
-    public String description;
-    public Integer qty;
-    public BigDecimal price;
+    private String description;
+    private int qty;
+    private double price;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id", nullable = false)
-    public Category category;
+    private Category category;
 
     @Enumerated(EnumType.STRING)
-    public Unit unit;
+    private Unit unit;
 
-    public Integer lowLimitAlert;
+    private int lowLimitAlert;
 
     @Column(nullable = false)
-    public Integer tax;
+    private double tax;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_id", nullable = false)
-    public Company company;
-
-    public Boolean isAlerted() {
-        return qty <= lowLimitAlert;
-    }
-
-    public BigDecimal calculatedTax() {
-        return price.multiply(BigDecimal.valueOf(tax)).divide(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_EVEN);
-    }
+    private Company company;
 
 }

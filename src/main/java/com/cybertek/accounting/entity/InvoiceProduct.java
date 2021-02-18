@@ -11,20 +11,21 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
-@Table(name = "invoice_product")
+@Table(name = "invoiceproduct")
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceProduct extends BaseEntity{
 
-    Integer qty;
-    BigDecimal unitPrice;
+    private int qty;
+    private double unitPrice;
 
     @ManyToOne()
     @JoinColumn(name = "product_id", nullable = false)
-    public Product product;
+    private Product product;
+
     @ManyToOne
     @JoinColumn(name = "invoice_id", nullable = false)
-    public Invoice invoice;
+    private Invoice invoice;
 
 
 

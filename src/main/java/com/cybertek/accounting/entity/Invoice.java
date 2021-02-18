@@ -19,9 +19,9 @@ public class Invoice extends BaseEntity{
 
 
     @Enumerated(EnumType.STRING)
-    public InvoiceType invoiceType;
+    private InvoiceType invoiceType;
 
-    public LocalDate invoiceDate;
+    private LocalDate invoiceDate;
 
     @ManyToOne
     @JoinColumn(name = "sptable_id")

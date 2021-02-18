@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class CompanyRepositoryTest {
     @Test
     public void createCompanyTest(){
 
-        Company company = new Company("title","address1","address2","OH","200345","rep","email@email.com", Calendar.getInstance().getTime());
+        Company company = new Company("title","address1","address2","OH","200345","rep","email@email.com", LocalDate.now());
         entityManager.persist(company);
 
     }
