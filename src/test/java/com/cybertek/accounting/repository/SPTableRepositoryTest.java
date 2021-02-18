@@ -43,7 +43,7 @@ public class SPTableRepositoryTest {
     @Test
     public void testCreateSPTableWithCompany(){
         Company company=entityManager.find(Company.class,1L);
-        SPTable spTable=new SPTable("NewAbc","55555","newEmail",company,"Type");
+        SPTable spTable=new SPTable("NewAbc","55555","newEmail",company,"Type",11111,"address","state");
         entityManager.persist(spTable);
 
     }
@@ -54,7 +54,7 @@ public class SPTableRepositoryTest {
     @Test
     public void testCreateNewSPWithNewCompany(){
         Company company3=new Company("LastOne","add111","add222","state3","06172","representitive3","email", LocalDate.now());
-        SPTable spTable=new SPTable("NewAbc1","55555","newEmail1",company3,"Type");
+        SPTable spTable=new SPTable("NewAbc1","55555","newEmail1",company3,"Type",22222,"address2","state2");
         spTableRepository.save(spTable);
 
     }
