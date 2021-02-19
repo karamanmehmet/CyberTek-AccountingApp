@@ -8,7 +8,7 @@ public interface CompanyService {
 
     Company create(Company company);
 
-    List<Company> readAll();
+    List<Company> findAll();
 
     Company update(Company company);
 

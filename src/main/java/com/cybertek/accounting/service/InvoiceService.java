@@ -10,14 +10,14 @@ import java.util.List;
 public interface InvoiceService {
     Invoice create(InvoiceDto invoice);
 
-    List<InvoiceDto> readAll();
+    List<InvoiceDto> findAll();
 
     Invoice update(InvoiceDto invoice);
 
     void delete(InvoiceDto invoice);
 
-    Invoice readById(long id);
+    Invoice findById(long id);
 
-    List<InvoiceDto> readByInvoiceNo(String invoiceNo);
+    List<InvoiceDto> findByInvoiceNo(String invoiceNo);
 
 }
