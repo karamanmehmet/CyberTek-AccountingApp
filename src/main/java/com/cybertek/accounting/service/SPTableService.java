@@ -1,30 +1,28 @@
 package com.cybertek.accounting.service;
 
+import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.SPTableDto;
-import com.cybertek.accounting.entity.Company;
-import com.cybertek.accounting.entity.SPTable;
-import com.cybertek.accounting.entity.User;
-import com.cybertek.accounting.enums.Status;
+
 
 import java.util.List;
 
 public interface SPTableService {
 
-    SPTable create(SPTableDto spTable);
+    SPTableDto create(SPTableDto spTable);
 
-    List<SPTableDto> readAll();
+    List<SPTableDto> findAll();
 
-    List<SPTableDto> readAllByCompany(Company company);
+    List<SPTableDto> findAllByCompany(CompanyDto company);
 
-    List<SPTableDto> readAllByCompanyAndType(Company company,String type);
+    List<SPTableDto> findAllByCompanyAndType(CompanyDto company, String type);
 
-    List<SPTableDto> readAllByCompanyAndStatus(Company company,Status status);
+    List<SPTableDto> findAllByCompanyAndState(CompanyDto company,String state);
 
-    SPTable update(SPTableDto spTable);
+    SPTableDto update(SPTableDto spTable);
 
     void delete(SPTableDto spTable);
 
-    List<SPTableDto> readAllByCompanyAndStatusAndType(Company company, Status status,String type);
+    List<SPTableDto> findAllByCompanyAndStateAndType(CompanyDto company,String state,String type);
 
 
 }
