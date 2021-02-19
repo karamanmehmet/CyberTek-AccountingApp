@@ -10,8 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleDto {
-
+    
     private String name;
 
-    //Should RoleDto come with a List<UserDto> ?
 }

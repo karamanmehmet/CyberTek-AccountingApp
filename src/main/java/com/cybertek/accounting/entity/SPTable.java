@@ -44,6 +44,31 @@ public class SPTable extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private boolean enabled;
+
+
+    /*
+
+    @Transactional
+     create
+     delete
+     update
+     List of it
+     List of active
+     Object findByID
+     List findByCompany
+     List findByTyep
+     List findByStatus
+     Enabled True False;
+
+     JPQL
+
+     Role
+        Basic Crud
+        findByName
+     */
+
+
 
 
 
