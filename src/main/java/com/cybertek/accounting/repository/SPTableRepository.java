@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public interface SPTableRepository extends JpaRepository<SPTable,Long> {
 
-    Optional<SPTable> findById(long id);
 
     List<SPTable> findAllByCompany(Company company);
 
@@ -23,17 +22,8 @@ public interface SPTableRepository extends JpaRepository<SPTable,Long> {
 
     List<SPTable> findAllByTypeAndEnabled(String type,boolean enabled);
 
-    Optional<SPTable> findByEmail(String email);
-
-    Optional<SPTable> findAllByEmailAndEnabled(String email,boolean enabled);
-
-    List<SPTable> findAllByState(String state);
-
-    List<SPTable> findAllByStateAndEnabled(String state,boolean enabled);
-
     List<SPTable> findAllByCompanyAndStatusAndType(Company company, Status status, String type);
 
-    // What is the difference between state - boolean enable - boolean active ??
 
 
 }

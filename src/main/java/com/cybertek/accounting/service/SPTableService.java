@@ -14,15 +14,11 @@ public interface SPTableService {
 
     List<SPTableDto> readAll();
 
-    SPTableDto readByEmail(String email);
-
     List<SPTableDto> readAllByCompany(Company company);
 
-    List<SPTableDto> readAllByType(String type);
+    List<SPTableDto> readAllByCompanyAndType(Company company,String type);
 
-    List<SPTableDto> readAllByState(String state);
-
-    List<SPTableDto> readAllByStatus(Status status);
+    List<SPTableDto> readAllByCompanyAndStatus(Company company,Status status);
 
     SPTable update(SPTableDto spTable);
 

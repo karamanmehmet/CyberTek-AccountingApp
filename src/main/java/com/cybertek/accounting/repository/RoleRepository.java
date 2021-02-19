@@ -12,6 +12,9 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role,Long> {
 
     List<Role> findByEnabled(boolean enabled);
+
+    Role findByName(String name);
+
     List<Role> findByNameAndEnabled(String name,boolean enabled);
 
 
