@@ -12,7 +12,7 @@ public interface RoleService {
 
     List<RoleDto> readAll();
 
-    void update(RoleDto role);
+    Role update(RoleDto role);
 
     void delete(RoleDto role);
 

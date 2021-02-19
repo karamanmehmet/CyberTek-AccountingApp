@@ -1,8 +1,6 @@
 package com.cybertek.accounting.dto;
 
-import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.enums.Status;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,6 +42,6 @@ public class SPTableDto {
         this.zipCode = zipCode;
         this.address = address;
         this.state = state;
-        this.status=Status.ACTIVE;   // it should be active as default
+        this.status= Status.ACTIVE;   // it should be active as default
     }
 }

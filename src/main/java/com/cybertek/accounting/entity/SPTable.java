@@ -47,26 +47,6 @@ public class SPTable extends BaseEntity {
     private boolean enabled;
 
 
-    /*
-
-    @Transactional
-     create
-     delete
-     update
-     List of it
-     List of active
-     Object findByID
-     List findByCompany
-     List findByTyep
-     List findByStatus
-     Enabled True False;
-
-     JPQL
-
-     Role
-        Basic Crud
-        findByName
-     */
 
 
 
