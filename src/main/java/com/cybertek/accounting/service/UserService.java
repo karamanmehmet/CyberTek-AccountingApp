@@ -1,5 +1,7 @@
 package com.cybertek.accounting.service;
 
+import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.dto.UserDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.User;
 
@@ -7,13 +9,14 @@ import java.util.List;
 
 public interface UserService {
 
-    User create(User user);
 
-    List<User> readAll();
+    UserDto create(UserDto userDto);
 
-    User update(User user);
+    List<UserDto> findAll();
 
-    void delete(User user);
+    UserDto update(UserDto userDto);
 
-    List<User> findByCompanyAndState(Company company, Boolean enabled);
+    void delete(UserDto userDto);
+
+    List<UserDto> findByCompanyAndEnabled(CompanyDto companyDto, Boolean enabled);
 }

@@ -1,5 +1,7 @@
 package com.cybertek.accounting.repository;
 
+import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.dto.UserDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +15,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByEmail(String email);
 
-    List<User> findByCompanyAndActive(Company company, boolean active);
+    List<User> findByCompanyAndEnabled(Company company, boolean enabled);
 
 
 }
