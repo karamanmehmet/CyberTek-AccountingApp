@@ -1,6 +1,5 @@
 package com.cybertek.accounting.dto;
 
-import com.cybertek.accounting.enums.Status;
 import com.cybertek.accounting.enums.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,8 +19,8 @@ public class ProductDto {
     private double price;
     private CategoryDto category;
     private Unit unit;
-//    private double tax;       ???
+    private double tax;
     private CompanyDto company;
-    private Status status;
+    private boolean enabled;
 
 }

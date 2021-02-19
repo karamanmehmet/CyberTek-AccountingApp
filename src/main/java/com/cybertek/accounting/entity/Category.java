@@ -1,6 +1,5 @@
 package com.cybertek.accounting.entity;
 
-import com.cybertek.accounting.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,6 @@ public class Category extends BaseEntity {
     @NotNull
     private Company company;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    private boolean enabled;
 
 }
