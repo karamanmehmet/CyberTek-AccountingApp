@@ -15,7 +15,6 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@Table(name = "companies")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Company extends BaseEntity{

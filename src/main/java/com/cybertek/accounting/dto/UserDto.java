@@ -24,8 +24,8 @@ public class UserDto {
     private String phone;
     private String email;
 
-    private CompanyDto companyDto;
+    private CompanyDto company;
 
-    private Set<RoleDto> roleDtos;
+    private Set<RoleDto> roles;
 
 }

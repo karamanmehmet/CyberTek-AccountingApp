@@ -10,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "product")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,7 +31,7 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
-    private int lowLimitAlert;
+    private int lowLimit;
 
     @Column(nullable = false)
     private double tax;

@@ -45,7 +45,7 @@ public class UserRepositoryTest {
         Role role = entityManager.find(Role.class,1L);
 
         User user = new User("Mehmet","Kara","mehmetkara@gmail.com" , true, "+1954784236",
-               "password");
+               "password",null);
         user.addRole(role);
 
         entityManager.persist(user);
@@ -58,7 +58,7 @@ public class UserRepositoryTest {
         Role roleEmployee = entityManager.find(Role.class,4L);
 
         User user = new User("Fatma","White","fatma@gmail.com" , true, "+1954784236",
-                "password");
+                "password",null);
 
         user.addRole(roleAdmin);
         user.addRole(roleEmployee);
@@ -92,7 +92,7 @@ public class UserRepositoryTest {
 
         Role jokerRole = new Role("JokerRole");
         User user = new User("John","Doe","johndoe@gmail.com" , true, "+1954784236",
-                "password");
+                "password",null);
         user.addRole(jokerRole);
 
         userRepository.save(user);

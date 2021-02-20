@@ -24,7 +24,4 @@ public class CompanyDto {
     private String email;
     private LocalDate establishmentDate;
 
-    private List<UserDto> userDtos;
-
-
 }

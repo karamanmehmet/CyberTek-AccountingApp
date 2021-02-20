@@ -1,5 +1,6 @@
 package com.cybertek.accounting.entity;
 
+import com.cybertek.accounting.enums.ClientVendorType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "sp_table")
 public class SPTable extends BaseEntity {
 
     @Column(unique = true)
@@ -30,9 +30,10 @@ public class SPTable extends BaseEntity {
     @JoinColumn(name="company_id")
     private Company company;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private ClientVendorType type;
 
-    private int zipCode;
+    private String zipCode;
 
     @Column(name = "address")
     @NotNull

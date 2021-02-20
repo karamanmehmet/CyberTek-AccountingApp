@@ -29,8 +29,8 @@ public class CompanyRepositoryTest {
     @Test
     public void createCompanyTest(){
 
-        Company company = new Company("title","address1","address2","OH","200345","rep","email@email.com", LocalDate.now());
-        entityManager.persist(company);
+      //  Company company = new Company("title","address1","address2","OH","200345","rep","email@email.com", LocalDate.now());
+      //  entityManager.persist(company);
 
     }
 

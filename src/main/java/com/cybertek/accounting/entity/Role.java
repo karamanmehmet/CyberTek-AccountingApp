@@ -17,7 +17,7 @@ public class Role {
 
     private String name;
 
-    private boolean enabled;
+    private boolean enabled=true;
 
     public Role(String name) {
         this.name = name;

@@ -1,6 +1,8 @@
 package com.cybertek.accounting.dto;
 
-import com.cybertek.accounting.enums.Status;
+import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.enums.ClientVendorType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class SPTableDto {
 
 
@@ -22,26 +25,15 @@ public class SPTableDto {
 
     private CompanyDto company;
 
-    private String type;
-
     private int zipCode;
 
     private String address;
 
     private String state;
 
-    private Status status;
+    private ClientVendorType type;
 
-    public SPTableDto(Long id, String companyName, String phone, String email,CompanyDto company, String type, int zipCode, String address, String state) {
-        this.id = id;
-        this.companyName = companyName;
-        this.phone = phone;
-        this.email = email;
-        this.company = company;
-        this.type = type;
-        this.zipCode = zipCode;
-        this.address = address;
-        this.state = state;
-        this.status= Status.ACTIVE;   // it should be active as default
-    }
+    private boolean enabled;
+
+
 }

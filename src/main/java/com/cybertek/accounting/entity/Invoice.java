@@ -1,5 +1,6 @@
 package com.cybertek.accounting.entity;
 
+import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "invoice")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +20,9 @@ public class Invoice extends BaseEntity{
 
     private String invoiceNo;
 
-    private boolean approved;
+    private InvoiceStatus invoiceStatus;
+
+    private String invoiceNumber;
 
     @Enumerated(EnumType.STRING)
     private InvoiceType invoiceType;
@@ -34,6 +36,9 @@ public class Invoice extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    private boolean enabled;
+
 
 
 }

@@ -23,11 +23,13 @@ public class User extends BaseEntity{
     private boolean enabled;
     private String phone;
 
-
-    @ManyToMany (cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "company_id",nullable = false)
+    private Company company;
 
     public User(String firstname, String lastname,  String email, boolean enabled, String phone,
                 Set<Role> roles,String password) {
@@ -69,7 +71,7 @@ public class User extends BaseEntity{
     }
 
      public User(String firstname, String lastname,  String email, boolean active, String phone,
-                String password) {
+                String password,Company company) {
 
         this.firstname = firstname;
         this.lastname = lastname;
@@ -77,13 +79,12 @@ public class User extends BaseEntity{
         this.password = password;
         this.enabled = enabled;
         this.phone = phone;
+        this.company = company;
 
 
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
+
 
 
 }

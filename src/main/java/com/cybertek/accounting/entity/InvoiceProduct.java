@@ -11,10 +11,13 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
-@Table(name = "invoiceproduct")
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvoiceProduct extends BaseEntity{
+public class InvoiceProduct {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private int qty;
     private double unitPrice;

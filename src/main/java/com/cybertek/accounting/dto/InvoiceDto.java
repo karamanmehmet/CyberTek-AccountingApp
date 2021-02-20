@@ -14,12 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class InvoiceDto {
 
-    private boolean approved;
-    private String invoiceNo;
     private InvoiceType invoiceType;
     private LocalDate invoiceDate;
     private SPTableDto sptable;
     private CompanyDto company;
-    double totalPrice;
-
 }
