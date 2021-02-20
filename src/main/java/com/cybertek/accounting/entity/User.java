@@ -20,7 +20,7 @@ public class User extends BaseEntity{
     private String firstname;
     private String lastname;
     private String password;
-    private boolean active;
+    private boolean enabled;
     private String phone;
 
 
@@ -29,28 +29,28 @@ public class User extends BaseEntity{
     private Set<Role> roles = new HashSet<>();
 
 
-    public User(String firstname, String lastname,  String email, boolean active, String phone,
+    public User(String firstname, String lastname,  String email, boolean enabled, String phone,
                 Set<Role> roles,String password) {
 
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
-        this.active = active;
+        this.enabled = enabled;
         this.phone = phone;
         this.roles = roles;
 
     }
 
     public User(long id, LocalDateTime insertDateTime, String insertUserId, LocalDateTime lastUpdateDateTime,
-                String lastUpdateUserId, String firstname, String lastname, String username, String email, boolean active, String phone,
+                String lastUpdateUserId, String firstname, String lastname, String username, String email, boolean enabled, String phone,
                 Set<Role> roles,String password) {
         super(id, insertDateTime, insertUserId, lastUpdateDateTime, lastUpdateUserId);
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
-        this.active = active;
+        this.enabled = enabled;
         this.phone = phone;
         this.roles = roles;
     }
@@ -75,7 +75,7 @@ public class User extends BaseEntity{
         this.lastname = lastname;
         this.email = email;
         this.password = password;
-        this.active = active;
+        this.enabled = enabled;
         this.phone = phone;
 
 

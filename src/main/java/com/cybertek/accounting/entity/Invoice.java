@@ -18,6 +18,10 @@ import java.time.LocalDate;
 public class Invoice extends BaseEntity{
 
 
+    private String invoiceNo;
+
+    private boolean approved;
+
     @Enumerated(EnumType.STRING)
     private InvoiceType invoiceType;
 

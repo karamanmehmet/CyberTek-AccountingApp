@@ -1,6 +1,5 @@
 package com.cybertek.accounting.entity;
 
-import com.cybertek.accounting.enums.Status;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,8 +40,10 @@ public class SPTable extends BaseEntity {
 
     private String state;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    private boolean enabled;
+
+
+
 
 
 
