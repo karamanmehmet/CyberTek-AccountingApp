@@ -1,9 +1,7 @@
 package com.cybertek.accounting.mapper;
 
 import com.cybertek.accounting.dto.InvoiceDto;
-import com.cybertek.accounting.dto.SPTableDto;
 import com.cybertek.accounting.entity.Invoice;
-import com.cybertek.accounting.entity.SPTable;
 import com.cybertek.accounting.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +12,7 @@ public class InvoiceMapper {
 
     private final InvoiceRepository repository;
     private final CompanyMapper companyMapper;
-    private final SPTableMapper spTableMapper;
+    private final ClientVendorMapper clientVendorMapper;
 
 
     public Invoice convertToEntity(InvoiceDto dto) {
@@ -29,7 +27,7 @@ public class InvoiceMapper {
                 obj.getInvoiceType(),
                 obj.getInvoiceStatus(),
                 obj.getInvoiceDate(),
-                spTableMapper.convertToDto(obj.getSptable()),
+                clientVendorMapper.convertToDto(obj.getClientVendor()),
                 companyMapper.convertToDto(obj.getCompany()));
 
     }

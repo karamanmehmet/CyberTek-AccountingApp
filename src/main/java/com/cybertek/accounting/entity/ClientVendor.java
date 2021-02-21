@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SPTable extends BaseEntity {
+public class ClientVendor extends BaseEntity {
 
     @Column(unique = true)
     @NotNull

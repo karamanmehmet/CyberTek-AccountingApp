@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SPTableDto {
+public class ClientVendorDto {
 
 
     private Long id;

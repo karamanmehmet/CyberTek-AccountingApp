@@ -15,7 +15,6 @@ public interface RoleService {
 
     void delete(RoleDto role);
 
-
     RoleDto findByName(String name);
 
 }

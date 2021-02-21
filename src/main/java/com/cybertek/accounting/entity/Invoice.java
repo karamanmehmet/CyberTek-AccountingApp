@@ -28,8 +28,8 @@ public class Invoice extends BaseEntity{
     private LocalDate invoiceDate;
 
     @ManyToOne
-    @JoinColumn(name = "sptable_id")
-    private SPTable sptable;
+    @JoinColumn(name = "client_vendor_id")
+    private ClientVendor clientVendor;
 
     @ManyToOne
     @JoinColumn(name = "company_id")

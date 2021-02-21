@@ -1,7 +1,5 @@
 package com.cybertek.accounting.dto;
 
-import com.cybertek.accounting.entity.Company;
-import com.cybertek.accounting.entity.SPTable;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import lombok.AllArgsConstructor;
@@ -21,6 +19,7 @@ public class InvoiceDto {
     private InvoiceType invoiceType;
     private InvoiceStatus invoiceStatus;
     private LocalDate invoiceDate;
-    private SPTableDto spTable;
+    private ClientVendorDto clientVendor;
     private CompanyDto company;
+
 }

@@ -1,7 +1,7 @@
 package com.cybertek.accounting.repository;
 
 import com.cybertek.accounting.entity.Company;
-import com.cybertek.accounting.entity.SPTable;
+import com.cybertek.accounting.entity.ClientVendor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -9,21 +9,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import java.time.Instant;
-
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
-public class SPTableRepositoryTest {
+public class ClientVendorRepositoryTest {
 
 
 
     @Autowired
-    private SPTableRepository spTableRepository;
+    private ClientVendorRepository clientVendorRepository;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -40,42 +34,42 @@ public class SPTableRepositoryTest {
 
     }
     /**
-     * User should create SPTable with existing Company
+     * User should create ClientVendor with existing Company
      */
     @Test
-    public void testCreateSPTableWithCompany(){
+    public void testCreateClientVendorWithCompany(){
         Company company=entityManager.find(Company.class,1L);
-        //   SPTable spTable=new SPTable("NewAbc","55555","newEmail",company,"Type",11111,"address","state");
-        //  entityManager.persist(spTable);
+        //   ClientVendor clientVendor=new ClientVendor("NewAbc","55555","newEmail",company,"Type",11111,"address","state");
+        //  entityManager.persist(clientVendor);
 
     }
 
     /**
-     * User should create SPTable and Company at same time
+     * User should create ClientVendor and Company at same time
      */
     @Test
-    public void testCreateNewSPWithNewCompany(){
+    public void testCreateNewClientVendorWithNewCompany(){
         // Company company3=new Company("LastOne","add111","add222","state3","06172","representitive3","email", LocalDate.now());
-        //  SPTable spTable=new SPTable("NewAbc1","55555","newEmail1",company3,"Type",22222,"address2","state2");
-        //  spTableRepository.save(spTable);
+        //  ClientVendor clientVendor=new ClientVendor("NewAbc1","55555","newEmail1",company3,"Type",22222,"address2","state2");
+        //  clientVendorRepository.save(clientVendor);
 
     }
 
     /**
-     * Related SPTable Should see
+     * Related ClientVendor Should see
      */
     @Test
-    public void testGetSP(){
-        SPTable spTable = spTableRepository.findById(1L).get();
-        System.out.println(spTable.toString());
+    public void testGetClientVendor(){
+        ClientVendor clientVendor = clientVendorRepository.findById(1L).get();
+        System.out.println(clientVendor.toString());
     }
 
     /**
-     * After delete SP,Company should not delete
+     * After delete ClientVendor,Company should not delete
      */
     @Test
-    public void testDeleteSPTable(){
+    public void testDeleteClientVendorTable(){
 
-        spTableRepository.deleteById(4L);
+        clientVendorRepository.deleteById(4L);
     }
 }

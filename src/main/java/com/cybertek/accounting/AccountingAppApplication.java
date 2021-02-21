@@ -25,7 +25,7 @@ public class AccountingAppApplication {
 
 	@Bean
 	@Transactional
-	public CommandLineRunner mappingDemo(RoleRepository roleRepository, UserRepository userRepository, CompanyRepository companyRepository, CategoryRepository categoryRepository, ProductRepository productRepository, InvoiceNumberRepository invoiceNumberRepository,InvoiceRepository invoiceRepository,InvoiceProductRepository invoiceProductRepository, SPTableRepository spTableRepository
+	public CommandLineRunner mappingDemo(RoleRepository roleRepository, UserRepository userRepository, CompanyRepository companyRepository, CategoryRepository categoryRepository, ProductRepository productRepository, InvoiceNumberRepository invoiceNumberRepository, InvoiceRepository invoiceRepository, InvoiceProductRepository invoiceProductRepository, ClientVendorRepository clientVendorRepository
 										 )
 	{
 		return args -> {
@@ -119,15 +119,15 @@ public class AccountingAppApplication {
 
 		//Create SP Table 1- Vendor 1 Client
 
-			SPTable vendorSP = new SPTable("Active azure","+142356662","active@azure.com",crustyCompany,
+			ClientVendor vendorSP = new ClientVendor("Active azure","+142356662","active@azure.com",crustyCompany,
 					ClientVendorType.VENDOR,"3245324","TX","Auckland Hill 14",true);
 
-			spTableRepository.saveAndFlush(vendorSP);
+			clientVendorRepository.saveAndFlush(vendorSP);
 
-			SPTable clientSP = new SPTable("Bayou Tracking","+142356662","bayou@tracking.com",crustyCompany,
+			ClientVendor clientSP = new ClientVendor("Bayou Tracking","+142356662","bayou@tracking.com",crustyCompany,
 					ClientVendorType.CLIENT,"234245","PH","Chesterfield Industrial Park 26",true);
 
-			spTableRepository.saveAndFlush(clientSP);
+			clientVendorRepository.saveAndFlush(clientSP);
 
 
 
