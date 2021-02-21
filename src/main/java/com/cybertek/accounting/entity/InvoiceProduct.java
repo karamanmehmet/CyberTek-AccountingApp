@@ -23,14 +23,14 @@ public class InvoiceProduct {
     private double unitPrice;
 
     @ManyToOne()
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = true)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "invoice_id", nullable = false)
+    @JoinColumn(name = "invoice_id", nullable = true)
     private Invoice invoice;
 
 
-
-
+    public InvoiceProduct( int qty, double unitPrice,Product smartPhone, Invoice invoiceSales) {
+    }
 }

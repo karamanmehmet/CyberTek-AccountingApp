@@ -25,7 +25,7 @@ public class SPTable extends BaseEntity {
     private String email;
 
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @NotNull
     @JoinColumn(name="company_id")
     private Company company;

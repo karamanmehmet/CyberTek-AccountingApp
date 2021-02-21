@@ -18,7 +18,7 @@ public class Category extends BaseEntity {
     @NotNull
     private String description;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "company_id")
     @NotNull
     private Company company;

@@ -2,6 +2,8 @@ package com.cybertek.accounting;
 
 import com.cybertek.accounting.entity.*;
 import com.cybertek.accounting.entity.InvoiceNumber;
+import com.cybertek.accounting.enums.ClientVendorType;
+import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
@@ -53,12 +55,12 @@ public class AccountingAppApplication {
 
 
 		//Create Sample Company
-			Company companySample = new Company("CrustyCloud LLC","address1","address2","OH","75074","Tolga Savaci","karaman@crustycloud.com", LocalDate.now(),true);
+			Company crustyCompany = new Company("CrustyCloud LLC","address1","address2","OH","75074","Tolga Savaci","karaman@crustycloud.com", LocalDate.now(),true);
 
 
-			companyRepository.save(companySample);
+			companyRepository.save(crustyCompany);
 
-			Company crustyCompany = companyRepository.findById(2l).get();
+
 
 			//Create InvoiceNumber for Company
 
@@ -117,12 +119,12 @@ public class AccountingAppApplication {
 
 		//Create SP Table 1- Vendor 1 Client
 
-			SPTable vendorSP = new SPTable(1,"Active azure","+142356662","active@azure.com",crustyCompany,
+			SPTable vendorSP = new SPTable("Active azure","+142356662","active@azure.com",crustyCompany,
 					ClientVendorType.VENDOR,"3245324","TX","Auckland Hill 14",true);
 
 			spTableRepository.saveAndFlush(vendorSP);
 
-			SPTable clientSP = new SPTable(2,"Bayou Tracking","+142356662","bayou@tracking.com",crustyCompany,
+			SPTable clientSP = new SPTable("Bayou Tracking","+142356662","bayou@tracking.com",crustyCompany,
 					ClientVendorType.CLIENT,"234245","PH","Chesterfield Industrial Park 26",true);
 
 			spTableRepository.saveAndFlush(clientSP);
@@ -131,12 +133,12 @@ public class AccountingAppApplication {
 
 		//Create Invoice
 
-			Invoice invoiceSales = new Invoice("1",InvoiceStatus.STATUS,"1", InvoiceType.SAlES,LocalDate.now().minusDays(1),
+			Invoice invoiceSales = new Invoice("1", InvoiceStatus.OPEN,"1", InvoiceType.SAlES,LocalDate.now().minusDays(1),
 					vendorSP,crustyCompany,true);
 
-			invoiceRepository.saveAndFlush(invoiceSales);
+			invoiceSales=	invoiceRepository.saveAndFlush(invoiceSales);
 
-			Invoice invoicePurchase = new Invoice("2",InvoiceStatus.STATUS,"2", InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
+			Invoice invoicePurchase = new Invoice("2",InvoiceStatus.OPEN,"2", InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
 					vendorSP,crustyCompany,true);
 
 			invoiceRepository.saveAndFlush(invoicePurchase);
@@ -145,11 +147,11 @@ public class AccountingAppApplication {
 
 		//Create Invoice Product
 
-			InvoiceProduct invoiceProduct1 = new InvoiceProduct(1L,2,300,smartPhone,invoiceSales);
+			InvoiceProduct invoiceProduct1 = new InvoiceProduct(2,300,smartPhone,invoiceSales);
 
 			invoiceProductRepository.save(invoiceProduct1);
 
-			InvoiceProduct invoiceProduct2 = new InvoiceProduct(2L,4,3.49,showerGel,invoicePurchase);
+			InvoiceProduct invoiceProduct2 = new InvoiceProduct(4,3.49,showerGel,invoicePurchase);
 
 			invoiceProductRepository.save(invoiceProduct2);
 

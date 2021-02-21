@@ -23,7 +23,7 @@ public class Product extends BaseEntity {
     private int qty;
     private double price;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     @NotNull
     private Category category;
@@ -36,7 +36,7 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private double tax;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "company_id")
     @NotNull
     private Company company;
