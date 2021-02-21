@@ -5,22 +5,33 @@ import com.cybertek.accounting.dto.RoleDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.Role;
+import com.cybertek.accounting.enums.InvoiceStatus;
+import com.cybertek.accounting.enums.InvoiceType;
 
 import java.util.List;
 
 public interface InvoiceService {
-    Invoice create(InvoiceDto invoice);
 
-    List<InvoiceDto> findAll();
+    InvoiceDto create(InvoiceDto invoice);
 
-    Invoice update(InvoiceDto invoice);
+    InvoiceDto update(InvoiceDto invoice);
 
-    void delete(InvoiceDto invoice);
+    boolean delete(InvoiceDto invoice);
 
     Invoice findById(long id);
 
-    List<InvoiceDto> findByInvoiceNo(String invoiceNo);
+    InvoiceDto findByIdDto(long id);
 
-    String calculateInvoiceNo(Company company);
+    InvoiceDto findByInvoiceNo(String invoiceNo);
+
+    List<Invoice> findFirst3ByCompanyOrderByInvoiceDateAsc(Company company);
+
+    List<Invoice> findFirst3ByCompanyOrderByInvoiceDateDesc(Company company);
+
+    List<Invoice> findAllByCompanyAndInvoiceType(Company company, InvoiceType invoiceType);
+
+    List<Invoice> findAllByCompanyAndInvoiceStatus(Company company, InvoiceStatus invoiceStatus);
+
+    List<Invoice> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(Company company,InvoiceType invoiceType, InvoiceStatus invoiceStatus);
 
 }

@@ -31,6 +31,10 @@ public class InvoiceProduct {
     private Invoice invoice;
 
 
-    public InvoiceProduct( int qty, double unitPrice,Product smartPhone, Invoice invoiceSales) {
+    public InvoiceProduct( int qty, double unitPrice,Product product, Invoice invoice) {
+        this.invoice = invoice;
+        this.product = product;
+        this.qty = qty;
+        this.unitPrice = unitPrice;
     }
 }

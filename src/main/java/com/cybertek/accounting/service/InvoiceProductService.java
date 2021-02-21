@@ -6,18 +6,14 @@ import java.util.List;
 
 public interface InvoiceProductService {
 
-    InvoiceProduct create(InvoiceProductDto invoiceProduct);
+    InvoiceProductDto create(InvoiceProductDto invoiceProduct);
 
-    List<InvoiceProductDto> findAll();
+    InvoiceProductDto update(InvoiceProductDto invoiceProduct);
 
-    InvoiceProduct update(InvoiceProductDto invoiceProduct);
-
-    void delete(InvoiceProductDto invoiceProduct);
+    boolean delete(InvoiceProductDto invoiceProduct);
 
     InvoiceProductDto findById(long id);
 
-    List<InvoiceProductDto> findById(Long id);
 
-    List<InvoiceProductDto> findAllByType(String type);
 
 }
