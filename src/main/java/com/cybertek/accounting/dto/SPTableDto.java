@@ -25,7 +25,7 @@ public class SPTableDto {
 
     private CompanyDto company;
 
-    private int zipCode;
+    private String zipCode;
 
     private String address;
 

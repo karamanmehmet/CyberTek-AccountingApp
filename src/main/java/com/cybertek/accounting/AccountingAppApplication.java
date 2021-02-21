@@ -133,12 +133,12 @@ public class AccountingAppApplication {
 
 		//Create Invoice
 
-			Invoice invoiceSales = new Invoice("1", InvoiceStatus.OPEN,"1", InvoiceType.SAlES,LocalDate.now().minusDays(1),
+			Invoice invoiceSales = new Invoice("1", InvoiceStatus.OPEN, InvoiceType.SAlES,LocalDate.now().minusDays(1),
 					vendorSP,crustyCompany,true);
 
 			invoiceSales=	invoiceRepository.saveAndFlush(invoiceSales);
 
-			Invoice invoicePurchase = new Invoice("2",InvoiceStatus.OPEN,"2", InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
+			Invoice invoicePurchase = new Invoice("2",InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
 					vendorSP,crustyCompany,true);
 
 			invoiceRepository.saveAndFlush(invoicePurchase);

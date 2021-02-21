@@ -22,8 +22,6 @@ public class Invoice extends BaseEntity{
 
     private InvoiceStatus invoiceStatus;
 
-    private String invoiceNumber;
-
     @Enumerated(EnumType.STRING)
     private InvoiceType invoiceType;
 

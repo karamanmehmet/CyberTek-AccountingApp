@@ -22,6 +22,7 @@ public interface InvoiceService {
 
     InvoiceDto findByIdDto(long id);
 
+
     InvoiceDto findByInvoiceNo(String invoiceNo);
 
     List<Invoice> findFirst3ByCompanyOrderByInvoiceDateAsc(Company company);
