@@ -1,9 +1,9 @@
 package com.cybertek.accounting;
 
-import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.entity.*;
 import com.cybertek.accounting.entity.InvoiceNumber;
-import com.cybertek.accounting.entity.Role;
-import com.cybertek.accounting.entity.User;
+import com.cybertek.accounting.enums.InvoiceType;
+import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -50,6 +50,8 @@ public class AccountingAppApplication {
 
 			userRepository.save(userRoot);
 
+
+
 		//Create Sample Company
 			Company companySample = new Company("CrustyCloud LLC","address1","address2","OH","75074","Tolga Savaci","karaman@crustycloud.com", LocalDate.now(),true);
 
@@ -62,6 +64,7 @@ public class AccountingAppApplication {
 
 			InvoiceNumber invoiceNumber = new InvoiceNumber(crustyCompany,2021,1);
 			invoiceNumber = invoiceNumberRepository.save(invoiceNumber);
+
 
 
 		//Create User for Company - Please continue creating with employee user
@@ -78,18 +81,77 @@ public class AccountingAppApplication {
 			userRepository.saveAndFlush(userManager);
 
 
+
+			User userEmployee = new User("employee","Mike","employee@crustycloud.com" , true, "+1954784236",
+					"password",crustyCompany);
+			userManager.addRole(roleEmployee);
+			userRepository.saveAndFlush(userEmployee);
+
+
+
 		//Create Product Category
+
+			Category electronicsCategory = new Category("electronics",crustyCompany,true);
+
+			categoryRepository.saveAndFlush(electronicsCategory);
+
+			Category beautyCategory = new Category("beauty",crustyCompany,true);
+
+			categoryRepository.saveAndFlush(beautyCategory);
+
+
 
 		//Create Product
 
+			Product smartPhone = new Product("Smart Phone","Blue smartphone",10,300,electronicsCategory, Unit.PIECE,
+					4,10.0,crustyCompany,true);
+
+			productRepository.saveAndFlush(smartPhone);
+
+			Product showerGel = new Product("Sport showerGel","Very nice shower gel",20,3.49,beautyCategory, Unit.PIECE,
+					6,15.0,crustyCompany,true);
+
+			productRepository.saveAndFlush(showerGel);
+
+
+
 		//Create SP Table 1- Vendor 1 Client
+
+			SPTable vendorSP = new SPTable(1,"Active azure","+142356662","active@azure.com",crustyCompany,
+					ClientVendorType.VENDOR,"3245324","TX","Auckland Hill 14",true);
+
+			spTableRepository.saveAndFlush(vendorSP);
+
+			SPTable clientSP = new SPTable(2,"Bayou Tracking","+142356662","bayou@tracking.com",crustyCompany,
+					ClientVendorType.CLIENT,"234245","PH","Chesterfield Industrial Park 26",true);
+
+			spTableRepository.saveAndFlush(clientSP);
+
+
 
 		//Create Invoice
 
+			Invoice invoiceSales = new Invoice("1",InvoiceStatus.STATUS,"1", InvoiceType.SAlES,LocalDate.now().minusDays(1),
+					vendorSP,crustyCompany,true);
+
+			invoiceRepository.saveAndFlush(invoiceSales);
+
+			Invoice invoicePurchase = new Invoice("2",InvoiceStatus.STATUS,"2", InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
+					vendorSP,crustyCompany,true);
+
+			invoiceRepository.saveAndFlush(invoicePurchase);
+
+
+
 		//Create Invoice Product
 
+			InvoiceProduct invoiceProduct1 = new InvoiceProduct(1L,2,300,smartPhone,invoiceSales);
 
+			invoiceProductRepository.save(invoiceProduct1);
 
+			InvoiceProduct invoiceProduct2 = new InvoiceProduct(2L,4,3.49,showerGel,invoicePurchase);
+
+			invoiceProductRepository.save(invoiceProduct2);
 
 
 		};

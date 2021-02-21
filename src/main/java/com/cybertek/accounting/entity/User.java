@@ -70,7 +70,7 @@ public class User extends BaseEntity{
         roles.remove(role);
     }
 
-     public User(String firstname, String lastname,  String email, boolean active, String phone,
+     public User(String firstname, String lastname,  String email, boolean enabled, String phone,
                 String password,Company company) {
 
         this.firstname = firstname;
