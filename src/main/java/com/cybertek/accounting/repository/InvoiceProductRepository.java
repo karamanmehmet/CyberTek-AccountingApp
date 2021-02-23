@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct,Long> {
@@ -16,7 +17,7 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct,L
 
     List<InvoiceProduct> findByProduct(Product product);
 
-    List<InvoiceProduct> findByInvoiceAndProduct(Invoice invoice, Product product);
+    Optional<InvoiceProduct> findByInvoiceAndProduct(Invoice invoice, Product product);
 
     //will do in future find by Company, Incovice Type / Status and Order By Invoice Date
     //anyone can do with Native / Query will be appreciated

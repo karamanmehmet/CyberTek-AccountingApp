@@ -30,6 +30,7 @@ public class InvoiceProduct {
     @JoinColumn(name = "invoice_id", nullable = true)
     private Invoice invoice;
 
+    private boolean isDeleted;
 
     public InvoiceProduct( int qty, double unitPrice,Product product, Invoice invoice) {
         this.invoice = invoice;
