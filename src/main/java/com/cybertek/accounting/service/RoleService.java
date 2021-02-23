@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RoleService {
 
-    RoleDto create(RoleDto role);
+    RoleDto create(RoleDto role) throws Exception;
 
     List<RoleDto> findAll();
 

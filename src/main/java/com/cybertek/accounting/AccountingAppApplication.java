@@ -3,7 +3,6 @@ package com.cybertek.accounting;
 import com.cybertek.accounting.entity.*;
 import com.cybertek.accounting.entity.InvoiceNumber;
 import com.cybertek.accounting.enums.ClientVendorType;
-import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
