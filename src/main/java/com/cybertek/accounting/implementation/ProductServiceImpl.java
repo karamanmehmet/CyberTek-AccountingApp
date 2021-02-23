@@ -12,6 +12,7 @@ import com.cybertek.accounting.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,10 @@ public class ProductServiceImpl implements ProductService {
         if(productDto.getName()==null ||  productDto.getCategory()==null || productDto.getCompany()==null) {
             throw new Exception("Something went wrong please try again");
         }
+        Optional<Product> foundedProduct = repository.findById(productDto.getId());
+
+        if (foundedProduct.isPresent())
+            throw new Exception("This product already exist");
 
         repository.saveAndFlush(mapper.convert(productDto,new Product()));
 

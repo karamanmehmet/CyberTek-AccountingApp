@@ -29,16 +29,14 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto create(CategoryDto categoryDto) throws Exception {
 
 
-        Category convertedCategory = mapper.convert(categoryDto, new Category());
-
-        Optional<Category> foundedCategory = repository.findById(convertedCategory.getId());
+        Optional<Category> foundedCategory = repository.findById(categoryDto.getId());
 
         if(foundedCategory.isPresent())
             throw new Exception("Category Already exist");
 
-         repository.save(convertedCategory);
+        repository.saveAndFlush(mapper.convert(categoryDto,new Category()));
 
-         return categoryDto;
+        return categoryDto;
     }
 
     @Override
@@ -88,18 +86,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto update(CategoryDto categoryDto) throws Exception {
-        Category convertedCategory = mapper.convert(categoryDto, new Category());
 
-        Optional<Category> foundedCategory = repository.findById(convertedCategory.getId());
+        Optional<Category> foundedCategory = repository.findById(categoryDto.getId());
 
         if (foundedCategory.isEmpty()) {
             throw new Exception("There is no category");
         }
-        convertedCategory.setId(foundedCategory.get().getId());
-
-        repository.saveAndFlush(convertedCategory);
-
-        return mapper.convert(convertedCategory,new CategoryDto());
+        repository.saveAndFlush(mapper.convert(categoryDto,new Category()));
+        return categoryDto;
     }
 
     @Override
@@ -113,8 +107,8 @@ public class CategoryServiceImpl implements CategoryService {
         if(products.size()>0)
             throw new Exception("This category has products");
 
-        // need to create dummy unique variable to able to create it again
-       //  foundedCategory.setId(foundedCategory.getCompany()+"-"+foundedCategory.getId());
+        // TODO  need to create unique logic to able to create it again
+        // foundedCategory.set(foundedCategory.getCompany()+"-"+foundedCategory.getId());
 
         foundedCategory.setEnabled(false);
 

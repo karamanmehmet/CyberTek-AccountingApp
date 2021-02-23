@@ -84,7 +84,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public ClientVendorDto update(ClientVendorDto clientVendor) throws Exception {
 
-        // TODO need to check logic
+        // TODO need to check logic with Category which one is correct and why ?
 
         Optional<ClientVendor> foundedClientVendor = repository.findByEmail(clientVendor.getEmail());
 
