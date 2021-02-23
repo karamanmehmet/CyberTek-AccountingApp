@@ -2,6 +2,7 @@ package com.cybertek.accounting.repository;
 
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
+import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
