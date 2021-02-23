@@ -12,15 +12,15 @@ import java.util.List;
 
 public interface InvoiceService {
 
-    InvoiceDto create(InvoiceDto invoice);
+    InvoiceDto create(InvoiceDto invoice) throws Exception;
 
-    InvoiceDto update(InvoiceDto invoice);
+    InvoiceDto update(InvoiceDto invoice) throws Exception;
 
-    boolean delete(InvoiceDto invoice);
+    boolean delete(InvoiceDto invoice) throws Exception;
 
-    Invoice findById(long id);
+    Invoice findById(long id) throws Exception;
 
-    InvoiceDto findByIdDto(long id);
+    InvoiceDto findByIdDto(long id) throws Exception;
 
 
     InvoiceDto findByInvoiceNo(String invoiceNo);

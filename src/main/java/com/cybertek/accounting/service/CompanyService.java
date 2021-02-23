@@ -1,20 +1,21 @@
 package com.cybertek.accounting.service;
 
+import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.entity.Company;
 
 import java.util.List;
 
 public interface CompanyService {
 
-    Company create(Company company);
+    CompanyDto create(CompanyDto companyDto) throws Exception;
 
-    List<Company> findAll();
+    List<CompanyDto> findAll();
 
-    Company update(Company company);
+    CompanyDto update(CompanyDto companyDto) throws Exception;
 
-    void delete(Company company);
+    void delete(CompanyDto companyDto) throws Exception;
 
-    List<Company> findByState(String state);
+    List<CompanyDto> findByState(String state);
 
 
 }
