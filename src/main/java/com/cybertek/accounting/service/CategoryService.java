@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CategoryService {
 
-    CategoryDto create(CategoryDto categoryDto);
+    CategoryDto create(CategoryDto categoryDto) throws Exception;
 
-    CategoryDto findById(long id);
+    CategoryDto findById(long id) throws Exception;
 
     List<CategoryDto> findAll();
 
@@ -17,8 +17,8 @@ public interface CategoryService {
 
     List<CategoryDto> findByCompanyAndStatus(CompanyDto companyDto, boolean enabled);
 
-    CategoryDto update(CategoryDto categoryDto);
+    CategoryDto update(CategoryDto categoryDto) throws Exception;
 
-    void delete(CategoryDto categoryDto);
+    void delete(CategoryDto categoryDto) throws Exception;
 
 }

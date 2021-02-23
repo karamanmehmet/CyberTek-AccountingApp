@@ -7,15 +7,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClientVendorRepository extends JpaRepository<ClientVendor,Long> {
+
+    Optional<ClientVendor> findByEmail(String email );
 
     List<ClientVendor> findAllByCompany(Company company);
 
     List<ClientVendor> findAllByCompanyAndEnabled(Company company, boolean enabled);
 
     List<ClientVendor> findAllByCompanyAndType(Company company, ClientVendorType type);
+
+    List<ClientVendor> findAllByCompanyAndState(Company company, String state);
+
+    List<ClientVendor> findAllByCompanyAndStateAndType(Company company, String state,ClientVendorType type);
 
     List<ClientVendor> findAllByCompanyAndTypeAndEnabled(Company company, ClientVendorType type, boolean enabled);
 
