@@ -10,13 +10,13 @@ import java.util.List;
 public interface UserService {
 
 
-    UserDto create(UserDto userDto);
+    UserDto create(UserDto userDto) throws Exception;
 
     List<UserDto> findAll();
 
-    UserDto update(UserDto userDto);
+    UserDto update(UserDto userDto) throws Exception;
 
-    void delete(UserDto userDto);
+    void delete(UserDto userDto) throws Exception;
 
     List<UserDto> findByCompanyAndEnabled(CompanyDto companyDto, Boolean enabled);
 }
