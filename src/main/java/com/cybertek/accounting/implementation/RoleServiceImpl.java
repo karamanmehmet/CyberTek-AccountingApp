@@ -50,8 +50,8 @@ public class RoleServiceImpl implements RoleService {
         //save updated Role to DB
         roleRepository.saveAndFlush(convertedRole);
         // call updated entity from DB and convert it to RoleDto and return the RoleDto
-        return mapper.convert(roleRepository.findByName(convertedRole.getName()),new RoleDto());
-            }
+        return mapper.convert(roleRepository.findByName(convertedRole.getName()), new RoleDto());
+    }
 
     @Override
     public void delete (RoleDto roleDto) {
