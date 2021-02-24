@@ -15,7 +15,7 @@ public interface ProductService {
 
     List<ProductDto> findAll();
 
-    List<ProductDto> findByCategory(Category categoryDto);
+    List<ProductDto> findByCategory(CategoryDto categoryDto);
 
     List<ProductDto> findByCategoryAndStatus(CategoryDto categoryDto, boolean enabled);
 
@@ -26,5 +26,7 @@ public interface ProductService {
     ProductDto update(ProductDto productDto) throws Exception;
 
     void delete(ProductDto productDto) throws Exception;
+
+
 
 }

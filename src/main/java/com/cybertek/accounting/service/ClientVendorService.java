@@ -13,6 +13,8 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAll();
 
+    ClientVendorDto findByEmail(String email) throws Exception;
+
     List<ClientVendorDto> findAllByCompany(CompanyDto company);
 
     List<ClientVendorDto> findAllByCompanyAndType(CompanyDto company, ClientVendorType type);
@@ -22,6 +24,7 @@ public interface ClientVendorService {
     ClientVendorDto update(ClientVendorDto clientVendor) throws Exception;
 
     void delete(ClientVendorDto clientVendor) throws Exception;
+
 
     List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type);
 

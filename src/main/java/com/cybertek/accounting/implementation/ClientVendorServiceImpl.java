@@ -1,7 +1,9 @@
 package com.cybertek.accounting.implementation;
 
+import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.enums.ClientVendorType;
@@ -25,8 +27,10 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public ClientVendorDto create(ClientVendorDto clientVendor) throws Exception {
 
-        repository.findByEmail(clientVendor.getEmail())
-                .orElseThrow(()->new Exception("This Client/Vendor is already exist"));
+        Optional<ClientVendor> foundedClientVendor = repository.findByEmail(clientVendor.getEmail());
+
+        if(foundedClientVendor.isPresent())
+                throw new Exception("This Client/Vendor is already exist");
 
         return mapper.convert(repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor())),new ClientVendorDto());
 
@@ -41,6 +45,14 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 .map(obj->
                      { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ClientVendorDto findByEmail(String email) throws Exception {
+
+        ClientVendor foundedCV = repository.findByEmail(email)
+                .orElseThrow(()->new Exception("This CV does not exist"));
+        return mapper.convert(foundedCV,new ClientVendorDto());
     }
 
     @Override
@@ -85,7 +97,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
         // TODO need to check logic with Category which one is correct and why ?
 
-        Optional<ClientVendor> foundedClientVendor = repository.findByEmail(clientVendor.getEmail());
+        Optional<ClientVendor> foundedClientVendor = repository.findById(clientVendor.getId());
 
         if(foundedClientVendor.isEmpty())
             throw new Exception("There is no client/Vendor");
@@ -114,6 +126,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         repository.saveAndFlush(foundedClientVendor);
 
           }
+
 
     @Override
     public List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type) {

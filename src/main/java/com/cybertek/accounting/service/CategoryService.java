@@ -21,4 +21,6 @@ public interface CategoryService {
 
     void delete(CategoryDto categoryDto) throws Exception;
 
+
+
 }

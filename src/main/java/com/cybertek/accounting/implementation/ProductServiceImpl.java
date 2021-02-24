@@ -53,8 +53,10 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
     @Override
-    public List<ProductDto> findByCategory(Category categoryDto) {
-        List<Product> list = repository.findAllByCategory(categoryDto);
+    public List<ProductDto> findByCategory(CategoryDto categoryDto) {
+
+        Category convertedCategory = mapper.convert(categoryDto, new Category());
+        List<Product> list = repository.findAllByCategory(convertedCategory);
         return list.stream()
                 .map(obj->
                 { return mapper.convert(obj,new ProductDto()); })
@@ -132,4 +134,5 @@ public class ProductServiceImpl implements ProductService {
 
 
     }
+
 }

@@ -100,7 +100,9 @@ public class CategoryServiceImpl implements CategoryService {
         Category foundedCategory = repository.findById(categoryDto.getId())
                 .orElseThrow(()->new Exception("There is no record with this "));
 
-        List<ProductDto> products = productService.findByCategory(foundedCategory);
+        CategoryDto convertedCategory = mapper.convert(foundedCategory, new CategoryDto());
+
+        List<ProductDto> products = productService.findByCategory(convertedCategory);
 
         if(products.size()>0)
             throw new Exception("This category has products");
@@ -111,4 +113,5 @@ public class CategoryServiceImpl implements CategoryService {
         repository.saveAndFlush(foundedCategory);
 
     }
+
 }
