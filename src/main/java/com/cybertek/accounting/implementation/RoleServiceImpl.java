@@ -18,20 +18,21 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
-   private  RoleRepository roleRepository;
+    private RoleRepository roleRepository;
     private MapperGeneric mapper;
 
     public RoleServiceImpl(RoleRepository roleRepository, MapperGeneric roleMapper) {
         this.roleRepository = roleRepository;
         this.mapper = roleMapper;
     }
+
     @Override
     public RoleDto create(RoleDto role) throws Exception {
-        if(role.getName()==null ) {
+        if (role.getName() == null) {
             throw new Exception("Something went wrong please try again");
         }
 
-        roleRepository.saveAndFlush(mapper.convert(role,new Role()));
+        roleRepository.saveAndFlush(mapper.convert(role, new Role()));
 
         return role;
     }
@@ -39,9 +40,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDto> findAll() {
         List<Role> list = roleRepository.findAll();
-        return list.stream().map(obj -> {return mapper.convert(obj, new Role());}).collect(Collectors.toList());
+        return list.stream().map(obj -> {
+            return mapper.convert(obj, new RoleDto());
+        }).collect(Collectors.toList());
     }
-
     @Override
     public RoleDto update(RoleDto dto) {
         //Find current Role Entity
@@ -53,8 +55,8 @@ public class RoleServiceImpl implements RoleService {
         //save updated Role to DB
         roleRepository.saveAndFlush(convertedRole);
         // call updated entity from DB and convert it to RoleDto and return the RoleDto
-        return mapper.convert(roleRepository.findByName(convertedRole.getName()),new RoleDto());
-            }
+        return mapper.convert(roleRepository.findByName(convertedRole.getName()), new RoleDto());
+    }
 
     @Override
     public void delete(RoleDto roleDto) {
