@@ -4,6 +4,7 @@ import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.InvoiceNumber;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface InvoiceNumberRepository extends JpaRepository<InvoiceNumber,Lon
 
     List<InvoiceNumber> findInvoiceNumberByCompany(Company company);
 
-    @Query(value = "SELECT * FROM invoicenumber JOIN company ON invoicenumber.company_id = company.id ORDER BY invoicenumber DESC LIMIT 1", nativeQuery = true)
-    InvoiceNumber findLastInvoiceNumberByCompany(Company company);
+    @Query(value = "SELECT * FROM invoicenumber i WHERE i.invoicenumber = CAST ((SELECT invoiceno FROM invoice i WHERE i.company_id = :id ORDER BY i.invoicedate DESC limit 1) AS INTEGER)", nativeQuery = true)
+    InvoiceNumber findLastInvoiceNumberByCompanyId(@Param("id") long id);
 
 }

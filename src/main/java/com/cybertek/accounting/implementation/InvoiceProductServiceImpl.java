@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceProductImpl implements InvoiceProductService {
+public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     private final InvoiceProductRepository invoiceProductRepository;
     private final InvoiceRepository invoiceRepository;
@@ -36,10 +36,17 @@ public class InvoiceProductImpl implements InvoiceProductService {
 
         Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new Exception("No product found"));
 
+        if (foundProduct.getQty() < invoiceProduct.getQty()) {
+            throw new Exception("Not enough product in the stock");
+        }
+
         Optional<InvoiceProduct> foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct);
 
         if (foundInvoiceProduct.isPresent()) {
             foundInvoiceProduct.get().setQty(foundInvoiceProduct.get().getQty() + invoiceProduct.getQty());
+        } else {
+            foundInvoiceProduct.get().setQty(invoiceProduct.getQty());
+            foundInvoiceProduct.get().setUnitPrice(foundProduct.getPrice());
         }
 
         InvoiceProduct createdInvoiceProduct = invoiceProductRepository.saveAndFlush(foundInvoiceProduct.get());
@@ -61,8 +68,13 @@ public class InvoiceProductImpl implements InvoiceProductService {
 
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new Exception("No invoice product found"));
 
+        if (foundProduct.getQty() < invoiceProduct.getQty()) {
+            throw new Exception("Not enough product in the stock");
+        }
+
         foundInvoiceProduct.setQty(invoiceProduct.getQty());
-        foundInvoiceProduct.setUnitPrice(invoiceProduct.getUnitPrice());
+        foundInvoiceProduct.setUnitPrice(foundProduct.getPrice());
+        foundInvoiceProduct.setProduct(foundProduct);
 
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
 
@@ -83,8 +95,13 @@ public class InvoiceProductImpl implements InvoiceProductService {
 
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new Exception("No invoice product found"));
 
+        foundProduct.setQty(foundProduct.getQty() + foundInvoiceProduct.getQty());
+
+        foundInvoiceProduct.setQty(0);
+        foundInvoiceProduct.setUnitPrice(0);
         foundInvoiceProduct.setDeleted(true);
 
+        productRepository.saveAndFlush(foundProduct);
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
 
     }

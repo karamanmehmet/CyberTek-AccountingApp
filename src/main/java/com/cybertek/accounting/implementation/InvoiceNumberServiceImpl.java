@@ -2,9 +2,11 @@ package com.cybertek.accounting.implementation;
 
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceNumber;
 import com.cybertek.accounting.repository.CompanyRepository;
 import com.cybertek.accounting.repository.InvoiceNumberRepository;
+import com.cybertek.accounting.repository.InvoiceRepository;
 import com.cybertek.accounting.service.InvoiceNumberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,14 +16,39 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceNumberImpl implements InvoiceNumberService {
+public class InvoiceNumberServiceImpl implements InvoiceNumberService {
 
     private final InvoiceNumberRepository invoiceNumberRepository;
     private final CompanyRepository companyRepository;
+    private final InvoiceRepository invoiceRepository;
 
-    // Should we add invoice number to the invoice in the InvoiceImpl or here?
-    public String create(Company company) throws Exception {
-        return generateInvoiceNumber(company);
+    @Override
+    public String create(CompanyDto companyDto) throws Exception {
+
+        String generatedInvoiceNumber;
+
+        Company foundCompany = companyRepository.findById(companyDto.getId()).orElseThrow(() -> new Exception("No company found"));
+        List<InvoiceNumber> invoiceNumberList = invoiceNumberRepository.findInvoiceNumberByCompany(foundCompany);
+
+        InvoiceNumber invoiceNumber = invoiceNumberRepository.findLastInvoiceNumberByCompanyId(foundCompany.getId());
+
+        Invoice invoice;
+
+        int lastInvoiceNumber = invoiceNumber.getInvoiceNumber();
+
+        if (invoiceNumberList.size() == 0) {
+            generatedInvoiceNumber = generateInvoiceNumber((-1));
+            invoiceNumber.setCompany(foundCompany);
+
+            invoice = invoiceRepository.findByInvoiceNo(generatedInvoiceNumber);
+
+            invoiceNumber.setYear(invoice.getInvoiceDate().getYear());
+
+        } else {
+            generatedInvoiceNumber = generateInvoiceNumber(lastInvoiceNumber);
+        }
+
+        return generatedInvoiceNumber;
     }
 
     @Override
@@ -52,22 +79,19 @@ public class InvoiceNumberImpl implements InvoiceNumberService {
 
     }
 
-    private String generateInvoiceNumber(Company company) throws Exception {
+    private String generateInvoiceNumber(int lastInvoiceNumber) {
 
-        Company foundCompany = companyRepository.findById(company.getId()).orElseThrow(() -> new Exception("No company found"));
-        List<InvoiceNumber> invoiceNumberByCompanyList = invoiceNumberRepository.findInvoiceNumberByCompany(foundCompany);
-
-        int lastInvoiceNumber = invoiceNumberRepository.findLastInvoiceNumberByCompany(company).getInvoiceNumber();
         String generatedInvoiceNumber;
 
-        if (invoiceNumberByCompanyList.size() == 0) {
+        if (lastInvoiceNumber == -1) {
             generatedInvoiceNumber = "000";
-        }else {
+        } else {
             generatedInvoiceNumber = String.valueOf(lastInvoiceNumber + 1);
 
-            while (generatedInvoiceNumber.length() < 3){
+            while (generatedInvoiceNumber.length() < 3) {
                 generatedInvoiceNumber = "0".concat(generatedInvoiceNumber);
             }
+
         }
 
         String result = "INV-" + generatedInvoiceNumber;
