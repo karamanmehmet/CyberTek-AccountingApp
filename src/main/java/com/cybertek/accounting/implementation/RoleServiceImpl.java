@@ -1,5 +1,6 @@
 package com.cybertek.accounting.implementation;
 
+import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.dto.RoleDto;
 import com.cybertek.accounting.entity.Product;
 import com.cybertek.accounting.entity.Role;
@@ -43,12 +44,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto update(RoleDto dto) {
-        Optional<Role> role = Optional.ofNullable(roleRepository.findByName(dto.getName()));
-
-        roleRepository.saveAndFlush(mapper.convert(dto,new Role()));
-
-        return dto;
-    }
+        //Find current Role Entity
+        Role foundrole = roleRepository.findByName(dto.getName());
+        //Map update user dto to entity object
+       Role convertedRole = mapper.convert(dto,new Role());
+        //set id to the converted object
+        convertedRole.setId(foundrole.getId());
+        //save updated Role to DB
+        roleRepository.saveAndFlush(convertedRole);
+        // call updated entity from DB and convert it to RoleDto and return the RoleDto
+        return mapper.convert(roleRepository.findByName(convertedRole.getName()),new RoleDto());
+            }
 
     @Override
     public void delete(RoleDto roleDto) {
