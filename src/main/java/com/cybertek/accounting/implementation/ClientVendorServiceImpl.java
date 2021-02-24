@@ -24,13 +24,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public ClientVendorDto create(ClientVendorDto clientVendor) throws Exception {
-        // TODO need to check logic
+
         repository.findByEmail(clientVendor.getEmail())
                 .orElseThrow(()->new Exception("This Client/Vendor is already exist"));
 
-        repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor()));
+        return mapper.convert(repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor())),new ClientVendorDto());
 
-        return clientVendor;
     }
 
     @Override
@@ -95,9 +94,9 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
         convertedClientVendor.setId(foundedClientVendor.get().getId());
 
-        repository.saveAndFlush(convertedClientVendor);
+        return mapper.convert(repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor())),new ClientVendorDto());
 
-        return clientVendor;    }
+            }
 
     @Override
     public void delete(ClientVendorDto clientVendor) throws Exception {

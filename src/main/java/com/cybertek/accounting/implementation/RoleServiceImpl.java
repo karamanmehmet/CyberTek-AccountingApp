@@ -25,14 +25,11 @@ public class RoleServiceImpl implements RoleService {
         this.mapper = roleMapper;
     }
     @Override
-    public RoleDto create(RoleDto role) throws Exception {
-        if(role.getName()==null ) {
+    public RoleDto create(RoleDto roleDto) throws Exception {
+        if(roleDto.getName()==null ) {
             throw new Exception("Something went wrong please try again");
         }
-
-        roleRepository.saveAndFlush(mapper.convert(role,new Role()));
-
-        return role;
+        return mapper.convert(roleRepository.saveAndFlush(mapper.convert(roleDto,new Role())), new RoleDto());
     }
 
     @Override

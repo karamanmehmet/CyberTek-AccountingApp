@@ -34,9 +34,8 @@ public class CategoryServiceImpl implements CategoryService {
         if(foundedCategory.isPresent())
             throw new Exception("Category Already exist");
 
-        repository.saveAndFlush(mapper.convert(categoryDto,new Category()));
+        return mapper.convert(repository.saveAndFlush(mapper.convert(categoryDto,new Category())),new CategoryDto());
 
-        return categoryDto;
     }
 
     @Override
@@ -92,8 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (foundedCategory.isEmpty()) {
             throw new Exception("There is no category");
         }
-        repository.saveAndFlush(mapper.convert(categoryDto,new Category()));
-        return categoryDto;
+        return mapper.convert(repository.saveAndFlush(mapper.convert(categoryDto,new Category())),new CategoryDto());
     }
 
     @Override
@@ -107,8 +105,6 @@ public class CategoryServiceImpl implements CategoryService {
         if(products.size()>0)
             throw new Exception("This category has products");
 
-        // TODO  need to create unique logic to able to create it again
-        // foundedCategory.set(foundedCategory.getCompany()+"-"+foundedCategory.getId());
 
         foundedCategory.setEnabled(false);
 
