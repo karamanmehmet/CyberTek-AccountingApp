@@ -27,9 +27,9 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findByEmail(userDto.getEmail());
         if (user != null) throw new Exception("This user already exists");
 
-        userRepository.saveAndFlush(mapper.convert(userDto,new User()));
+        return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
 
-        return userDto;
+
     }
 
     @Override
@@ -74,4 +74,5 @@ public class UserServiceImpl implements UserService {
                 .map(obj ->{ return mapper.convert(obj,new UserDto());})
                 .collect(Collectors.toList());
     }
+
 }

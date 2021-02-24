@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 
-@SpringBootApplication//(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class AccountingAppApplication {
 
 	public static void main(String[] args) {

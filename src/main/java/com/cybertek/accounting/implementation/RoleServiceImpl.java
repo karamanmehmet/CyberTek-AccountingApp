@@ -25,17 +25,20 @@ public class RoleServiceImpl implements RoleService {
         this.mapper = roleMapper;
     }
     @Override
-    public RoleDto create(RoleDto roleDto) throws Exception {
-        if(roleDto.getName()==null ) {
+    public RoleDto create(RoleDto role) throws Exception {
+        if(role.getName()==null ) {
             throw new Exception("Something went wrong please try again");
         }
-        return mapper.convert(roleRepository.saveAndFlush(mapper.convert(roleDto,new Role())), new RoleDto());
+
+        roleRepository.saveAndFlush(mapper.convert(role,new Role()));
+
+        return role;
     }
 
     @Override
     public List<RoleDto> findAll() {
         List<Role> list = roleRepository.findAll();
-        return list.stream().map(obj -> {return mapper.convert(obj, new RoleDto());}).collect(Collectors.toList());
+        return list.stream().map(obj -> {return mapper.convert(obj, new Role());}).collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +51,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete (RoleDto roleDto) {
+    public void delete(RoleDto roleDto) {
         Role role = roleRepository.findByName(roleDto.getName());
         role.setName(roleDto.getName());
         role.setEnabled(false);
