@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             throw new Exception("The user is not exist");
         }
         userRepository.saveAndFlush(mapper.convert(userDto,new User()));
-        return userDto;
+        return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
     }
 
     @Override
@@ -58,10 +58,6 @@ public class UserServiceImpl implements UserService {
        user.setEmail(userDto.getEmail());
        user.setEnabled(false);
        userRepository.saveAndFlush(user);
-
-
-
-
     }
 
     @Override
