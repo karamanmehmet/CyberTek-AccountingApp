@@ -33,9 +33,8 @@ public class ProductServiceImpl implements ProductService {
         if (foundedProduct.isPresent())
             throw new Exception("This product already exist");
 
-        repository.saveAndFlush(mapper.convert(productDto,new Product()));
+        return mapper.convert(repository.saveAndFlush(mapper.convert(productDto,new Product())),new ProductDto());
 
-        return productDto;
     }
 
     @Override
@@ -112,12 +111,9 @@ public class ProductServiceImpl implements ProductService {
 
         Product convertedProduct = mapper.convert(productDto, new Product());
 
-
         convertedProduct.setId(foundedProduct.getId());
 
-        repository.saveAndFlush(convertedProduct);
-
-        return productDto;
+        return mapper.convert(repository.saveAndFlush(convertedProduct),new ProductDto());
 
     }
 

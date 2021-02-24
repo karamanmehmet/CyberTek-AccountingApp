@@ -3,6 +3,7 @@ package com.cybertek.accounting;
 import com.cybertek.accounting.entity.*;
 import com.cybertek.accounting.entity.InvoiceNumber;
 import com.cybertek.accounting.enums.ClientVendorType;
+import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
@@ -138,7 +139,7 @@ public class AccountingAppApplication {
 
 			invoiceSales=	invoiceRepository.saveAndFlush(invoiceSales);
 
-			Invoice invoicePurchase = new Invoice("2",InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
+			Invoice invoicePurchase = new Invoice("2", InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
 					vendorSP,crustyCompany,true);
 
 			invoiceRepository.saveAndFlush(invoicePurchase);

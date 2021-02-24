@@ -1,8 +1,6 @@
 package com.cybertek.accounting.restcontroller;
 
-import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.ProductDto;
-import com.cybertek.accounting.service.CategoryService;
 import com.cybertek.accounting.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
