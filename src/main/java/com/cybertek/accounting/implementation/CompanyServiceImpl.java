@@ -20,6 +20,14 @@ public class CompanyServiceImpl implements CompanyService {
     CompanyRepository companyRepository;
     MapperGeneric mapperGeneric;
 
+
+    @Override
+    public CompanyDto findByEmail(String email) throws Exception {
+        Company foundCompany = companyRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("This company does not exist!"));
+        return mapperGeneric.convert(foundCompany,new CompanyDto());
+    }
+
     @Override
     public CompanyDto create(CompanyDto companyDto) throws Exception {
 
@@ -54,7 +62,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void delete(CompanyDto companyDto) throws Exception {
+    public boolean delete(CompanyDto companyDto) throws Exception {
 
         //TODO discuss delete logic|change the unique part after setting enabled=false
 
@@ -65,6 +73,7 @@ public class CompanyServiceImpl implements CompanyService {
         foundCompany.setEmail(companyDto.getEmail() + "-" + foundCompany.getId());
 
         companyRepository.saveAndFlush(foundCompany);
+        return !foundCompany.isEnabled();
     }
 
     @Override
