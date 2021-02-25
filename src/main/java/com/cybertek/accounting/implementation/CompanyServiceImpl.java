@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
 
-    CompanyRepository companyRepository;
-    MapperGeneric mapperGeneric;
+    private  final CompanyRepository companyRepository;
+    private  final MapperGeneric mapperGeneric;
 
 
     @Override
