@@ -9,6 +9,7 @@ import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
 public class AccountingAppApplication {
 
 	public static void main(String[] args) {
