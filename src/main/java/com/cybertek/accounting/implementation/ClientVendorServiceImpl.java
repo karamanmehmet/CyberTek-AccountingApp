@@ -1,12 +1,12 @@
 package com.cybertek.accounting.implementation;
 
-import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.dto.CompanyDto;
-import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.enums.ClientVendorType;
+import com.cybertek.accounting.exception.ClientVendorNotFoundException;
+import com.cybertek.accounting.exception.ExistentClientVendorException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ClientVendorRepository;
 import com.cybertek.accounting.service.ClientVendorService;
@@ -25,12 +25,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     private final MapperGeneric mapper;
 
     @Override
-    public ClientVendorDto create(ClientVendorDto clientVendor) throws Exception {
+    public ClientVendorDto create(ClientVendorDto clientVendor) throws ExistentClientVendorException {
 
         Optional<ClientVendor> foundedClientVendor = repository.findByEmail(clientVendor.getEmail());
 
         if(foundedClientVendor.isPresent())
-                throw new Exception("This Client/Vendor is already exist");
+                throw new ExistentClientVendorException("This Client/Vendor is already exist");
 
         return mapper.convert(repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor())),new ClientVendorDto());
 
@@ -48,10 +48,10 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
-    public ClientVendorDto findByEmail(String email) throws Exception {
+    public ClientVendorDto findByEmail(String email) throws ClientVendorNotFoundException {
 
         ClientVendor foundedCV = repository.findByEmail(email)
-                .orElseThrow(()->new Exception("This CV does not exist"));
+                .orElseThrow(()->new ClientVendorNotFoundException("This CV does not exist"));
         return mapper.convert(foundedCV,new ClientVendorDto());
     }
 
@@ -93,14 +93,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
 
     @Override
-    public ClientVendorDto update(ClientVendorDto clientVendor) throws Exception {
-
-        // TODO need to check logic with Category which one is correct and why ?
+    public ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 
         Optional<ClientVendor> foundedClientVendor = repository.findById(clientVendor.getId());
 
         if(foundedClientVendor.isEmpty())
-            throw new Exception("There is no client/Vendor");
+            throw new ClientVendorNotFoundException("There is no client/Vendor");
 
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
 
@@ -111,12 +109,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
             }
 
     @Override
-    public void delete(ClientVendorDto clientVendor) throws Exception {
+    public void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 
-        // TODO need to check logic
+        // TODO need to check logic do we need to check Cv ha Invoice or Not
 
         ClientVendor foundedClientVendor = repository.findByEmail(clientVendor.getEmail())
-                .orElseThrow(()->new Exception("There is no record with this "));
+                .orElseThrow(()->new ClientVendorNotFoundException("There is no record with this "));
 
 
         foundedClientVendor.setEmail(foundedClientVendor.getEmail()+"-"+foundedClientVendor.getId());

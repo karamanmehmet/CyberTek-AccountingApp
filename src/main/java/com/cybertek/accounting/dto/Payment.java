@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Calculator {
+public class Payment {
 
     private double tax;
     private double cost;

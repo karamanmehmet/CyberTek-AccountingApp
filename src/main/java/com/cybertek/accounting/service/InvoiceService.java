@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public interface InvoiceService {
 
-    InvoiceDto create(InvoiceDto invoice) throws ExistentInvoiceException;
+    InvoiceDto create(InvoiceDto invoice) throws Exception;
 
     InvoiceDto update(InvoiceDto invoice) throws InvoiceNotFoundException;
 

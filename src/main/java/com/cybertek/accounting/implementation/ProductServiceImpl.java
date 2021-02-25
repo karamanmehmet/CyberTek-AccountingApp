@@ -6,6 +6,10 @@ import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Product;
+import com.cybertek.accounting.exception.ExistentCategoryException;
+import com.cybertek.accounting.exception.ExistentProductException;
+import com.cybertek.accounting.exception.ProductNotFoundException;
+import com.cybertek.accounting.exception.ProductNullException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ProductRepository;
 import com.cybertek.accounting.service.ProductService;
@@ -22,26 +26,29 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
     private final MapperGeneric mapper;
 
+    /*TODO  Should we give ID number when we creating product.
+           Otherwise there is no unique value(name should be unique ?) to check product exist or Not */
+
     @Override
-    public ProductDto create(ProductDto productDto) throws Exception {
+    public ProductDto create(ProductDto productDto) throws ProductNullException, ExistentProductException {
 
         if(productDto.getName()==null ||  productDto.getCategory()==null || productDto.getCompany()==null) {
-            throw new Exception("Something went wrong please try again");
+            throw new ProductNullException("Something went wrong please try again");
         }
         Optional<Product> foundedProduct = repository.findById(productDto.getId());
 
         if (foundedProduct.isPresent())
-            throw new Exception("This product already exist");
+            throw new ExistentProductException("This product already exist");
 
         return mapper.convert(repository.saveAndFlush(mapper.convert(productDto,new Product())),new ProductDto());
 
     }
 
     @Override
-    public ProductDto findById(long id) throws Exception {
+    public ProductDto findById(long id) throws ProductNotFoundException {
 
         Product foundedProduct = repository.findById(id)
-                .orElseThrow(()->new Exception("This product does not exist"));
+                .orElseThrow(()->new ProductNotFoundException("This product does not exist"));
         return mapper.convert(foundedProduct,new ProductDto());
     }
     @Override
@@ -102,14 +109,14 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public ProductDto update(ProductDto productDto) throws Exception {
+    public ProductDto update(ProductDto productDto) throws ProductNullException, ProductNotFoundException {
 
         if(productDto.getName()==null ||  productDto.getCategory()==null || productDto.getCompany()==null) {
-            throw new Exception("Something went wrong please try again");
+            throw new ProductNullException("Something went wrong please try again");
         }
 
         Product foundedProduct = repository.findById(productDto.getId())
-                .orElseThrow(() -> new Exception("There is no product with this ID"));
+                .orElseThrow(() -> new ProductNotFoundException("There is no product with this ID"));
 
         Product convertedProduct = mapper.convert(productDto, new Product());
 
@@ -120,10 +127,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(ProductDto productDto) throws Exception {
+    public void delete(ProductDto productDto) throws ProductNotFoundException {
 
         Product foundedProduct = repository.findById(productDto.getId())
-                .orElseThrow(()->new Exception("There is no record with this "));
+                .orElseThrow(()->new ProductNotFoundException("There is no record with this "));
 
 
         foundedProduct.setName(foundedProduct.getId()+"-"+foundedProduct.getName());

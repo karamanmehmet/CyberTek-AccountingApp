@@ -18,7 +18,7 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
 
     List<Company> findByEnabled(boolean enabled);
 
-    @Query(value = "SELECT * FROM companies c JOIN users u ON c.id = u.company_id WHERE u.id = ?1",nativeQuery = true)
+    @Query(value = "SELECT * FROM company c JOIN users u ON c.id = u.company_id WHERE u.id = ?1",nativeQuery = true)
     Optional<Company> findCompanyByUser(Long userId);
 
 

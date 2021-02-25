@@ -32,7 +32,7 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
 
         InvoiceNumber invoiceNumber = invoiceNumberRepository.findLastInvoiceNumberByCompanyId(foundCompany.getId());
 
-        Invoice invoice;
+        Invoice invoice = new Invoice();
 
         int lastInvoiceNumber = invoiceNumber.getInvoiceNumber();
 

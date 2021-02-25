@@ -6,6 +6,7 @@ import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
 import com.cybertek.accounting.entity.Product;
+import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.InvoiceProductRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
@@ -14,7 +15,8 @@ import com.cybertek.accounting.service.InvoiceProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,20 +38,33 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new Exception("No product found"));
 
-        if (foundProduct.getQty() < invoiceProduct.getQty()) {
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElse(null);
+
+        if (foundProduct.getQty() < invoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
             throw new Exception("Not enough product in the stock");
+        }else if (foundProduct.getQty() >= invoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES){
+            foundProduct.setQty(foundProduct.getQty() - invoiceProduct.getQty());
+        }else {
+            foundProduct.setQty(foundProduct.getQty() + invoiceProduct.getQty());
         }
 
-        Optional<InvoiceProduct> foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct);
+        productRepository.saveAndFlush(foundProduct);
 
-        if (foundInvoiceProduct.isPresent()) {
-            foundInvoiceProduct.get().setQty(foundInvoiceProduct.get().getQty() + invoiceProduct.getQty());
+        if (foundInvoiceProduct != null) {
+            foundInvoiceProduct.setQty(foundInvoiceProduct.getQty() + invoiceProduct.getQty());
         } else {
-            foundInvoiceProduct.get().setQty(invoiceProduct.getQty());
-            foundInvoiceProduct.get().setUnitPrice(foundProduct.getPrice());
+
+            foundInvoiceProduct = new InvoiceProduct();
+
+            foundInvoiceProduct.setProduct(foundProduct);
+            foundInvoiceProduct.setInvoice(foundInvoice);
+
+            foundInvoiceProduct.setQty(invoiceProduct.getQty());
+            foundInvoiceProduct.setUnitPrice(foundProduct.getPrice());
+
         }
 
-        InvoiceProduct createdInvoiceProduct = invoiceProductRepository.saveAndFlush(foundInvoiceProduct.get());
+        InvoiceProduct createdInvoiceProduct = invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
 
         return mapper.convert(createdInvoiceProduct, new InvoiceProductDto());
 
@@ -68,13 +83,18 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new Exception("No invoice product found"));
 
-        if (foundProduct.getQty() < invoiceProduct.getQty()) {
+        if (foundProduct.getQty() < invoiceProduct.getQty() - foundInvoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
             throw new Exception("Not enough product in the stock");
+        }else if (foundProduct.getQty() >= invoiceProduct.getQty() - foundInvoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
+            foundProduct.setQty(foundProduct.getQty() - (invoiceProduct.getQty() - foundInvoiceProduct.getQty()));
+        }else {
+            foundProduct.setQty(foundProduct.getQty() + (invoiceProduct.getQty() - foundInvoiceProduct.getQty()));
         }
+
+        productRepository.saveAndFlush(foundProduct);
 
         foundInvoiceProduct.setQty(invoiceProduct.getQty());
         foundInvoiceProduct.setUnitPrice(foundProduct.getPrice());
-        foundInvoiceProduct.setProduct(foundProduct);
 
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
 
@@ -95,7 +115,15 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new Exception("No invoice product found"));
 
-        foundProduct.setQty(foundProduct.getQty() + foundInvoiceProduct.getQty());
+        if (foundInvoice.getInvoiceType() == InvoiceType.SALES) {
+            foundProduct.setQty(foundProduct.getQty() + foundInvoiceProduct.getQty());
+        }else if (foundInvoice.getInvoiceType() == InvoiceType.PURCHASE && foundInvoiceProduct.getQty() < foundProduct.getQty()) {
+            foundProduct.setQty(foundProduct.getQty() - foundInvoiceProduct.getQty());
+        }else {
+            throw new Exception("Not enough product in the stock");
+        }
+
+        productRepository.saveAndFlush(foundProduct);
 
         foundInvoiceProduct.setQty(0);
         foundInvoiceProduct.setUnitPrice(0);
@@ -104,6 +132,16 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         productRepository.saveAndFlush(foundProduct);
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
 
+    }
+
+    @Override
+    public List<InvoiceProductDto> findAll() {
+
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAll();
+
+        List<InvoiceProductDto> dtos = invoiceProductList.stream().map(invoiceProduct -> {return mapper.convert(invoiceProduct, new InvoiceProductDto());}).collect(Collectors.toList());
+
+        return dtos;
     }
 
     @Override
