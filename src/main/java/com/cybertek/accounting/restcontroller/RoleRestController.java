@@ -1,15 +1,13 @@
 package com.cybertek.accounting.restcontroller;
 
 import com.cybertek.accounting.dto.RoleDto;
+import com.cybertek.accounting.dto.UserDto;
 import com.cybertek.accounting.entity.Role;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.service.RoleService;
 import com.cybertek.accounting.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/role")
@@ -22,5 +20,17 @@ public class RoleRestController {
     RoleDto findByName(@PathVariable("name") String name){
         return roleService.findByName(name);
     }
+
+    @PutMapping("/update")
+    public RoleDto updateRole(@RequestBody RoleDto roleDto) throws Exception {
+        return  roleService.update(roleDto);
+    }
+
+    @PostMapping("/create")
+    public RoleDto createRole(@RequestBody RoleDto role) throws Exception {
+        return roleService.create(role);
+    }
+
+
 
 }

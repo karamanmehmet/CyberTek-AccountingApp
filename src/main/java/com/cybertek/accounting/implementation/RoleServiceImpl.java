@@ -1,10 +1,7 @@
 package com.cybertek.accounting.implementation;
 
-import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.dto.RoleDto;
-import com.cybertek.accounting.entity.Product;
 import com.cybertek.accounting.entity.Role;
-import com.cybertek.accounting.entity.User;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.RoleRepository;
 import com.cybertek.accounting.service.RoleService;
@@ -12,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +28,9 @@ public class RoleServiceImpl implements RoleService {
             throw new Exception("Something went wrong please try again");
         }
 
-        roleRepository.saveAndFlush(mapper.convert(role, new Role()));
 
-        return role;
+
+        return mapper.convert(roleRepository.saveAndFlush(mapper.convert(role, new Role())),role);
     }
 
     @Override

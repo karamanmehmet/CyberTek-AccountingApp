@@ -5,6 +5,7 @@ import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.UserDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.User;
+import com.cybertek.accounting.exception.AccountingAppException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.UserRepository;
 import com.cybertek.accounting.service.UserService;
@@ -23,9 +24,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDto create(UserDto userDto) throws Exception {
+    public UserDto create(UserDto userDto) throws AccountingAppException {
         Optional<User> user = userRepository.findByEmail(userDto.getEmail());
-        if (user != null) throw new Exception("This user already exists");
+        if (user != null) throw new AccountingAppException("This user already exists");
 
         return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
 
@@ -41,11 +42,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(UserDto userDto) throws Exception {
+    public UserDto update(UserDto userDto) throws AccountingAppException {
         Optional<User> user = userRepository.findByEmail(userDto.getEmail());
 
         if (user.isEmpty()) {
-            throw new Exception("The user is not exist");
+            throw new AccountingAppException("The user is not exist");
         }
         userRepository.saveAndFlush(mapper.convert(userDto,new User()));
         return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
