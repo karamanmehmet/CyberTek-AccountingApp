@@ -1,6 +1,8 @@
 package com.cybertek.accounting.restcontroller;
 
 import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.exception.ExistentCompanyException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +15,18 @@ import java.util.List;
 @RequestMapping("/api/company")
 public class CompanyRestController {
 
-    CompanyService companyService;
+    private final CompanyService companyService;
 
 
     @PostMapping
-    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyDto) throws Exception {
+    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyDto) throws ExistentCompanyException {
 
         CompanyDto companyDto1 = companyService.create(companyDto);
 
         return ResponseEntity.ok(companyDto1);
     }
 
-    @GetMapping("/companies")
+    @GetMapping("/all")
     public List<CompanyDto> retrieveAllCompanies(){
 
         List<CompanyDto> allCompanyDtos = companyService.findAll();
@@ -32,17 +34,17 @@ public class CompanyRestController {
         return allCompanyDtos;
     }
 
-    @PutMapping("/update")
-    public CompanyDto updateCompany(@RequestBody CompanyDto companyDto) throws Exception {
+    @PutMapping
+    public CompanyDto updateCompany(@RequestBody CompanyDto companyDto) throws CompanyNotFoundException {
 
         CompanyDto updatedCompany = companyService.update(companyDto);
 
         return updatedCompany;
     }
 
-    //TODO should we use find by id in service in order to create delete?
+
     @DeleteMapping
-    public boolean deleteCompany(@RequestBody CompanyDto companyDto) throws Exception {
+    public boolean deleteCompany(@RequestBody CompanyDto companyDto) throws CompanyNotFoundException {
         return companyService.delete(companyDto);
     }
 

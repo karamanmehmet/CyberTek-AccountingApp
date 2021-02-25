@@ -2,6 +2,8 @@ package com.cybertek.accounting.implementation;
 
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.exception.ExistentCompanyException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CompanyRepository;
 import com.cybertek.accounting.service.CompanyService;
@@ -9,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,21 +23,18 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
-    public CompanyDto findByEmail(String email) throws Exception {
+    public CompanyDto findByEmail(String email) throws CompanyNotFoundException {
         Company foundCompany = companyRepository.findByEmail(email)
-                .orElseThrow(() -> new Exception("This company does not exist!"));
+                .orElseThrow(() -> new CompanyNotFoundException("This company does not exist!"));
         return mapperGeneric.convert(foundCompany,new CompanyDto());
     }
 
     @Override
-    public CompanyDto create(CompanyDto companyDto) throws Exception {
-
-        //TODO discuss if findByEmail is valid | email is unique in this case
-        //TODO discuss if we should use Optional<>
+    public CompanyDto create(CompanyDto companyDto) throws ExistentCompanyException {
 
         Optional<Company> foundCompany = companyRepository.findByEmail(companyDto.getEmail());
 
-        if (foundCompany.isPresent()) throw new Exception("This company already exists");
+        if (foundCompany.isPresent()) throw new ExistentCompanyException("This company already exists");
 
         companyRepository.saveAndFlush(mapperGeneric.convert(companyDto,new Company()));
 
@@ -51,10 +49,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDto update(CompanyDto companyDto) throws Exception {
+    public CompanyDto update(CompanyDto companyDto) throws CompanyNotFoundException {
 
         Company foundCompany = companyRepository.findByEmail(companyDto.getEmail())
-                .orElseThrow(() -> new Exception("This company does not exist"));
+                .orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
 
         companyRepository.saveAndFlush(foundCompany);
 
@@ -62,15 +60,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean delete(CompanyDto companyDto) throws Exception {
-
-        //TODO discuss delete logic|change the unique part after setting enabled=false
+    public boolean delete(CompanyDto companyDto) throws CompanyNotFoundException {
 
         Company foundCompany = companyRepository.findByEmail(companyDto.getEmail())
-                .orElseThrow(() -> new Exception("This company does not exist"));
+                .orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
 
         foundCompany.setEnabled(false);
-        foundCompany.setEmail(companyDto.getEmail() + "-" + foundCompany.getId());
 
         companyRepository.saveAndFlush(foundCompany);
         return !foundCompany.isEnabled();

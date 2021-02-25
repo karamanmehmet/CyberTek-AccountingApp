@@ -4,11 +4,17 @@ package com.cybertek.accounting.restcontroller;
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.entity.Invoice;
+import com.cybertek.accounting.enums.InvoiceStatus;
+import com.cybertek.accounting.enums.InvoiceType;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
+import com.cybertek.accounting.exception.ExistentInvoiceException;
+import com.cybertek.accounting.exception.InvoiceNotFoundException;
 import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -27,37 +33,61 @@ public class InvoiceRestController {
     }
 
     @PostMapping
-    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws Exception {
+    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws ExistentInvoiceException {
       return invoiceService.create(invoiceDto);
     }
 
-    @PutMapping("/update")
-    public InvoiceDto updateInvoice(@RequestBody InvoiceDto invoiceDto) throws Exception {
+    @PutMapping
+    public InvoiceDto updateInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException {
         return invoiceService.update(invoiceDto);
     }
 
-    @DeleteMapping("/{id}")
-    public boolean deleteInvoice(@PathVariable("id") Long id) throws Exception {
-        return invoiceService.delete(invoiceService.findByIdDto(id));
+    @DeleteMapping
+    public boolean deleteInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException {
+        return invoiceService.delete(invoiceDto);
     }
 
-//    @GetMapping("/first3ByCompanyAsc/{email}")
-//    public List<Invoice> returnFirst3AscByCompany(@PathVariable("email") String email) throws Exception {
-//
-//        CompanyDto foundCompany = companyService.findByEmail(email);
-//
-//        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateAsc(foundCompany);
-//    }
-//
-//    @GetMapping("/first3ByCompanyDesc/{email}")
-//    public List<Invoice> returnFirst3AscByCompany(@PathVariable("email") String email) throws Exception {
-//
-//        CompanyDto foundCompany = companyService.findByEmail(email);
-//
-//        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateDesc(foundCompany);
-//    }
+    @GetMapping("/first3ByCompanyAsc/{companyEmail}")
+    public List<InvoiceDto> returnFirst3AscByCompany(@PathVariable("companyEmail") String companyEmail) throws InvoiceNotFoundException, CompanyNotFoundException {
 
-    //TODO not sure on how to continue from findAllByCompanyAndInvoiceType onwards
+        CompanyDto foundCompany = companyService.findByEmail(companyEmail);
+
+        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateAsc(foundCompany);
+    }
+
+    @GetMapping("/first3ByCompanyDesc/{companyEmail}")
+    public List<InvoiceDto> returnFirst3DescByCompany(@PathVariable String companyEmail) throws InvoiceNotFoundException, CompanyNotFoundException {
+
+        CompanyDto foundCompany = companyService.findByEmail(companyEmail);
+
+        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateDesc(foundCompany);
+    }
+
+    @GetMapping("/{companyEmail}/invType/{invoiceType}")
+    public List<InvoiceDto> returnAllByCompanyAndInvoiceType(@PathVariable String companyEmail, @PathVariable InvoiceType invoiceType) throws CompanyNotFoundException {
+
+        CompanyDto company = companyService.findByEmail(companyEmail);
+
+        return invoiceService.findAllByCompanyAndInvoiceType(company,invoiceType);
+    }
+
+    @GetMapping("/{companyEmail}/invStatus/{invoiceStatus}")
+    public List<InvoiceDto> returnAllByCompanyAndInvoiceStatus(@PathVariable String companyEmail, @PathVariable  InvoiceStatus invoiceStatus) throws CompanyNotFoundException {
+
+        CompanyDto company = companyService.findByEmail(companyEmail);
+
+        return invoiceService.findAllByCompanyAndInvoiceStatus(company,invoiceStatus);
+    }
+
+    @GetMapping("/{companyEmail}/{invoiceType}/{invoiceStatus}")
+    public List<InvoiceDto> returnAllByCompanyAndInvoiceType(@PathVariable String companyEmail, @PathVariable InvoiceType invoiceType, @PathVariable InvoiceStatus invoiceStatus) throws CompanyNotFoundException {
+
+        CompanyDto company = companyService.findByEmail(companyEmail);
+
+        return invoiceService.findAllByCompanyAndInvoiceTypeAndInvoiceStatus(company,invoiceType,invoiceStatus);
+    }
+
+
 
 
 }

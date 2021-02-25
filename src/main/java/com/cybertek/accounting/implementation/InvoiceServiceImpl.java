@@ -1,10 +1,13 @@
 package com.cybertek.accounting.implementation;
 
+import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
+import com.cybertek.accounting.exception.ExistentInvoiceException;
+import com.cybertek.accounting.exception.InvoiceNotFoundException;
 import com.cybertek.accounting.mapper.InvoiceMapper;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.InvoiceRepository;
@@ -13,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +26,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final MapperGeneric mapper;
 
     @Override
-    public InvoiceDto create(InvoiceDto invoice) throws Exception {
+    public InvoiceDto create(InvoiceDto invoice) throws ExistentInvoiceException {
 
         Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
 
-        if (foundInvoice != null) throw new Exception("This exception already exists");
+        if (foundInvoice != null) throw new ExistentInvoiceException("This exception already exists");
 
         repository.saveAndFlush(mapper.convert(invoice,new Invoice()));
 
@@ -34,11 +38,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceDto update(InvoiceDto invoice) throws Exception {
+    public InvoiceDto update(InvoiceDto invoice) throws InvoiceNotFoundException {
 
         Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
 
-        if (foundInvoice == null) throw new Exception("This invoice does not exist");
+        if (foundInvoice == null) throw new InvoiceNotFoundException("This invoice does not exist");
 
         repository.saveAndFlush(mapper.convert(invoice,new Invoice()));
 
@@ -46,11 +50,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public boolean delete(InvoiceDto invoice) throws Exception {
+    public boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException {
 
         Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
 
-        if (foundInvoice == null) throw new Exception("This invoice does not exist");
+        if (foundInvoice == null) throw new InvoiceNotFoundException("This invoice does not exist");
 
         foundInvoice.setEnabled(false);
         foundInvoice.setInvoiceNo(invoice.getInvoiceNo() + "-" + foundInvoice.getId());
@@ -61,16 +65,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice findById(long id) throws Exception {
+    public Invoice findById(long id) throws InvoiceNotFoundException {
 
-        return repository.findById(id).orElseThrow(() -> new Exception("Invoice with this id can not be found!"));
+        return repository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice with this id can not be found!"));
     }
 
     @Override
-    public InvoiceDto findByIdDto(long id) throws Exception {
+    public InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException {
 
         Invoice invoice = repository.findById(id)
-                .orElseThrow(() -> new Exception("Invoice with this id can not be found!"));
+                .orElseThrow(() -> new InvoiceNotFoundException("Invoice with this id can not be found!"));
 
         return mapper.convert(invoice,new InvoiceDto());
 
@@ -83,32 +87,41 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<Invoice> findFirst3ByCompanyOrderByInvoiceDateAsc(Company company) {
+    public List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc(CompanyDto company) {
 
-        //TODO should return type be DTO?
-        return repository.findFirst3ByCompanyOrderByInvoiceDateAsc(company);
+        return repository.findFirst3ByCompanyOrderByInvoiceDateAsc(mapper.convert(company,new Company())).stream()
+                .map(invoice -> mapper.convert(invoice,new InvoiceDto()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Invoice> findFirst3ByCompanyOrderByInvoiceDateDesc(Company company) {
-        //TODO should return type be DTO?
-        return repository.findFirst3ByCompanyOrderByInvoiceDateDesc(company);
+    public List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) {
+
+        return repository.findFirst3ByCompanyOrderByInvoiceDateDesc(mapper.convert(company,new Company())).stream()
+                .map(invoice -> mapper.convert(invoice,new InvoiceDto()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Invoice> findAllByCompanyAndInvoiceType(Company company, InvoiceType invoiceType) {
+    public List<InvoiceDto> findAllByCompanyAndInvoiceType(CompanyDto company, InvoiceType invoiceType) {
 
-        return repository.findAllByCompanyAndInvoiceType(company, invoiceType);
+        return repository.findAllByCompanyAndInvoiceType(mapper.convert(company,new Company()), invoiceType).stream()
+                .map(invoice -> mapper.convert(invoice,new InvoiceDto()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Invoice> findAllByCompanyAndInvoiceStatus(Company company, InvoiceStatus invoiceStatus) {
+    public List<InvoiceDto> findAllByCompanyAndInvoiceStatus(CompanyDto company, InvoiceStatus invoiceStatus) {
 
-        return repository.findAllByCompanyAndInvoiceStatus(company, invoiceStatus);
+        return repository.findAllByCompanyAndInvoiceStatus(mapper.convert(company,new Company()), invoiceStatus).stream()
+                .map(invoice -> mapper.convert(invoice,new InvoiceDto()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Invoice> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(Company company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) {
-        return repository.findAllByCompanyAndInvoiceTypeAndInvoiceStatus(company, invoiceType, invoiceStatus);
+    public List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) {
+        return repository.findAllByCompanyAndInvoiceTypeAndInvoiceStatus(mapper.convert(company,new Company()), invoiceType, invoiceStatus).stream()
+                .map(invoice -> mapper.convert(invoice,new InvoiceDto()))
+                .collect(Collectors.toList());
     }
 }
