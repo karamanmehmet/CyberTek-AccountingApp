@@ -33,7 +33,7 @@ public class InvoiceRestController {
     }
 
     @PostMapping
-    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws ExistentInvoiceException {
+    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws ExistentInvoiceException, Exception {
       return invoiceService.create(invoiceDto);
     }
 
