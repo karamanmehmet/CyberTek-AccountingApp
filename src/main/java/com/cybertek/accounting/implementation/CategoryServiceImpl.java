@@ -5,6 +5,9 @@ import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.exception.CategoryHasProductException;
+import com.cybertek.accounting.exception.CategoryNotFoundException;
+import com.cybertek.accounting.exception.ExistentCategoryException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CategoryRepository;
 import com.cybertek.accounting.service.CategoryService;
@@ -24,25 +27,27 @@ public class CategoryServiceImpl implements CategoryService {
     private final MapperGeneric mapper;
     private final ProductService productService;
 
+    /*TODO  Should we give ID number when we creating category.
+       Otherwise there is no unique value to check category exist or Not */
 
     @Override
-    public CategoryDto create(CategoryDto categoryDto) throws Exception {
+    public CategoryDto create(CategoryDto categoryDto) throws ExistentCategoryException {
 
 
         Optional<Category> foundedCategory = repository.findById(categoryDto.getId());
 
         if(foundedCategory.isPresent())
-            throw new Exception("Category Already exist");
+            throw new ExistentCategoryException("Category Already exist");
 
         return mapper.convert(repository.saveAndFlush(mapper.convert(categoryDto,new Category())),new CategoryDto());
 
     }
 
     @Override
-    public CategoryDto findById(long id) throws Exception {
+    public CategoryDto findById(long id) throws CategoryNotFoundException {
 
         Category foundedCategory = repository.findById(id)
-                .orElseThrow(()->new Exception("This category does not exist"));
+                .orElseThrow(()->new CategoryNotFoundException("This category does not exist"));
         return mapper.convert(foundedCategory,new CategoryDto());
     }
 
@@ -58,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findByCompany(CompanyDto companyDto) {
+    public List<CategoryDto> findAllByCompany(CompanyDto companyDto) {
 
         Company convertedCompany = mapper.convert(companyDto, new Company());
         List<Category> list = repository.findAllByCompany(convertedCompany);
@@ -70,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findByCompanyAndStatus(CompanyDto companyDto, boolean enabled) {
+    public List<CategoryDto> findAllByCompanyAndStatus(CompanyDto companyDto, boolean enabled) {
 
         Company convertedCompany = mapper.convert(companyDto, new Company());
 
@@ -84,28 +89,28 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public CategoryDto update(CategoryDto categoryDto) throws Exception {
+    public CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException {
 
         Optional<Category> foundedCategory = repository.findById(categoryDto.getId());
 
         if (foundedCategory.isEmpty()) {
-            throw new Exception("There is no category");
+            throw new CategoryNotFoundException("There is no category");
         }
         return mapper.convert(repository.saveAndFlush(mapper.convert(categoryDto,new Category())),new CategoryDto());
     }
 
     @Override
-    public void delete(CategoryDto categoryDto) throws Exception {
+    public void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException {
 
         Category foundedCategory = repository.findById(categoryDto.getId())
-                .orElseThrow(()->new Exception("There is no record with this "));
+                .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
 
         CategoryDto convertedCategory = mapper.convert(foundedCategory, new CategoryDto());
 
         List<ProductDto> products = productService.findByCategory(convertedCategory);
 
         if(products.size()>0)
-            throw new Exception("This category has products");
+            throw new CategoryHasProductException("This category has products");
 
 
         foundedCategory.setEnabled(false);

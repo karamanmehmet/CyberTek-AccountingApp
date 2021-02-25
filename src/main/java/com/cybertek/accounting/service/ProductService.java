@@ -4,14 +4,17 @@ import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.entity.Category;
+import com.cybertek.accounting.exception.ExistentProductException;
+import com.cybertek.accounting.exception.ProductNotFoundException;
+import com.cybertek.accounting.exception.ProductNullException;
 
 import java.util.List;
 
 public interface ProductService {
 
-    ProductDto create(ProductDto productDto) throws Exception;
+    ProductDto create(ProductDto productDto) throws ProductNullException, ExistentProductException;
 
-    ProductDto findById(long id) throws Exception;
+    ProductDto findById(long id) throws ProductNotFoundException;
 
     List<ProductDto> findAll();
 
@@ -23,9 +26,9 @@ public interface ProductService {
 
     List<ProductDto> findByCompanyAndStatus(CompanyDto companyDto, boolean enabled);
 
-    ProductDto update(ProductDto productDto) throws Exception;
+    ProductDto update(ProductDto productDto) throws ProductNullException, ProductNotFoundException;
 
-    void delete(ProductDto productDto) throws Exception;
+    void delete(ProductDto productDto) throws ProductNotFoundException;
 
 
 
