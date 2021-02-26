@@ -36,7 +36,7 @@ public class ProductRestController {
     }
 
     @PostMapping
-    public ProductDto createProduct(@RequestBody ProductDto productDto) throws ProductAlreadyExistException, ProductFieldNullException {
+    public ProductDto createProduct(@RequestBody ProductDto productDto) throws ProductAlreadyExistException, ProductFieldNullException, CompanyNotFoundException {
         return  service.create(productDto);
     }
 

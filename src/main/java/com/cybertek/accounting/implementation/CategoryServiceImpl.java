@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category convertedCategory = mapper.convert(categoryDto, new Category());
         convertedCategory.setCompany(convertedCompany);
-        //convertedCategory.setEnabled(true);
+        convertedCategory.setEnabled(true);
 
         return mapper.convert(repository.saveAndFlush(convertedCategory),new CategoryDto());
 
