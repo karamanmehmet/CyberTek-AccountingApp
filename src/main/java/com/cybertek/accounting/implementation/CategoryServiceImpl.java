@@ -6,10 +6,7 @@ import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Product;
-import com.cybertek.accounting.exception.CategoryHasProductException;
-import com.cybertek.accounting.exception.CategoryNotFoundException;
-import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.CategoryAlreadyExistException;
+import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CategoryRepository;
 import com.cybertek.accounting.service.CategoryService;
@@ -118,14 +115,16 @@ public class CategoryServiceImpl implements CategoryService {
         List<ProductDto> products = productService.findByCategory(convertedCategory);
 
         if(products.size()>0){
-            throw new CategoryHasProductException("This category has products");
 
-               /* products.stream().map(p -> {
+                products.stream().map(p -> {
                                 Product obj=mapper.convert(p,new Product());
-                                obj.setEnabled(false);
-                                 productService.delete(mapper.convert(obj,new ProductDto()));
-                                return obj;}
-                                .collect(Collectors.toList()));*/
+                                    try {
+                                        productService.delete(mapper.convert(obj,new ProductDto()));
+                                    } catch (ProductNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                    return obj;})
+                                                .collect(Collectors.toList());
         }
 
 
