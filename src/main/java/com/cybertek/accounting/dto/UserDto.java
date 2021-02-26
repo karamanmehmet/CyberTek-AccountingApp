@@ -26,6 +26,6 @@ public class UserDto {
 
     private CompanyDto company;
 
-    private Set<RoleDto> roles;
+    private List<RoleDto> role;
 
 }

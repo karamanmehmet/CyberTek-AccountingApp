@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role,Long> {
 
     List<Role> findAllByEnabled(boolean enabled);
-
+    List<Role> findAll();
     Role findByName(String name);
 
 }
