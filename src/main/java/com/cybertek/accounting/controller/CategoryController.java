@@ -21,7 +21,6 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final CompanyService companyService;
 
-    // After click Category
     @GetMapping("/all")
     public String showCategories(Model model) throws CompanyNotFoundException {
         // TODO This part will update according to valid user
@@ -29,20 +28,17 @@ public class CategoryController {
         return "/category/category-list";
     }
 
-    // After click Add Category
     @GetMapping("/create")
     public String addCategoryForm(Model model) {
         model.addAttribute("category", new CategoryDto());
         return "/category/category-add";
     }
 
-   //After click Save Changes
     @PostMapping("/all")
     public String addCategory(@ModelAttribute("category") CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
         categoryService.create(categoryDto);
 
         return "redirect:/category/all";
-        // it will continue from getMapping  categories
     }
 
 

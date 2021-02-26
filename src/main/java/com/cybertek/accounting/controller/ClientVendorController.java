@@ -29,14 +29,12 @@ public class ClientVendorController {
         return "/clientvendor/vendor-client-list";
 
     }
-    // After click Add CV
     @GetMapping("/create")
     public String addClientVendorForm(Model model) {
         model.addAttribute("clientvendor", new ClientVendorDto());
         return "/clientvendor/vendor-client-add";
     }
 
-    //After click Save Changes
     @PostMapping("/all")
     public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
