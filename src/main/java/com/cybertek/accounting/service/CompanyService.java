@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface CompanyService {
 
+    CompanyDto findById(Long id) throws CompanyNotFoundException;
+
     CompanyDto findByEmail(String email) throws CompanyNotFoundException;
 
     CompanyDto create(CompanyDto companyDto) throws CompanyAlreadyExistsException;

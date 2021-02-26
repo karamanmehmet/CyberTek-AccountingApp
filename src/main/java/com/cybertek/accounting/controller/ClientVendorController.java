@@ -21,7 +21,7 @@ public class ClientVendorController {
     private final ClientVendorService clientVendorService;
     private final CompanyService companyService;
 
-    @GetMapping("/all")
+    @GetMapping("/list")
     public String showClientVendors(Model model) throws CompanyNotFoundException {
         // TODO This part will update according to valid user
         model.addAttribute("clientVendors",clientVendorService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
@@ -35,7 +35,7 @@ public class ClientVendorController {
         return "/clientvendor/vendor-client-add";
     }
 
-    @PostMapping("/all")
+    @PostMapping("/create")
     public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         clientVendorService.create(clientVendorDto);

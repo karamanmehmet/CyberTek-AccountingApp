@@ -1,7 +1,7 @@
 package com.cybertek.accounting.controller;
 
 import com.cybertek.accounting.dto.InvoiceDto;
-import com.cybertek.accounting.dto.Payment;
+import com.cybertek.accounting.dto.InvoiceMonetaryDetailDto;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.service.CompanyService;
@@ -31,7 +31,7 @@ public class InvoiceController {
         List<InvoiceDto> purchaseInvoices = invoiceService.findAllByCompanyAndInvoiceType(companyService.findByEmail("karaman@crustycloud.com"), InvoiceType.PURCHASE);
 
         // Put it in a service.
-        List<Payment> payments = purchaseInvoices.stream().map(invoice -> {
+        List<InvoiceMonetaryDetailDto> payments = purchaseInvoices.stream().map(invoice -> {
             try {
                 return paymentService.create(invoice);
             } catch (Exception e) {

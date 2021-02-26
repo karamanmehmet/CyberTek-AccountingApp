@@ -1,7 +1,10 @@
 package com.cybertek.accounting.implementation;
 
+import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.exception.CategoryNotFoundException;
 import com.cybertek.accounting.exception.CompanyAlreadyExistsException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.mapper.MapperGeneric;
@@ -21,6 +24,14 @@ public class CompanyServiceImpl implements CompanyService {
     private  final CompanyRepository companyRepository;
     private  final MapperGeneric mapperGeneric;
 
+
+    @Override
+    public CompanyDto findById(Long id) throws CompanyNotFoundException {
+
+        Company company = companyRepository.findById(id)
+                .orElseThrow(()->new CompanyNotFoundException("This company does not exist"));
+        return mapperGeneric.convert(company,new CompanyDto());
+    }
 
     @Override
     public CompanyDto findByEmail(String email) throws CompanyNotFoundException {
@@ -43,6 +54,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyDto> findAll() {
+
+       List<Company> list = companyRepository.findAll();
+
         return companyRepository.findAll().stream()
                 .map(company -> mapperGeneric.convert(company,new CompanyDto()))
                 .collect(Collectors.toList());

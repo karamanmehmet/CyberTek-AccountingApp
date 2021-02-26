@@ -1,7 +1,8 @@
 package com.cybertek.accounting.controller;
 
 import com.cybertek.accounting.dto.UserDto;
-import com.cybertek.accounting.exception.AccountingAppException;
+import com.cybertek.accounting.exception.UserAlreadyExist;
+import com.cybertek.accounting.exception.UserNotFound;
 import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.RoleService;
 import com.cybertek.accounting.service.UserService;
@@ -27,15 +28,15 @@ public class UserController {
         this.companyService = companyService;
     }
 
-    @GetMapping("/user-add")
+    @GetMapping("/add")
     public String createUser(Model model){
         model.addAttribute("user",new UserDto());
         model.addAttribute("roles",roleService.findAll());
         model.addAttribute("companies",companyService.findAll());
         return "user/user-add";
     }
-    @PostMapping("/user-add")
-    public String insertUser(UserDto user,Model model) throws AccountingAppException {
+    @PostMapping("/add")
+    public String insertUser(UserDto user,Model model) throws  UserAlreadyExist {
         userService.create(user);
         return "redirect:/user/user-add";
     }

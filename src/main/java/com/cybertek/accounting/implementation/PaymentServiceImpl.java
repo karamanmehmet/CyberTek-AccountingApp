@@ -1,6 +1,6 @@
 package com.cybertek.accounting.implementation;
 
-import com.cybertek.accounting.dto.Payment;
+import com.cybertek.accounting.dto.InvoiceMonetaryDetailDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
@@ -21,7 +21,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final InvoiceProductRepository invoiceProductRepository;
 
     @Override
-    public Payment create(InvoiceDto invoiceDto) throws Exception {
+    public InvoiceMonetaryDetailDto create(InvoiceDto invoiceDto) throws Exception {
 
         double tax = 0;
         double cost = 0;
@@ -50,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         totalCost = cost + tax;
 
-        return new Payment(tax, cost, totalCost);
+        return new InvoiceMonetaryDetailDto(tax, cost, totalCost);
 
     }
 

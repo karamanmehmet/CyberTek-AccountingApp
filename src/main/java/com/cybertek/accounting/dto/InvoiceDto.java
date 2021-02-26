@@ -21,5 +21,6 @@ public class InvoiceDto {
     private LocalDate invoiceDate;
     private ClientVendorDto clientVendor;
     private CompanyDto company;
+    private InvoiceMonetaryDetailDto paymentDto;
 
 }

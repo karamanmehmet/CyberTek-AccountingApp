@@ -14,13 +14,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    private RoleRepository roleRepository;
-    private MapperGeneric mapper;
+    private final RoleRepository roleRepository;
+    private final MapperGeneric mapper;
 
-    public RoleServiceImpl(RoleRepository roleRepository, MapperGeneric roleMapper) {
-        this.roleRepository = roleRepository;
-        this.mapper = roleMapper;
-    }
+
 
     @Override
     public RoleDto create(RoleDto role) throws Exception {

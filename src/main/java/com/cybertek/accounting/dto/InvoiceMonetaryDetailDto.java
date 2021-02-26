@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class InvoiceMonetaryDetailDto {
 
     private double tax;
     private double cost;
