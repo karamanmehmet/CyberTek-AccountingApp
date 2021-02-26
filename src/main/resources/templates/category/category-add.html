@@ -157,7 +157,7 @@
                                                 <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel" aria-labelledby="account-tab">
 
                                                     <!-- Account form starts -->
-                                                    <form novalidate th:action="@{/category/all}" method="post" th:object="${category}">
+                                                    <form class="needs-validation" novalidate th:action="@{/category/all}" method="post" th:object="${category}">
 
                                                         <div class="row">
 
@@ -165,7 +165,7 @@
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-username">Description</label>
-                                                                        <input type="text" id="users-edit-username" class="form-control"  th:field="*{description}" placeholder="Please Enter Category Description"  required aria-invalid="false">
+                                                                        <input type="text" id="users-edit-username" class="form-control"  th:field="*{description}" placeholder="Please Enter Category Description"  data-validation-required-message="This field is required" required>
                                                                     </div>
                                                                 </div>
 
