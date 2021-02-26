@@ -38,6 +38,9 @@ public class Company extends BaseEntity{
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "phone",nullable = false)
+    private String phone;
+
     @Column(name = "establishment_date", nullable = false)
     private LocalDate establishmentDate;
 

@@ -20,7 +20,7 @@ public class CompanyMapper {
 
     public CompanyDto convertToDto(Company obj) {
 
-        return new CompanyDto(obj.getId(),obj.getTitle(),obj.getAddress1(),obj.getAddress2(),obj.getState(),obj.getRepresentative(),obj.getRepresentative(),obj.getEmail(),obj.getEstablishmentDate());
+        return new CompanyDto(obj.getId(),obj.getTitle(),obj.getAddress1(),obj.getAddress2(),obj.getState(),obj.getRepresentative(),obj.getRepresentative(),obj.getEmail(),obj.getPhone(),obj.getEstablishmentDate(), obj.isEnabled());
     }
 
 

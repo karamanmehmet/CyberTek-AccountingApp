@@ -44,7 +44,7 @@ public class AccountingAppApplication {
 			roleRepository.save(roleEmployee);
 
 		//Create Root Company & Users
-			Company companyRoot = new Company("CyberTek LLC","address1","address2","OH","75074","rep","email@email.com", LocalDate.now(),true);
+			Company companyRoot = new Company("CyberTek LLC","address1","address2","OH","75074","rep","email@email.com","+19823642342", LocalDate.now(),true);
 
 			companyRepository.save(companyRoot);
 
@@ -57,7 +57,7 @@ public class AccountingAppApplication {
 
 
 		//Create Sample Company
-			Company crustyCompany = new Company("CrustyCloud LLC","address1","address2","OH","75074","Tolga Savaci","karaman@crustycloud.com", LocalDate.now(),true);
+			Company crustyCompany = new Company("CrustyCloud LLC","address1","address2","OH","75074","Tolga Savaci","karaman@crustycloud.com","+19823642342", LocalDate.now(),true);
 
 
 			companyRepository.save(crustyCompany);

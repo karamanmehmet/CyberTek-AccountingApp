@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<!-- BEGIN : Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="Apex admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Apex admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Dashboard2 - Apex responsive bootstrap 4 admin template</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../static/img/ico/favicon.ico">
+    <link rel="shortcut icon" type="image/png" href="../static/img/ico/favicon-32.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
+    <!-- BEGIN VENDOR CSS-->
+    <!-- font icons-->
+    <link rel="stylesheet" type="text/css" href="../static/fonts/feather/style.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/fonts/simple-line-icons/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/vendors/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/vendors/css/prism.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/vendors/css/switchery.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/vendors/css/chartist.min.css">
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN APEX CSS-->
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/themes/layout-dark.css">
+    <link rel="stylesheet" href="../static/css/plugins/switchery.css">
+    <!-- END APEX CSS-->
+    <!-- BEGIN Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="../static/css/core/menu/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/pages/dashboard2.css">
+    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons.css">
+    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons-wind.css">
+    <!-- END Page Level CSS-->
+</head>
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+
+    <nav class="navbar navbar-expand-lg navbar-light header-navbar navbar-fixed">
+        <div class="container-fluid navbar-wrapper">
+            <div class="navbar-header d-flex">
+                <div class="navbar-toggle menu-toggle d-xl-none d-block float-left align-items-center justify-content-center" data-toggle="collapse"><i class="ft-menu font-medium-3"></i></div>
+                <ul class="navbar-nav">
+                    <li class="nav-item mr-2 d-none d-lg-block"><a class="nav-link apptogglefullscreen" id="navbar-fullscreen" href="javascript:;"><i class="ft-maximize font-medium-3"></i></a></li>
+
+                </ul>
+                <div class="navbar-brand-center">
+                    <div class="navbar-header">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <div class="logo"><a class="logo-text" href="index.html">
+                                       <span class="text">CYBERTEK</span>
+                                    </a></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <!-- Navbar (Header) Ends-->
+
+   <!-- ////////////////////////////////////////////////////////////////////////////-->
+    <div class="wrapper">
+
+  <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center" role="navigation" data-menu="menu-wrapper">
+            <!-- Horizontal menu content-->
+            <div class="navbar-container main-menu-content center-layout" data-menu="menu-container">
+                <!-- include ../../../includes/mixins-->
+                <ul class="navigation-main nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
+                   			<li data-menu=""><a class="dropdown-toggle nav-link d-flex align-items-center" href="main.html" data-toggle="dropdown"><i class="ft-home"></i><span data-i18n="Dashboard">Home Page</span></a>
+                    </li>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;" data-toggle="dropdown"><i class="ft-box"></i><span data-i18n="Apps">Management</span></a>
+                        <ul class="dropdown-menu">
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="company-list.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Email">Company Registration</span></a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="user-list.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Chat">User Registration</span></a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="vendor-client-list.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Task Board">Vendor/Client Registration</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;" data-toggle="dropdown"><i class="ft-aperture"></i><span data-i18n="UI Kit">Stock Management</span></a>
+                        <ul class="dropdown-menu">
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="product-list.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Grid">Products</span></a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="category-list.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Typography">Category</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;" data-toggle="dropdown"><i class="ft-briefcase"></i><span data-i18n="Components">Invoices</span></a>
+                        <ul class="dropdown-menu">
+                           
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="purchase-invoice-list.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Grid">Purchase Invoice</span></a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="sales-invoice-list.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Typography">Sales Invoice</span></a>
+                            </li>
+                         </ul>
+                    </li>
+                      <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;" data-toggle="dropdown"><i class="ft-briefcase"></i><span data-i18n="Components">Reporting</span></a>
+                        <ul class="dropdown-menu">
+                           
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="stock-report.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Grid">Stock Report</span></a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="profit-loss-report.html" data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Typography">Profit / Loss Report</span></a>
+                            </li>
+                         </ul>
+                    </li>
+
+      </ul>
+            </div>
+        </div>
+
+
+        <div class="main-panel">
+            <!-- BEGIN : Main Content-->
+            <div class="main-content">
+                <div class="content-overlay"></div>
+                <div class="content-wrapper">
+                    <section class="users-list-wrapper">
+                        <!-- Filter starts -->
+                        <div class="users-list-filter px-2">
+                            
+
+
+                                    <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+									<a class="btn btn-primary bg-light-primary mb-1" href="company-list.html"><i class="fa fa-list mr-1"></i>Company List</a>
+                                    </div>
+
+                            
+                        </div>
+                        <!-- Filter ends -->
+
+                        <!-- Table starts -->
+
+
+		   <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-body">
+
+                                            <div class="tab-content">
+                                                <!-- Account content starts -->
+                                                <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+
+                                                    <!-- Account form starts -->
+                                                    <form novalidate th:action="@{/company/add}" method="post" th:object="${company}" >
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-username">Title</label>
+                                                                        <input th:field="*{title}" type="text" id="users-edit-username" class="form-control" placeholder="Username" value="dean3004" required aria-invalid="false">
+                                                                    </div>
+                                                                </div>
+																<div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-name">Zip</label>
+                                                                        <input th:field="*{zip}" type="text" id="zip" class="form-control" placeholder="Name" value="43082" required aria-invalid="false">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-name">Address</label>
+                                                                        <input th:field="*{address1}" type="text" id="users-edit-name" class="form-control" placeholder="Name" value="973 Polaris Crossing Way Westerville" required aria-invalid="false">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-email">E-mail</label>
+                                                                        <input th:field="*{email}" type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-email">Establishment Date</label>
+                                                                        <input th:field="*{establishmentDate}" type="text" class="form-control pickadate picker__input picker__input--active" placeholder="Basic Pick-a-date" readonly="" id="P435854046" aria-haspopup="true" aria-readonly="false" aria-owns="P435854046_root">                                                                    </div>
+                                                                </div>																
+                                                            </div>
+
+                                                            <div class="col-12 col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-role">State</label>
+                                                                        <select th:field="*{state}" id="users-edit-role" class="form-control" required>
+                                                                            <option th:value="''" th:text="Select State"></option>
+                                                                            <option th:each="state : ${states}" th:text="${state}"></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-status">Status</label>
+                                                                        <select th:field="*{enabled}" id="users-edit-status" class="form-control" required>
+                                                                            <option value="">Select Status</option>
+                                                                            <option value="1">Active</option>
+                                                                            <option value="3">Close</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="representative">Representative</label>
+                                                                        <input  th:field="*{representative}" type="text" id="representative" class="form-control" placeholder="Representative">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="phone">Phone</label>
+                                                                        <input th:field="*{phone}" type="text" id="phone" class="form-control" placeholder="9734157843">
+                                                                    </div>
+                                                                </div>																
+                                                            </div>
+
+       
+                                                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                                <button type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Changes</button>
+																<button type="submit" class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete Company</button>
+                                                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <!-- Account form ends -->
+                                                </div>
+                                                <!-- Account content ends -->
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+
+                        <!-- Table ends -->
+                    </section>
+
+                </div>
+            </div>
+            <!-- END : End Main Content-->
+
+
+            <!-- Scroll to top button -->
+            <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+        </div>
+    </div>
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+    <!-- BEGIN VENDOR JS-->
+    <script src="../static/vendors/js/vendors.min.js"></script>
+    <script src="../static/vendors/js/switchery.min.js"></script>
+    <!-- BEGIN VENDOR JS-->
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="../static/vendors/js/chartist.min.js"></script>
+    <script src="../static/vendors/js/apexcharts.min.js"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN APEX JS-->
+    <script src="../static/js/core/app-menu.js"></script>
+    <script src="../static/js/core/app.js"></script>
+    <script src="../static/js/notification-sidebar.js"></script>
+    <script src="../static/js/customizer.js"></script>
+    <script src="../static/js/scroll-top.js"></script>
+    <!-- END APEX JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="../static/js/dashboard2.js"></script>
+    <!-- END PAGE LEVEL JS-->
+    <!-- BEGIN: Custom CSS-->
+    <script src="../../../assets/js/scripts.js"></script>
+    <!-- END: Custom CSS-->
+</body>
+<!-- END : Body-->
+
+</html>

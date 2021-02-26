@@ -22,7 +22,9 @@ public class CompanyDto {
     private String state;
     private String zip;
     private String representative;
+    private String phone;
     private String email;
     private LocalDate establishmentDate;
+    private boolean enabled;
 
 }
