@@ -2,14 +2,17 @@ package com.cybertek.accounting.implementation;
 
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.exception.ClientVendorNotFoundException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.ExistentClientVendorException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ClientVendorRepository;
 import com.cybertek.accounting.service.ClientVendorService;
+import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +26,29 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     private final ClientVendorRepository repository;
     private final MapperGeneric mapper;
+    private final CompanyService companyService;
+
+
+
+
+
 
     @Override
-    public ClientVendorDto create(ClientVendorDto clientVendor) throws ExistentClientVendorException {
+    public ClientVendorDto create(ClientVendorDto clientVendor) throws ExistentClientVendorException, CompanyNotFoundException {
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
-        Optional<ClientVendor> foundedClientVendor = repository.findByEmail(clientVendor.getEmail());
+        Optional<ClientVendor> foundedClientVendor = repository.findByEmailAndCompany(clientVendor.getEmail(),convertedCompany);
 
         if(foundedClientVendor.isPresent())
                 throw new ExistentClientVendorException("This Client/Vendor is already exist");
 
-        return mapper.convert(repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor())),new ClientVendorDto());
+
+        ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+
+        convertedClientVendor.setCompany(convertedCompany);
+        //convertedCategory.setEnabled(true);
+        return mapper.convert(repository.saveAndFlush(convertedClientVendor),new ClientVendorDto());
 
     }
 

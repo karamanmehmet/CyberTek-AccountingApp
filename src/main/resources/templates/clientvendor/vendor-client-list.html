@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="loading" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
 <!-- BEGIN : Head-->
 
 <head>
@@ -10,35 +10,35 @@
     <meta name="keywords" content="admin template, Apex admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
     <title>Dashboard2 - Apex responsive bootstrap 4 admin template</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../static/img/ico/favicon.ico">
-    <link rel="shortcut icon" type="image/png" href="../static/img/ico/favicon-32.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/img/ico/favicon.ico">
+    <link rel="shortcut icon" type="image/png" href="../../static/img/ico/favicon-32.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <!-- font icons-->
-    <link rel="stylesheet" type="text/css" href="../static/fonts/feather/style.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/fonts/simple-line-icons/style.css">
-    <link rel="stylesheet" type="text/css" href="../static/fonts/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/prism.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/switchery.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/chartist.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/fonts/feather/style.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/fonts/simple-line-icons/style.css">
+    <link rel="stylesheet" type="text/css" href="../../static/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/prism.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/switchery.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/chartist.min.css">
     <!-- END VENDOR CSS-->
     <!-- BEGIN APEX CSS-->
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/components.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/themes/layout-dark.css">
-    <link rel="stylesheet" href="../static/css/plugins/switchery.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/themes/layout-dark.css">
+    <link rel="stylesheet" href="../../static/css/plugins/switchery.css">
     <!-- END APEX CSS-->
     <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="../static/css/core/menu/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/pages/dashboard2.css">
-    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons.css">
-    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons-wind.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/core/menu/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/pages/dashboard2.css">
+    <link rel="stylesheet" href="../../static/fonts/weathericons/css/weather-icons.css">
+    <link rel="stylesheet" href="../../static/fonts/weathericons/css/weather-icons-wind.css">
     <!-- END Page Level CSS-->
 </head>
 <!-- END : Head-->
@@ -136,9 +136,8 @@
 
 
                                     <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-									<a class="btn btn-success bg-light-success mb-1" href="vendor-client-add.html"><i class="fa fa-plus mr-1"></i>Add Vendor/Client</a>
+									<a class="btn btn-success bg-light-success mb-1" th:href="@{/clientvendor/create}"><i class="fa fa-plus mr-1"></i>Add Vendor/Client</a>
                                     </div>
-                                </div>
                             </form>
                         </div>
                         <!-- Filter ends -->
@@ -164,35 +163,21 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td class="text-truncate">ACME Co</td>
-																<td >+9032456874</td>
-																<td >acme@company.com</td>
-																<td >Vendor</td>
-                                                                <td><span class="badge bg-light-success">Active</span></td>
+                                                            <tr th:each="clientVendor:${clientVendors}">
+                                                                <td th:text="${clientVendor.getId()}"></td>
+                                                                <td th:text="${clientVendor.getCompanyName()}" class="text-truncate"></td>
+																<td th:text="${clientVendor.getPhone()}"></td>
+																<td th:text="${clientVendor.getEmail()}"></td>
+																<td th:text="${clientVendor.getType()}"></td>
                                                                 <td>
+                                                                    <span th:if="${clientVendor.isEnabled()}" class="badge bg-light-success">Active</span>
+                                                                    <span th:if="${!clientVendor.isEnabled()}" class="badge bg-light-danger">Passive</span>                                                                <td>
                                                                     <a href="page-users-edit.html">
                                                                         <i class="ft-edit"></i>
                                                                     </a>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td class="text-truncate">ACME Co</td>
-																<td >+9032456874</td>
-																<td >acme@company.com</td>
-																<td >Vendor</td>
-                                                                <td><span class="badge bg-light-success">Active</span></td>
-                                                                <td>
-                                                                    <a href="page-users-edit.html">
-                                                                        <i class="ft-edit"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-
-
-	</tbody>
+                                                            </tbody>
                                                     </table>
                                                 </div>
                                                 <!-- Datatable ends -->
@@ -226,25 +211,25 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
     <!-- BEGIN VENDOR JS-->
-    <script src="../static/vendors/js/vendors.min.js"></script>
-    <script src="../static/vendors/js/switchery.min.js"></script>
+    <script src="../../static/vendors/js/vendors.min.js"></script>
+    <script src="../../static/vendors/js/switchery.min.js"></script>
     <!-- BEGIN VENDOR JS-->
     <!-- BEGIN PAGE VENDOR JS-->
-    <script src="../static/vendors/js/chartist.min.js"></script>
-    <script src="../static/vendors/js/apexcharts.min.js"></script>
+    <script src="../../static/vendors/js/chartist.min.js"></script>
+    <script src="../../static/vendors/js/apexcharts.min.js"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN APEX JS-->
-    <script src="../static/js/core/app-menu.js"></script>
-    <script src="../static/js/core/app.js"></script>
-    <script src="../static/js/notification-sidebar.js"></script>
-    <script src="../static/js/customizer.js"></script>
-    <script src="../static/js/scroll-top.js"></script>
+    <script src="../../static/js/core/app-menu.js"></script>
+    <script src="../../static/js/core/app.js"></script>
+    <script src="../../static/js/notification-sidebar.js"></script>
+    <script src="../../static/js/customizer.js"></script>
+    <script src="../../static/js/scroll-top.js"></script>
     <!-- END APEX JS-->
     <!-- BEGIN PAGE LEVEL JS-->
-    <script src="../static/js/dashboard2.js"></script>
+    <script src="../../static/js/dashboard2.js"></script>
     <!-- END PAGE LEVEL JS-->
     <!-- BEGIN: Custom CSS-->
-    <script src="../../../assets/js/scripts.js"></script>
+    <script src="../../static/assets/js/scripts.js"></script>
     <!-- END: Custom CSS-->
 </body>
 <!-- END : Body-->

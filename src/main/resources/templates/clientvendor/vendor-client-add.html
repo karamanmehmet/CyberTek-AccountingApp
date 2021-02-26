@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="loading" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
 <!-- BEGIN : Head-->
 
 <head>
@@ -10,35 +10,35 @@
     <meta name="keywords" content="admin template, Apex admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
     <title>Dashboard2 - Apex responsive bootstrap 4 admin template</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../static/img/ico/favicon.ico">
-    <link rel="shortcut icon" type="image/png" href="../static/img/ico/favicon-32.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../static/img/ico/favicon.ico">
+    <link rel="shortcut icon" type="image/png" href="../../static/img/ico/favicon-32.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
     <!-- font icons-->
-    <link rel="stylesheet" type="text/css" href="../static/fonts/feather/style.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/fonts/simple-line-icons/style.css">
-    <link rel="stylesheet" type="text/css" href="../static/fonts/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/prism.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/switchery.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/chartist.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/fonts/feather/style.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/fonts/simple-line-icons/style.css">
+    <link rel="stylesheet" type="text/css" href="../../static/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/prism.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/switchery.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/vendors/css/chartist.min.css">
     <!-- END VENDOR CSS-->
     <!-- BEGIN APEX CSS-->
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/components.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/themes/layout-dark.css">
-    <link rel="stylesheet" href="../static/css/plugins/switchery.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/themes/layout-dark.css">
+    <link rel="stylesheet" href="../../static/css/plugins/switchery.css">
     <!-- END APEX CSS-->
     <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="../static/css/core/menu/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/pages/dashboard2.css">
-    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons.css">
-    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons-wind.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/core/menu/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/pages/dashboard2.css">
+    <link rel="stylesheet" href="../../static/fonts/weathericons/css/weather-icons.css">
+    <link rel="stylesheet" href="../../static/fonts/weathericons/css/weather-icons-wind.css">
     <!-- END Page Level CSS-->
 </head>
 <!-- END : Head-->
@@ -144,8 +144,7 @@
 									<a class="btn btn-primary bg-light-primary mb-1" href="vendor-client-list.html"><i class="fa fa-list mr-1"></i>Vendor/Client List</a>
                                     </div>
                                 </div>
-                            
-                        </div>
+
                         <!-- Filter ends -->
 
                         <!-- Table starts -->
@@ -162,19 +161,19 @@
                                                 <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel" aria-labelledby="account-tab">
 
                                                     <!-- Account form starts -->
-                                                    <form novalidate>
+                                                    <form novalidate th:action="@{/clientvendor/all}" method="post" th:object="${clientvendor}">
                                                         <div class="row">
                                                             <div class="col-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-username">Name</label>
-                                                                        <input type="text" id="users-edit-username" class="form-control" placeholder="Username" value="dean3004" required aria-invalid="false">
+                                                                        <input type="text" id="users-edit-username" th:field="*{companyName}"class="form-control" placeholder="Enter Client/Vendor Name" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-email">E-mail</label>
-                                                                        <input type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
+                                                                        <input type="email" id="users-edit-email" th:field="*{email}" class="form-control" placeholder="Enter Email" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
 														
@@ -183,25 +182,25 @@
                                                             <div class="col-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-role">Type</label>
+                                                                        <label >Type</label>
                                                                         
 																		
-																		                
-							<ul class="list-unstyled mb-0">
-                                                <li class="d-inline-block mr-2">
-                                                    <div class="radio radio-primary">
-                                                        <input type="radio" name="color-radio" id="color-radio-1" checked>
-                                                        <label for="color-radio-1">Vendor</label>
-                                                    </div>
-                                                </li>
-                                                <li class="d-inline-block mr-2">
-                                                    <div class="radio radio-secondary">
-                                                        <input type="radio" name="color-radio" id="color-radio-2">
-                                                        <label for="color-radio-2">Client</label>
-                                                    </div>
-                                                </li>
 
-                                            </ul>
+                                                                        <ul class="list-unstyled mb-0">
+                                                                            <li class="d-inline-block mr-2">
+                                                                                <div class="radio radio-primary">
+                                                                                    <input type="radio" th:field="*{type}" th:value="Vendor" name="color-radio" id="color-radio-1" checked>
+                                                                                    <label for="color-radio-1">Vendor</label>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="d-inline-block mr-2">
+                                                                                <div class="radio radio-secondary">
+                                                                                    <input type="radio" th:field="*{type}" th:value="Client"  name="color-radio" id="color-radio-2">
+                                                                                    <label for="color-radio-2">Client</label>
+                                                                                </div>
+                                                                            </li>
+
+                                                                        </ul>
          
 																		
 																		
@@ -214,7 +213,7 @@
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-company">Phone</label>
-                                                                        <input type="text" id="users-edit-company" class="form-control" placeholder="97341578663">
+                                                                        <input type="text" id="users-edit-company" th:field="*{phone}" class="form-control" placeholder="Enter Phone Number" >
                                                                     </div>
                                                                 </div>																
                                                             </div>
@@ -239,7 +238,6 @@
                             </div>
                         </div>
     
-                         </div>
                         <!-- Table ends -->
                     </section>
 
@@ -260,25 +258,25 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
     <!-- BEGIN VENDOR JS-->
-    <script src="../static/vendors/js/vendors.min.js"></script>
-    <script src="../static/vendors/js/switchery.min.js"></script>
+    <script src="../../static/vendors/js/vendors.min.js"></script>
+    <script src="../../static/vendors/js/switchery.min.js"></script>
     <!-- BEGIN VENDOR JS-->
     <!-- BEGIN PAGE VENDOR JS-->
-    <script src="../static/vendors/js/chartist.min.js"></script>
-    <script src="../static/vendors/js/apexcharts.min.js"></script>
+    <script src="../../static/vendors/js/chartist.min.js"></script>
+    <script src="../../static/vendors/js/apexcharts.min.js"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN APEX JS-->
-    <script src="../static/js/core/app-menu.js"></script>
-    <script src="../static/js/core/app.js"></script>
-    <script src="../static/js/notification-sidebar.js"></script>
-    <script src="../static/js/customizer.js"></script>
-    <script src="../static/js/scroll-top.js"></script>
+    <script src="../../static/js/core/app-menu.js"></script>
+    <script src="../../static/js/core/app.js"></script>
+    <script src="../../static/js/notification-sidebar.js"></script>
+    <script src="../../static/js/customizer.js"></script>
+    <script src="../../static/js/scroll-top.js"></script>
     <!-- END APEX JS-->
     <!-- BEGIN PAGE LEVEL JS-->
-    <script src="../static/js/dashboard2.js"></script>
+    <script src="../../static/js/dashboard2.js"></script>
     <!-- END PAGE LEVEL JS-->
     <!-- BEGIN: Custom CSS-->
-    <script src="../../../assets/js/scripts.js"></script>
+    <script src="../../static/assets/js/scripts.js"></script>
     <!-- END: Custom CSS-->
 </body>
 <!-- END : Body-->

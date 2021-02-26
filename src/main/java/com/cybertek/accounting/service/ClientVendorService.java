@@ -4,6 +4,7 @@ import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.exception.ClientVendorNotFoundException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.ExistentClientVendorException;
 
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface ClientVendorService {
 
-    ClientVendorDto create(ClientVendorDto clientVendor) throws ExistentClientVendorException;
+    ClientVendorDto create(ClientVendorDto clientVendor) throws ExistentClientVendorException, CompanyNotFoundException;
 
     List<ClientVendorDto> findAll();
 

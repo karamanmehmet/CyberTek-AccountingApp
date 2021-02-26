@@ -14,6 +14,9 @@ public interface ClientVendorRepository extends JpaRepository<ClientVendor,Long>
 
     Optional<ClientVendor> findByEmail(String email );
 
+    Optional<ClientVendor> findByEmailAndCompany(String email,Company company );
+
+
     List<ClientVendor> findAllByCompany(Company company);
 
     List<ClientVendor> findAllByCompanyAndEnabled(Company company, boolean enabled);
