@@ -3,18 +3,16 @@ package com.cybertek.accounting.restcontroller;
 
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
-import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.ExistentInvoiceException;
+import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
 import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -33,7 +31,7 @@ public class InvoiceRestController {
     }
 
     @PostMapping
-    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws ExistentInvoiceException, Exception {
+    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceAlreadyExistsException, Exception {
       return invoiceService.create(invoiceDto);
     }
 

@@ -1,7 +1,7 @@
 package com.cybertek.accounting.restcontroller;
 
 import com.cybertek.accounting.dto.CompanyDto;
-import com.cybertek.accounting.exception.ExistentCompanyException;
+import com.cybertek.accounting.exception.CompanyAlreadyExistsException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class CompanyRestController {
 
 
     @PostMapping
-    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyDto) throws ExistentCompanyException {
+    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyDto) throws CompanyAlreadyExistsException {
 
         CompanyDto companyDto1 = companyService.create(companyDto);
 

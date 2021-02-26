@@ -6,12 +6,10 @@ import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
-import com.cybertek.accounting.exception.ExistentInvoiceException;
+import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
-import com.cybertek.accounting.mapper.InvoiceMapper;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.InvoiceRepository;
-import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.InvoiceNumberService;
 import com.cybertek.accounting.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +27,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceNumberService invoiceNumberService;
 
     @Override
-    public InvoiceDto create(InvoiceDto invoice) throws ExistentInvoiceException, Exception {
+    public InvoiceDto create(InvoiceDto invoice) throws InvoiceAlreadyExistsException, Exception {
 
         Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
 
-        if (foundInvoice != null) throw new ExistentInvoiceException("This exception already exists");
+        if (foundInvoice != null) throw new InvoiceAlreadyExistsException("This exception already exists");
 
         Invoice createdInvoice = mapper.convert(invoice,new Invoice());
         createdInvoice.setInvoiceNo(invoiceNumberService.create(invoice.getCompany()));

@@ -2,17 +2,12 @@ package com.cybertek.accounting.service;
 
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
-import com.cybertek.accounting.dto.RoleDto;
-import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
-import com.cybertek.accounting.entity.Role;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
-import com.cybertek.accounting.exception.ExistentInvoiceException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InvoiceService {
 

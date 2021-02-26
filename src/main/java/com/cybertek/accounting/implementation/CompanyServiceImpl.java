@@ -2,7 +2,7 @@ package com.cybertek.accounting.implementation;
 
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.entity.Company;
-import com.cybertek.accounting.exception.ExistentCompanyException;
+import com.cybertek.accounting.exception.CompanyAlreadyExistsException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CompanyRepository;
@@ -30,11 +30,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyDto create(CompanyDto companyDto) throws ExistentCompanyException {
+    public CompanyDto create(CompanyDto companyDto) throws CompanyAlreadyExistsException {
 
         Optional<Company> foundCompany = companyRepository.findByEmail(companyDto.getEmail());
 
-        if (foundCompany.isPresent()) throw new ExistentCompanyException("This company already exists");
+        if (foundCompany.isPresent()) throw new CompanyAlreadyExistsException("This company already exists");
 
         companyRepository.saveAndFlush(mapperGeneric.convert(companyDto,new Company()));
 
