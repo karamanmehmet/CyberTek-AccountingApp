@@ -2,7 +2,7 @@ package com.cybertek.accounting.controller;
 
 import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.ExistentCategoryException;
+import com.cybertek.accounting.exception.CategoryAlreadyExistException;
 import com.cybertek.accounting.service.CategoryService;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class CategoryController {
 
    //After click Save Changes
     @PostMapping("/all")
-    public String addCategory(@ModelAttribute("category") CategoryDto categoryDto) throws ExistentCategoryException, CompanyNotFoundException {
+    public String addCategory(@ModelAttribute("category") CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
         categoryService.create(categoryDto);
 
         return "redirect:/category/all";

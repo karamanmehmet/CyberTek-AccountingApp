@@ -1,18 +1,15 @@
 package com.cybertek.accounting.restcontroller;
 
 import com.cybertek.accounting.dto.ClientVendorDto;
-import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.exception.ClientVendorNotFoundException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.ExistentClientVendorException;
-import com.cybertek.accounting.mapper.MapperGeneric;
+import com.cybertek.accounting.exception.ClientVendorAlreadyExistException;
 import com.cybertek.accounting.service.ClientVendorService;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,7 +31,7 @@ public class ClientVendorRestController {
     }
 
     @PostMapping
-    public ClientVendorDto createClientVendor(@RequestBody ClientVendorDto clientVendor) throws ExistentClientVendorException, CompanyNotFoundException {
+    public ClientVendorDto createClientVendor(@RequestBody ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         return service.create(clientVendor);
     }

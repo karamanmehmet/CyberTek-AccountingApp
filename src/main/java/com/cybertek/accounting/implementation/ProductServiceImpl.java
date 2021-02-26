@@ -6,11 +6,13 @@ import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Product;
-import com.cybertek.accounting.exception.ExistentProductException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
+import com.cybertek.accounting.exception.ProductAlreadyExistException;
 import com.cybertek.accounting.exception.ProductNotFoundException;
 import com.cybertek.accounting.exception.ProductFieldNullException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ProductRepository;
+import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,25 +26,30 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
     private final MapperGeneric mapper;
+    private final CompanyService companyService;
 
-    /*TODO  Should we give ID number when we creating product.
-           Otherwise there is no unique value(name should be unique ?) to check product exist or Not */
 
     @Override
-    public ProductDto create(ProductDto productDto) throws ProductFieldNullException, ExistentProductException {
-        // use desc company
+    public ProductDto create(ProductDto productDto) throws ProductFieldNullException, ProductAlreadyExistException, CompanyNotFoundException {
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
         if(productDto.getName()==null ||  productDto.getCategory()==null || productDto.getCompany()==null) {
-            throw new ProductFieldNullException("Check your products field.They can not be null");
+            throw new ProductFieldNullException("Check your products field.Company-Category-Name  can not be null");
         }
-        Optional<Product> foundedProduct = repository.findById(productDto.getId());
+        Optional<Product> foundedProduct = repository.findByNameAndCompany(productDto.getName(),convertedCompany);
 
         if (foundedProduct.isPresent())
-            throw new ExistentProductException("This product already exist");
+            throw new ProductAlreadyExistException("This product already exist");
 
-        return mapper.convert(repository.saveAndFlush(mapper.convert(productDto,new Product())),new ProductDto());
+        Product convertedProduct = mapper.convert(productDto, new Product());
+        convertedProduct.setCompany(convertedCompany);
+        //convertedCategory.setEnabled(true);
+
+        return mapper.convert(repository.saveAndFlush(convertedProduct),new ProductDto());
 
     }
+
 
     @Override
     public ProductDto findById(long id) throws ProductNotFoundException {

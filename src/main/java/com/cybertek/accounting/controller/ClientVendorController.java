@@ -2,7 +2,7 @@ package com.cybertek.accounting.controller;
 
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.ExistentClientVendorException;
+import com.cybertek.accounting.exception.ClientVendorAlreadyExistException;
 import com.cybertek.accounting.service.ClientVendorService;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class ClientVendorController {
 
     //After click Save Changes
     @PostMapping("/all")
-    public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ExistentClientVendorException, CompanyNotFoundException {
+    public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         clientVendorService.create(clientVendorDto);
         return "redirect:/clientvendor/all";

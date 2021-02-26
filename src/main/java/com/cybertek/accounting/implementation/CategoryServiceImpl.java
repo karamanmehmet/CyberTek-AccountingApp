@@ -8,7 +8,7 @@ import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.exception.CategoryHasProductException;
 import com.cybertek.accounting.exception.CategoryNotFoundException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.ExistentCategoryException;
+import com.cybertek.accounting.exception.CategoryAlreadyExistException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CategoryRepository;
 import com.cybertek.accounting.service.CategoryService;
@@ -33,14 +33,14 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public CategoryDto create(CategoryDto categoryDto) throws ExistentCategoryException, CompanyNotFoundException {
+    public CategoryDto create(CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
         // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
         Optional<Category> foundedCategory = repository.findByDescriptionAndCompany(categoryDto.getDescription(),convertedCompany);
 
         if(foundedCategory.isPresent())
-            throw new ExistentCategoryException("Category Already exist");
+            throw new CategoryAlreadyExistException("Category Already exist");
 
         Category convertedCategory = mapper.convert(categoryDto, new Category());
         convertedCategory.setCompany(convertedCompany);

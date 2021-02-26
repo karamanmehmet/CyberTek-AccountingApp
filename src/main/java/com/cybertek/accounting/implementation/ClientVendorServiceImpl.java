@@ -2,13 +2,12 @@ package com.cybertek.accounting.implementation;
 
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.dto.CompanyDto;
-import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.exception.ClientVendorNotFoundException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.ExistentClientVendorException;
+import com.cybertek.accounting.exception.ClientVendorAlreadyExistException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ClientVendorRepository;
 import com.cybertek.accounting.service.ClientVendorService;
@@ -34,14 +33,14 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
 
     @Override
-    public ClientVendorDto create(ClientVendorDto clientVendor) throws ExistentClientVendorException, CompanyNotFoundException {
+    public ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
         // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
         Optional<ClientVendor> foundedClientVendor = repository.findByEmailAndCompany(clientVendor.getEmail(),convertedCompany);
 
         if(foundedClientVendor.isPresent())
-                throw new ExistentClientVendorException("This Client/Vendor is already exist");
+                throw new ClientVendorAlreadyExistException("This Client/Vendor is already exist");
 
 
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
