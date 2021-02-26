@@ -111,7 +111,6 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 
-        // TODO need to check logic do we need to check Cv ha Invoice or Not
 
         ClientVendor foundedClientVendor = repository.findByEmail(clientVendor.getEmail())
                 .orElseThrow(()->new ClientVendorNotFoundException("There is no record with this "));

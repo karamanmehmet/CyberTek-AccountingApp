@@ -7,10 +7,12 @@ import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.exception.CategoryHasProductException;
 import com.cybertek.accounting.exception.CategoryNotFoundException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.ExistentCategoryException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CategoryRepository;
 import com.cybertek.accounting.service.CategoryService;
+import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,20 +28,25 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
     private final MapperGeneric mapper;
     private final ProductService productService;
+    private final CompanyService companyService;
 
-    /*TODO  Should we give ID number when we creating category.
-       Otherwise there is no unique value to check category exist or Not */
+
 
     @Override
-    public CategoryDto create(CategoryDto categoryDto) throws ExistentCategoryException {
+    public CategoryDto create(CategoryDto categoryDto) throws ExistentCategoryException, CompanyNotFoundException {
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
-
-        Optional<Category> foundedCategory = repository.findById(categoryDto.getId());
+        Optional<Category> foundedCategory = repository.findByDescriptionAndCompany(categoryDto.getDescription(),convertedCompany);
 
         if(foundedCategory.isPresent())
             throw new ExistentCategoryException("Category Already exist");
 
-        return mapper.convert(repository.saveAndFlush(mapper.convert(categoryDto,new Category())),new CategoryDto());
+        Category convertedCategory = mapper.convert(categoryDto, new Category());
+        convertedCategory.setCompany(convertedCompany);
+        //convertedCategory.setEnabled(true);
+
+        return mapper.convert(repository.saveAndFlush(convertedCategory),new CategoryDto());
 
     }
 
@@ -101,7 +108,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException {
-
+        // category disable yapılacaksa cehecke gerek yok productlarıda disable yap
         Category foundedCategory = repository.findById(categoryDto.getId())
                 .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
 

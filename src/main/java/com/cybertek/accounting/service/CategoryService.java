@@ -4,13 +4,14 @@ import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.exception.CategoryHasProductException;
 import com.cybertek.accounting.exception.CategoryNotFoundException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.ExistentCategoryException;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    CategoryDto create(CategoryDto categoryDto) throws ExistentCategoryException;
+    CategoryDto create(CategoryDto categoryDto) throws ExistentCategoryException, CompanyNotFoundException;
 
     CategoryDto findById(long id) throws CategoryNotFoundException;
 

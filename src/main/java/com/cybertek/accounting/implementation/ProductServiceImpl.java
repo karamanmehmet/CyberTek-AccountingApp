@@ -6,10 +6,9 @@ import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Product;
-import com.cybertek.accounting.exception.ExistentCategoryException;
 import com.cybertek.accounting.exception.ExistentProductException;
 import com.cybertek.accounting.exception.ProductNotFoundException;
-import com.cybertek.accounting.exception.ProductNullException;
+import com.cybertek.accounting.exception.ProductFieldNullException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ProductRepository;
 import com.cybertek.accounting.service.ProductService;
@@ -30,10 +29,11 @@ public class ProductServiceImpl implements ProductService {
            Otherwise there is no unique value(name should be unique ?) to check product exist or Not */
 
     @Override
-    public ProductDto create(ProductDto productDto) throws ProductNullException, ExistentProductException {
+    public ProductDto create(ProductDto productDto) throws ProductFieldNullException, ExistentProductException {
+        // use desc company
 
         if(productDto.getName()==null ||  productDto.getCategory()==null || productDto.getCompany()==null) {
-            throw new ProductNullException("Something went wrong please try again");
+            throw new ProductFieldNullException("Check your products field.They can not be null");
         }
         Optional<Product> foundedProduct = repository.findById(productDto.getId());
 
@@ -109,10 +109,10 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public ProductDto update(ProductDto productDto) throws ProductNullException, ProductNotFoundException {
+    public ProductDto update(ProductDto productDto) throws ProductFieldNullException, ProductNotFoundException {
 
         if(productDto.getName()==null ||  productDto.getCategory()==null || productDto.getCompany()==null) {
-            throw new ProductNullException("Something went wrong please try again");
+            throw new ProductFieldNullException("Something went wrong please try again");
         }
 
         Product foundedProduct = repository.findById(productDto.getId())

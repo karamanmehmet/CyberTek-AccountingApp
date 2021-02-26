@@ -1,9 +1,6 @@
 package com.cybertek.accounting.restcontroller;
 
-import com.cybertek.accounting.dto.CategoryDto;
-import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.ProductDto;
-import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.service.CategoryService;
 import com.cybertek.accounting.service.CompanyService;
@@ -34,12 +31,12 @@ public class ProductRestController {
     }
 
     @PutMapping
-    public ProductDto updateProduct(@RequestBody ProductDto productDto) throws ProductNotFoundException, ProductNullException {
+    public ProductDto updateProduct(@RequestBody ProductDto productDto) throws ProductNotFoundException, ProductFieldNullException {
         return  service.update(productDto);
     }
 
     @PostMapping
-    public ProductDto createProduct(@RequestBody ProductDto productDto) throws ExistentProductException, ProductNullException {
+    public ProductDto createProduct(@RequestBody ProductDto productDto) throws ExistentProductException, ProductFieldNullException {
         return  service.create(productDto);
     }
 
