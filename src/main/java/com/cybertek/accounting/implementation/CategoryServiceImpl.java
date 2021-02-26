@@ -116,21 +116,16 @@ public class CategoryServiceImpl implements CategoryService {
 
         if(products.size()>0){
 
-                products.stream().map(p -> {
-                                Product obj=mapper.convert(p,new Product());
-                                    try {
-                                        productService.delete(mapper.convert(obj,new ProductDto()));
-                                    } catch (ProductNotFoundException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return obj;})
-                                                .collect(Collectors.toList());
+            List<ProductDto> disabledProducts = products.stream().map(p -> {
+                try {
+                    productService.delete(p);
+                } catch (ProductNotFoundException e) {
+                    e.printStackTrace();
+                }
+                return p;
+            })
+                    .collect(Collectors.toList());
         }
-
-
-
-
-
 
         foundedCategory.setEnabled(false);
 
