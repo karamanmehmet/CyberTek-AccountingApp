@@ -15,6 +15,7 @@ import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
 
 
-
+    @Transactional
     @Override
     public ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
         // TODO This part will update according to valid user
@@ -106,7 +107,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());      }
 
-
+    @Transactional
     @Override
     public ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 
@@ -122,7 +123,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         return mapper.convert(repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor())),new ClientVendorDto());
 
             }
-
+    @Transactional
     @Override
     public void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 

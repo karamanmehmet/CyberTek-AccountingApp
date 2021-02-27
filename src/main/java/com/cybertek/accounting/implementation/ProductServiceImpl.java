@@ -16,6 +16,8 @@ import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private final MapperGeneric mapper;
     private final CompanyService companyService;
 
-
+    @Transactional
     @Override
     public ProductDto create(ProductDto productDto) throws ProductFieldNullException, ProductAlreadyExistException, CompanyNotFoundException {
         // TODO This part will update according to valid user
@@ -114,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
-
+    @Transactional
     @Override
     public ProductDto update(ProductDto productDto) throws ProductFieldNullException, ProductNotFoundException {
 
@@ -132,7 +134,7 @@ public class ProductServiceImpl implements ProductService {
         return mapper.convert(repository.saveAndFlush(convertedProduct),new ProductDto());
 
     }
-
+    @Transactional
     @Override
     public void delete(ProductDto productDto) throws ProductNotFoundException {
 
@@ -148,7 +150,20 @@ public class ProductServiceImpl implements ProductService {
 
 
     }
+    @Transactional
+    @Override
+    public void deleteByCategory(List<ProductDto> disabledProducts)  {
 
+        List<ProductDto> disabledProductList = disabledProducts.stream()
+                .peek(p -> {
+                            Product product=mapper.convert(p,new Product());
+                            product.setEnabled(false);
+                            repository.saveAndFlush(product);
+                })
+                .collect(Collectors.toList());
+
+
+    }
 
 
 

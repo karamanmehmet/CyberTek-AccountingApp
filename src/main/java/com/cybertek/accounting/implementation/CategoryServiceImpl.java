@@ -15,6 +15,7 @@ import com.cybertek.accounting.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,8 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductService productService;
     private final CompanyService companyService;
 
-
-
+    @Transactional
     @Override
     public CategoryDto create(CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
         // TODO This part will update according to valid user
@@ -92,7 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
-
+    @Transactional
     @Override
     public CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException {
 
@@ -103,10 +103,10 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return mapper.convert(repository.saveAndFlush(mapper.convert(categoryDto,new Category())),new CategoryDto());
     }
-
+    @Transactional
     @Override
     public void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException {
-        // category disable yapılacaksa cehecke gerek yok productlarıda disable yap
+
         Category foundedCategory = repository.findById(categoryDto.getId())
                 .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
 
@@ -114,17 +114,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         List<ProductDto> products = productService.findByCategory(convertedCategory);
 
-        if(products.size()>0){
-
-            List<ProductDto> disabledProducts = products.stream().map(p -> {
-                try {
-                    productService.delete(p);
-                } catch (ProductNotFoundException e) {
-                    e.printStackTrace();
-                }
-                return p;
-            })
-                    .collect(Collectors.toList());
+        if(products.size()>0) {
+            productService.deleteByCategory(products);
         }
 
         foundedCategory.setEnabled(false);

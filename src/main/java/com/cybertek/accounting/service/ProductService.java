@@ -30,6 +30,9 @@ public interface ProductService {
 
     void delete(ProductDto productDto) throws ProductNotFoundException;
 
+    void deleteByCategory(List<ProductDto> productDto);
+
+
 
 
 }

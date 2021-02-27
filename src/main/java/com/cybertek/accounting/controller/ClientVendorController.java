@@ -29,13 +29,13 @@ public class ClientVendorController {
         return "/clientvendor/vendor-client-list";
 
     }
-    @GetMapping("/create")
+    @GetMapping("/add")
     public String addClientVendorForm(Model model) {
         model.addAttribute("clientvendor", new ClientVendorDto());
         return "/clientvendor/vendor-client-add";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/add")
     public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         clientVendorService.create(clientVendorDto);

@@ -21,20 +21,20 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final CompanyService companyService;
 
-    @GetMapping("/all")
+    @GetMapping("/list")
     public String showCategories(Model model) throws CompanyNotFoundException {
         // TODO This part will update according to valid user
         model.addAttribute("categories",categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
         return "/category/category-list";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/add")
     public String addCategoryForm(Model model) {
         model.addAttribute("category", new CategoryDto());
         return "/category/category-add";
     }
 
-    @PostMapping("/all")
+    @PostMapping("/list")
     public String addCategory(@ModelAttribute("category") CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
         categoryService.create(categoryDto);
 
