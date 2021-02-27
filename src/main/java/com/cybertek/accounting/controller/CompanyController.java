@@ -2,11 +2,13 @@ package com.cybertek.accounting.controller;
 
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.exception.CompanyAlreadyExistsException;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,7 +19,7 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    @GetMapping("/list")
+    @GetMapping
     public String listAllCompanies(Model model){
         model.addAttribute("companies", companyService.findAll());
 
@@ -40,8 +42,16 @@ public class CompanyController {
 
         companyService.create(companyDto);
 
-        return "redirect:/company/list";
+        return "redirect:/company";
     }
 
+    //TODO should we create another VIEW company-update?
+    @GetMapping("/{companyEmail}")
+    public String editCompany(@PathVariable String companyEmail, Model model) throws CompanyNotFoundException {
+
+        model.addAttribute("company",companyService.findByEmail(companyEmail));
+
+        return "redirect:/company/add";
+    }
 
 }
