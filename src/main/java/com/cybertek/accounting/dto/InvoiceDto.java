@@ -23,4 +23,6 @@ public class InvoiceDto {
     private CompanyDto company;
     private InvoiceMonetaryDetailDto paymentDto;
 
+    public InvoiceDto(String invoiceNo, InvoiceType invoiceType, InvoiceStatus invoiceStatus, LocalDate invoiceDate, ClientVendorDto convertToDto, CompanyDto convertToDto1) {
+    }
 }
