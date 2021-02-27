@@ -16,6 +16,9 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAll();
 
+
+    ClientVendorDto findByEmailAndType(String email, ClientVendorType type) throws CompanyNotFoundException;
+
     ClientVendorDto findByEmail(String email) throws ClientVendorNotFoundException;
 
     List<ClientVendorDto> findAllByCompany(CompanyDto company);
@@ -24,7 +27,7 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAllByCompanyAndState(CompanyDto company, String state);
 
-    ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException;
+    ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException;
 
     void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException;
 

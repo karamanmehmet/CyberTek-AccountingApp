@@ -34,11 +34,17 @@ public class CategoryController {
         return "/category/category-add";
     }
 
-    @PostMapping("/list")
+    @PostMapping("/add")
     public String addCategory(@ModelAttribute("category") CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
         categoryService.create(categoryDto);
 
-        return "redirect:/category/all";
+        return "redirect:/category/list";
+    }
+    // JUST FOR TEST PURPOSE
+    @GetMapping("/test")
+    public String addCategory() {
+
+        return "/form-validation";
     }
 
 

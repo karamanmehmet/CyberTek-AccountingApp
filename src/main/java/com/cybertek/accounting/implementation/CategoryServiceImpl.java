@@ -106,7 +106,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException {
-
         Category foundedCategory = repository.findById(categoryDto.getId())
                 .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
 

@@ -40,14 +40,14 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
         Optional<ClientVendor> foundedClientVendor = repository.findByEmailAndCompany(clientVendor.getEmail(),convertedCompany);
 
-        if(foundedClientVendor.isPresent())
+        if(foundedClientVendor.isPresent() && foundedClientVendor.get().getType().equals(clientVendor.getType()))
                 throw new ClientVendorAlreadyExistException("This Client/Vendor is already exist");
 
 
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
 
         convertedClientVendor.setCompany(convertedCompany);
-        //convertedCategory.setEnabled(true);
+        convertedClientVendor.setEnabled(true);
         return mapper.convert(repository.saveAndFlush(convertedClientVendor),new ClientVendorDto());
 
     }
@@ -61,6 +61,18 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 .map(obj->
                      { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());
+    }
+
+
+
+    @Override
+    public ClientVendorDto findByEmailAndType(String email, ClientVendorType type) throws CompanyNotFoundException {
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+
+        return mapper.convert(repository.findByCompanyAndEmailAndType(convertedCompany,email,type),new ClientVendorDto());
+
+
     }
 
     @Override
@@ -109,18 +121,22 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Transactional
     @Override
-    public ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
+    public ClientVendorDto update(ClientVendorDto clientVendor) throws CompanyNotFoundException {
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
-        Optional<ClientVendor> foundedClientVendor = repository.findById(clientVendor.getId());
-
+        ClientVendor foundedClientVendor = repository.findByCompanyAndEmailAndType(convertedCompany, clientVendor.getEmail(), clientVendor.getType());
+/*
         if(foundedClientVendor.isEmpty())
-            throw new ClientVendorNotFoundException("There is no client/Vendor");
+            throw new ClientVendorNotFoundException("There is no client/Vendor");*/
 
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
 
-        convertedClientVendor.setId(foundedClientVendor.get().getId());
+        convertedClientVendor.setId(foundedClientVendor.getId());
+        // TODO This part will update according to valid user.how I can trasfer all properties
+        convertedClientVendor.setCompany(convertedCompany);
 
-        return mapper.convert(repository.saveAndFlush(mapper.convert(clientVendor,new ClientVendor())),new ClientVendorDto());
+        return mapper.convert(repository.saveAndFlush(mapper.convert(convertedClientVendor,new ClientVendor())),new ClientVendorDto());
 
             }
     @Transactional

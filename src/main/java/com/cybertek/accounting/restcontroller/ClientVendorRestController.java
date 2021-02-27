@@ -37,7 +37,7 @@ public class ClientVendorRestController {
     }
 
     @PutMapping
-    public ClientVendorDto updateClientVendor(@RequestBody ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
+    public ClientVendorDto updateClientVendor(@RequestBody ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException {
 
         return service.update(clientVendor);
     }
