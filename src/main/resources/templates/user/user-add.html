@@ -112,10 +112,9 @@
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-status">Status</label>
-                                                                        <select th:field="*{active}"id="users-edit-status" class="form-control" required>
-                                                                            <option value="">Select Status</option>
-                                                                            <option value="true">Active</option>
-                                                                            <option value="false">Close</option>
+                                                                        <select th:field="*{active}" class="form-control" required>
+                                                                            <option th:value="${true}">Active</option>
+                                                                            <option th:value="${false}">Close</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
