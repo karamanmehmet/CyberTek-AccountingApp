@@ -8,6 +8,7 @@ import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
+import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
 import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +79,7 @@ public class InvoiceRestController {
     }
 
     @GetMapping("/{companyEmail}/{invoiceType}/{invoiceStatus}")
-    public List<InvoiceDto> returnAllByCompanyAndInvoiceType(@PathVariable String companyEmail, @PathVariable InvoiceType invoiceType, @PathVariable InvoiceStatus invoiceStatus) throws CompanyNotFoundException {
+    public List<InvoiceDto> returnAllByCompanyAndInvoiceType(@PathVariable String companyEmail, @PathVariable InvoiceType invoiceType, @PathVariable InvoiceStatus invoiceStatus) throws CompanyNotFoundException, InvoiceNotFoundException, InvoiceProductNotFoundException {
 
         CompanyDto company = companyService.findByEmail(companyEmail);
 

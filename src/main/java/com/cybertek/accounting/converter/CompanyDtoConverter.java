@@ -1,7 +1,9 @@
 package com.cybertek.accounting.converter;
 
 import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.service.CompanyService;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Lazy;

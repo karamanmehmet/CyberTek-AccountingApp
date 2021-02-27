@@ -72,8 +72,13 @@
                                                         <td th:text="${company.phone}"></td>
                                                         <td th:text="${company.zip}"></td>
                                                         <td th:text="${company.state}"></td>
-                                                        <td><span class="badge bg-light-success"
-                                                                  th:text="${company.enabled}"></span></td>
+                                                        <td th:if="${company.enabled == true}">
+                                                            <span class="badge bg-light-success">Active</span>
+
+                                                        </td>
+                                                        <td th:if="${company.enabled == false}">
+                                                            <span class="badge bg-light-DANGER">Closed</span>
+                                                        </td>
                                                         <td>
                                                             <a href="page-users-edit.html">
                                                                 <i class="ft-edit"></i>
