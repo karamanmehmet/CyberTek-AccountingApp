@@ -40,7 +40,7 @@ public class CategoryController {
 
         return "redirect:/category/list";
     }
-
+    // JUST FOR TEST PURPOSE
     @GetMapping("/test")
     public String addCategory() {
 

@@ -41,6 +41,7 @@ public class ClientVendorController {
         return "redirect:/clientvendor/list";
 
     }
+    //WILL BE UPDATE
     @DeleteMapping("/delete")
     public String deleteClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorNotFoundException {
 
@@ -57,7 +58,7 @@ public class ClientVendorController {
         return "/clientvendor/vendor-client-update";
 
     }
-
+    // NEED TO TALK ABOUT LOGIC
     @PostMapping("/update")
     public String updateProject(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,Model model) throws ClientVendorNotFoundException, CompanyNotFoundException {
 
