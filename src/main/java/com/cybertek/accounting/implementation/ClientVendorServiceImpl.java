@@ -47,7 +47,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
 
         convertedClientVendor.setCompany(convertedCompany);
-        //convertedCategory.setEnabled(true);
+        convertedClientVendor.setEnabled(true);
         return mapper.convert(repository.saveAndFlush(convertedClientVendor),new ClientVendorDto());
 
     }

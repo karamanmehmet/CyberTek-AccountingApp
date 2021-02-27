@@ -150,7 +150,6 @@ public class ProductServiceImpl implements ProductService {
 
 
     }
-    @Transactional
     @Override
     public void deleteByCategory(List<ProductDto> disabledProducts)  {
 

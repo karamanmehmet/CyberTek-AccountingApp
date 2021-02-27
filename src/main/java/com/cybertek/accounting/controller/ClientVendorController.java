@@ -39,7 +39,7 @@ public class ClientVendorController {
     public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         clientVendorService.create(clientVendorDto);
-        return "redirect:/clientvendor/all";
+        return "redirect:/clientvendor/list";
 
     }
 
