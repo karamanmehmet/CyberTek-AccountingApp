@@ -19,16 +19,17 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductController {
 
     private final ProductService productService;
     private final CompanyService companyService;
     private final CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping("/list")
     public String getAllProducts(Model model) throws CompanyNotFoundException {
 
+        //TODO: Change the static values below.
         List<ProductDto> products = productService.findByCompany(companyService.findByEmail("karaman@crustycloud.com"));
         model.addAttribute("products", products);
 
@@ -39,13 +40,14 @@ public class ProductController {
     @GetMapping("/add")
     public String createProduct(Model model) throws CompanyNotFoundException {
 
+        //TODO: Change the static values below.
         model.addAttribute("product", new ProductDto());
         model.addAttribute("categories", categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
 
         return "/product/product-add";
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public String insertProduct(@ModelAttribute ProductDto productDto) throws CompanyNotFoundException, ProductFieldNullException, ProductAlreadyExistException {
 
         productService.create(productDto);

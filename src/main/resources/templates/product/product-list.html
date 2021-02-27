@@ -2,48 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
 <!-- BEGIN : Head-->
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description"
-          content="Apex admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords"
-          content="admin template, Apex admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <meta name="author" content="PIXINVENT">
-    <title>Dashboard2 - Apex responsive bootstrap 4 admin template</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../static/img/ico/favicon.ico">
-    <link rel="shortcut icon" type="image/png" href="../static/img/ico/favicon-32.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900"
-          rel="stylesheet">
-    <!-- BEGIN VENDOR CSS-->
-    <!-- font icons-->
-    <link rel="stylesheet" type="text/css" href="../static/fonts/feather/style.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/fonts/simple-line-icons/style.css">
-    <link rel="stylesheet" type="text/css" href="../static/fonts/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/prism.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/switchery.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/vendors/css/chartist.min.css">
-    <!-- END VENDOR CSS-->
-    <!-- BEGIN APEX CSS-->
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/components.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/themes/layout-dark.css">
-    <link rel="stylesheet" href="../static/css/plugins/switchery.css">
-    <!-- END APEX CSS-->
-    <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="../static/css/core/menu/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/pages/dashboard2.css">
-    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons.css">
-    <link rel="stylesheet" href="../static/fonts/weathericons/css/weather-icons-wind.css">
-    <!-- END Page Level CSS-->
-</head>
+<head th:replace="fragments :: page_head"/>
 <!-- END : Head-->
 
 <!-- BEGIN : Body-->
@@ -51,116 +10,13 @@
 <body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover"
       data-menu="horizontal-menu" data-col="2-columns">
 
-<nav class="navbar navbar-expand-lg navbar-light header-navbar navbar-fixed">
-    <div class="container-fluid navbar-wrapper">
-        <div class="navbar-header d-flex">
-            <div class="navbar-toggle menu-toggle d-xl-none d-block float-left align-items-center justify-content-center"
-                 data-toggle="collapse"><i class="ft-menu font-medium-3"></i></div>
-            <ul class="navbar-nav">
-                <li class="nav-item mr-2 d-none d-lg-block"><a class="nav-link apptogglefullscreen"
-                                                               id="navbar-fullscreen" href="javascript:;"><i
-                        class="ft-maximize font-medium-3"></i></a></li>
-
-            </ul>
-            <div class="navbar-brand-center">
-                <div class="navbar-header">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <div class="logo"><a class="logo-text" href="index.html">
-                                <span class="text">CYBERTEK</span>
-                            </a></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</nav>
+<div th:replace="fragments :: page_header"/>
 <!-- Navbar (Header) Ends-->
 
 <!-- ////////////////////////////////////////////////////////////////////////////-->
 <div class="wrapper">
 
-    <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center"
-         role="navigation" data-menu="menu-wrapper">
-        <!-- Horizontal menu content-->
-        <div class="navbar-container main-menu-content center-layout" data-menu="menu-container">
-            <!-- include ../../../includes/mixins-->
-            <ul class="navigation-main nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-                <li data-menu=""><a class="dropdown-toggle nav-link d-flex align-items-center" href="main.html"
-                                    data-toggle="dropdown"><i class="ft-home"></i><span
-                        data-i18n="Dashboard">Home Page</span></a>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a
-                        class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
-                        data-toggle="dropdown"><i class="ft-box"></i><span data-i18n="Apps">Management</span></a>
-                    <ul class="dropdown-menu">
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="company-list.html"
-                                            data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                                data-i18n="Email">Company Registration</span></a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="user-list.html"
-                                            data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                                data-i18n="Chat">User Registration</span></a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center"
-                                            href="vendor-client-list.html" data-toggle="dropdown"><i
-                                class="ft-arrow-right submenu-icon"></i><span data-i18n="Task Board">Vendor/Client Registration</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a
-                        class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
-                        data-toggle="dropdown"><i class="ft-aperture"></i><span
-                        data-i18n="UI Kit">Stock Management</span></a>
-                    <ul class="dropdown-menu">
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="product-list.html"
-                                            data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                                data-i18n="Grid">Products</span></a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="category-list.html"
-                                            data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                                data-i18n="Typography">Category</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a
-                        class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
-                        data-toggle="dropdown"><i class="ft-briefcase"></i><span data-i18n="Components">Invoices</span></a>
-                    <ul class="dropdown-menu">
-
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center"
-                                            href="purchase-invoice-list.html" data-toggle="dropdown"><i
-                                class="ft-arrow-right submenu-icon"></i><span
-                                data-i18n="Grid">Purchase Invoice</span></a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center"
-                                            href="sales-invoice-list.html" data-toggle="dropdown"><i
-                                class="ft-arrow-right submenu-icon"></i><span
-                                data-i18n="Typography">Sales Invoice</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a
-                        class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
-                        data-toggle="dropdown"><i class="ft-briefcase"></i><span data-i18n="Components">Reporting</span></a>
-                    <ul class="dropdown-menu">
-
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="stock-report.html"
-                                            data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                                data-i18n="Grid">Stock Report</span></a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item d-flex align-items-center"
-                                            href="profit-loss-report.html" data-toggle="dropdown"><i
-                                class="ft-arrow-right submenu-icon"></i><span data-i18n="Typography">Profit / Loss Report</span></a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
-    </div>
+    <div th:replace="fragments :: page_menu"/>
 
 
     <div class="main-panel">
@@ -171,14 +27,12 @@
                 <section class="users-list-wrapper">
                     <!-- Filter starts -->
                     <div class="users-list-filter px-2">
-                        <form>
 
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                            <a class="btn btn-success bg-light-success mb-1" th:href="@{/product/add}"><i
+                                    class="fa fa-plus mr-1"></i>Add Product</a>
+                        </div>
 
-                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                <a class="btn btn-success bg-light-success mb-1" th:href="@{/products/add}"><i
-                                        class="fa fa-plus mr-1"></i>Add Product</a>
-                            </div>
-                        </form>
                     </div>
                     <!-- Filter ends -->
 
@@ -212,7 +66,7 @@
                                                         <td th:text="${product.qty}"></td>
                                                         <td th:text="${product.unit}"></td>
                                                         <td th:text="${product.category.description}"></td>
-                                                        <td><span class="badge bg-light-danger"
+                                                        <td><span class="badge bg-light-success"
                                                                   th:if="${product.enabled == true}">Active</span></td>
                                                         <td><span class="badge bg-light-danger"
                                                                   th:unless="${product.enabled == true}">Passive</span>
@@ -240,14 +94,8 @@
         </div>
         <!-- END : End Main Content-->
 
-        <!-- BEGIN : Footer-->
-        <footer class="footer undefined undefined">
-            <p class="clearfix text-muted m-0"><span>Copyright &copy; 2020 &nbsp;</span><a
-                    href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent" id="pixinventLink"
-                    target="_blank">PIXINVENT</a><span class="d-none d-sm-inline-block">, All rights reserved.</span>
-            </p>
-        </footer>
-        <!-- End : Footer-->
+        <footer th:replace="fragments :: page_footer"></footer>
+
         <!-- Scroll to top button -->
         <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
 
@@ -258,26 +106,12 @@
 
 <div class="sidenav-overlay"></div>
 <div class="drag-target"></div>
-<!-- BEGIN VENDOR JS-->
-<script src="../static/vendors/js/vendors.min.js"></script>
-<script src="../static/vendors/js/switchery.min.js"></script>
-<!-- BEGIN VENDOR JS-->
-<!-- BEGIN PAGE VENDOR JS-->
-<script src="../static/vendors/js/chartist.min.js"></script>
-<script src="../static/vendors/js/apexcharts.min.js"></script>
-<!-- END PAGE VENDOR JS-->
-<!-- BEGIN APEX JS-->
-<script src="../static/js/core/app-menu.js"></script>
-<script src="../static/js/core/app.js"></script>
-<script src="../static/js/notification-sidebar.js"></script>
-<script src="../static/js/customizer.js"></script>
-<script src="../static/js/scroll-top.js"></script>
-<!-- END APEX JS-->
+
 <!-- BEGIN PAGE LEVEL JS-->
-<script src="../static/js/dashboard2.js"></script>
+<script th:src="@{/js/dashboard2.js}"></script>
 <!-- END PAGE LEVEL JS-->
 <!-- BEGIN: Custom CSS-->
-<script src="../../../assets/js/scripts.js"></script>
+<script th:src="@{/assets/js/scripts.js}"></script>
 <!-- END: Custom CSS-->
 </body>
 <!-- END : Body-->

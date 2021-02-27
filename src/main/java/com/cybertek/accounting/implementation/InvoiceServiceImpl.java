@@ -8,13 +8,16 @@ import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
+import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.InvoiceRepository;
+import com.cybertek.accounting.service.InvoiceMonetaryDetailService;
 import com.cybertek.accounting.service.InvoiceNumberService;
 import com.cybertek.accounting.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceRepository repository;
     private final MapperGeneric mapper;
     private final InvoiceNumberService invoiceNumberService;
+    private final InvoiceMonetaryDetailService invoiceMonetaryDetailService;
 
     @Override
     public InvoiceDto create(InvoiceDto invoice) throws InvoiceAlreadyExistsException, Exception {
@@ -125,9 +129,26 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) {
-        return repository.findAllByCompanyAndInvoiceTypeAndInvoiceStatus(mapper.convert(company,new Company()), invoiceType, invoiceStatus).stream()
+    public List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+
+        List<InvoiceDto> invoiceDtoList = repository.findAllByCompanyAndInvoiceTypeAndInvoiceStatus(mapper.convert(company,new Company()), invoiceType, invoiceStatus).stream()
                 .map(invoice -> mapper.convert(invoice,new InvoiceDto()))
                 .collect(Collectors.toList());
+
+        return monetaryDetail(invoiceDtoList);
     }
+
+    private List<InvoiceDto> monetaryDetail(List<InvoiceDto> invoiceDtoList) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+
+        List<InvoiceDto> list = new ArrayList<>();
+
+        for(InvoiceDto invoice : invoiceDtoList){
+            invoice.setMonetaryDetailDto(invoiceMonetaryDetailService.create(invoice));
+            list.add(invoice);
+        }
+
+        return list;
+
+    }
+
 }

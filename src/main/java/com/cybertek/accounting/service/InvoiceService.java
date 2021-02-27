@@ -6,6 +6,7 @@ import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
+import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
 
 import java.util.List;
 
@@ -32,6 +33,6 @@ public interface InvoiceService {
 
     List<InvoiceDto> findAllByCompanyAndInvoiceStatus(CompanyDto company, InvoiceStatus invoiceStatus);
 
-    List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company,InvoiceType invoiceType, InvoiceStatus invoiceStatus);
+    List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company,InvoiceType invoiceType, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
 
 }

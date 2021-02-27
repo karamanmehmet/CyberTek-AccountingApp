@@ -5,23 +5,26 @@ import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
 import com.cybertek.accounting.entity.Product;
+import com.cybertek.accounting.exception.InvoiceNotFoundException;
+import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
 import com.cybertek.accounting.repository.InvoiceProductRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
-import com.cybertek.accounting.service.PaymentService;
+import com.cybertek.accounting.service.InvoiceMonetaryDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentServiceImpl implements PaymentService {
+public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailService {
 
     private final InvoiceRepository invoiceRepository;
     private final InvoiceProductRepository invoiceProductRepository;
 
     @Override
-    public InvoiceMonetaryDetailDto create(InvoiceDto invoiceDto) throws Exception {
+    public InvoiceMonetaryDetailDto create(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
 
         double tax = 0;
         double cost = 0;
@@ -30,13 +33,13 @@ public class PaymentServiceImpl implements PaymentService {
         Invoice invoice = invoiceRepository.findByInvoiceNo(invoiceDto.getInvoiceNo());
 
         if (invoice == null) {
-            throw new Exception("No invoice found");
+            throw new InvoiceNotFoundException("No invoice found");
         }
 
         List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoice(invoice);
 
         if (invoiceProductList.size() == 0) {
-            throw new Exception("No invoice product found");
+            throw new InvoiceProductNotFoundException("No invoice product found");
         }
 
         for (InvoiceProduct invoiceProduct : invoiceProductList) {

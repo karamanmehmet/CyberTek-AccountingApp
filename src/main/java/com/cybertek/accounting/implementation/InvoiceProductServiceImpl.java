@@ -127,7 +127,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         foundInvoiceProduct.setQty(0);
         foundInvoiceProduct.setUnitPrice(0);
-        foundInvoiceProduct.setDeleted(true);
+        foundInvoiceProduct.setEnabled(true);
 
         productRepository.saveAndFlush(foundProduct);
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);

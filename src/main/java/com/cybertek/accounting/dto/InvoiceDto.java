@@ -21,7 +21,7 @@ public class InvoiceDto {
     private LocalDate invoiceDate;
     private ClientVendorDto clientVendor;
     private CompanyDto company;
-    private InvoiceMonetaryDetailDto paymentDto;
+    private InvoiceMonetaryDetailDto monetaryDetailDto;
 
     public InvoiceDto(String invoiceNo, InvoiceType invoiceType, InvoiceStatus invoiceStatus, LocalDate invoiceDate, ClientVendorDto convertToDto, CompanyDto convertToDto1) {
     }

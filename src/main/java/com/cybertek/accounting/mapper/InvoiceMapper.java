@@ -21,14 +21,14 @@ public class InvoiceMapper {
 
     }
 
-//    public InvoiceDto convertToDto(Invoice obj) {
-//
-//        return new InvoiceDto(obj.getInvoiceNo(),
-//                obj.getInvoiceType(),
-//                obj.getInvoiceStatus(),
-//                obj.getInvoiceDate(),
-//                clientVendorMapper.convertToDto(obj.getClientVendor()),
-//                companyMapper.convertToDto(obj.getCompany()));
-//
-//    }
+    public InvoiceDto convertToDto(Invoice obj) {
+
+        return new InvoiceDto(obj.getInvoiceNo(),
+                obj.getInvoiceType(),
+                obj.getInvoiceStatus(),
+                obj.getInvoiceDate(),
+                clientVendorMapper.convertToDto(obj.getClientVendor()),
+                companyMapper.convertToDto(obj.getCompany()));
+
+    }
 }
