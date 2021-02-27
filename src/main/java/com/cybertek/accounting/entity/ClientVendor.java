@@ -13,14 +13,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientVendor extends BaseEntity {
-
-    @Column(unique = true)
+    // TODO if we add unique for companyName and Email we ca not create VENDOR / CLIENT with same credentials
+    // I checked it implementation
+    //@Column(unique = true)
     @NotNull
     private String companyName;
 
     private String phone;
 
-    @Column(unique = true)
+    //@Column(unique = true)
     @NotNull
     private String email;
 

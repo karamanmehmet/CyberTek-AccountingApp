@@ -41,5 +41,11 @@ public class CategoryController {
         return "redirect:/category/list";
     }
 
+    @GetMapping("/test")
+    public String addCategory() {
+
+        return "/form-validation";
+    }
+
 
 }
