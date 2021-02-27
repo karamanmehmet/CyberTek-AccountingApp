@@ -37,11 +37,16 @@ public class UserController {
     }
     @PostMapping("/add")
     public String insertUser(UserDto user,Model model) throws  UserAlreadyExist {
+
         userService.create(user);
         return "redirect:/user/user-add";
     }
     //
-
+    @GetMapping("/list")
+    public String listUsers(Model model){
+        model.addAttribute("users",userService.findAll());
+        return "user/user-list";
+    }
 
 }
 
