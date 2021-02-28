@@ -1,17 +1,14 @@
 package com.cybertek.accounting.controller;
 
 import com.cybertek.accounting.dto.CategoryDto;
-import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.CategoryAlreadyExistException;
+import com.cybertek.accounting.dto.ClientVendorDto;
+import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.service.CategoryService;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class CategoryController {
     @GetMapping("/list")
     public String showCategories(Model model) throws CompanyNotFoundException {
         // TODO This part will update according to valid user
-        model.addAttribute("categories",categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
+        model.addAttribute("categories",categoryService.findAllByCompanyAndStatus(companyService.findByEmail("karaman@crustycloud.com"),true));
         return "/category/category-list";
     }
 
@@ -35,8 +32,10 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public String addCategory(@ModelAttribute("category") CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
-        categoryService.create(categoryDto);
+    public String addCategory(@ModelAttribute("category") CategoryDto categoryDto,@RequestParam(value="action", required=true) String action) throws CategoryAlreadyExistException, CompanyNotFoundException {
+        if (action.equals("save")) {
+            categoryService.create(categoryDto);
+        }
 
         return "redirect:/category/list";
     }
@@ -45,6 +44,26 @@ public class CategoryController {
     public String addCategory() {
 
         return "/form-validation";
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateCategory(@PathVariable long id,Model model) throws CategoryNotFoundException {
+        model.addAttribute("category",categoryService.findById(id));
+
+        return "/category/category-update";
+
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateCategory(@PathVariable long id, @ModelAttribute("category") CategoryDto categoryDto, @RequestParam(value="action", required=true) String action) throws CompanyNotFoundException, CategoryNotFoundException, CategoryHasProductException {
+        if (action.equals("save")) {
+            categoryService.update(categoryDto,id);
+        }
+        if (action.equals("delete")) {
+            categoryService.delete(id);
+        }
+
+        return "redirect:/category/list";
     }
 
 

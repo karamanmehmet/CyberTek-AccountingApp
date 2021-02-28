@@ -50,8 +50,13 @@
                                                                 <th>Company Name</th>
                                                                 <th>Phone</th>
                                                                 <th>Email</th>
-																<th>Type</th>
-																<th>Status</th>
+                                                                <th>Type</th>
+																<th>ZipCode</th>
+                                                                <th>Address</th>
+                                                                <th>State</th>
+                                                                <th>Status</th>
+
+
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -60,7 +65,10 @@
                                                                 <td th:text="${clientVendor.getCompanyName()}" class="text-truncate"></td>
 																<td th:text="${clientVendor.getPhone()}"></td>
 																<td th:text="${clientVendor.getEmail()}"></td>
-																<td th:text="${clientVendor.getType()}"></td>
+                                                                <td th:text="${clientVendor.getType()}"></td>
+                                                                <td th:text="${clientVendor.getZipCode()}"></td>
+                                                                <td th:text="${clientVendor.getAddress()}"></td>
+                                                                <td th:text="${clientVendor.getState()}"></td>
                                                                 <td>
                                                                     <span th:if="${clientVendor.isEnabled()}" class="badge bg-light-success">Active</span>
                                                                     <span th:if="${!clientVendor.isEnabled()}" class="badge bg-light-danger">Passive</span>                                                                <td>

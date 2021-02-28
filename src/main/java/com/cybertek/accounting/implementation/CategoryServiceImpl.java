@@ -94,19 +94,52 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException {
-
-        Optional<Category> foundedCategory = repository.findById(categoryDto.getId());
+    public CategoryDto update(CategoryDto categoryDto,long id) throws CategoryNotFoundException, CompanyNotFoundException {
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+        Optional<Category> foundedCategory = repository.findById(id);
 
         if (foundedCategory.isEmpty()) {
             throw new CategoryNotFoundException("There is no category");
         }
-        return mapper.convert(repository.saveAndFlush(mapper.convert(categoryDto,new Category())),new CategoryDto());
+        Category convertedCategory = mapper.convert(categoryDto, new Category());
+        convertedCategory.setId(foundedCategory.get().getId());
+        convertedCategory.setEnabled(true);
+        convertedCategory.setCompany(convertedCompany);
+
+        return mapper.convert(repository.saveAndFlush(convertedCategory),new CategoryDto());
     }
+
+    @Override
+    public CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException, CompanyNotFoundException {
+        return null;
+    }
+
     @Transactional
     @Override
     public void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException {
-        Category foundedCategory = repository.findById(categoryDto.getId())
+     /*   Category foundedCategory = repository.findById(categoryDto.getId())
+                .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
+
+        CategoryDto convertedCategory = mapper.convert(foundedCategory, new CategoryDto());
+
+        List<ProductDto> products = productService.findByCategory(convertedCategory);
+
+        if(products.size()>0) {
+            productService.deleteByCategory(products);
+        }
+
+        foundedCategory.setEnabled(false);
+
+        repository.saveAndFlush(foundedCategory);*/
+
+    }
+
+    @Transactional
+    @Override
+    public void delete(long id) throws CategoryNotFoundException, CategoryHasProductException {
+
+        Category foundedCategory = repository.findById(id)
                 .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
 
         CategoryDto convertedCategory = mapper.convert(foundedCategory, new CategoryDto());

@@ -14,7 +14,7 @@ public interface ClientVendorService {
 
     ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
 
-    List<ClientVendorDto> findAll();
+    List<ClientVendorDto> findAll() throws CompanyNotFoundException;
 
 
     ClientVendorDto findByEmailAndType(String email, ClientVendorType type) throws CompanyNotFoundException;
@@ -35,6 +35,9 @@ public interface ClientVendorService {
 
 
     void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException;
+
+    void delete(long id) throws ClientVendorNotFoundException;
+
 
 
     List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type);

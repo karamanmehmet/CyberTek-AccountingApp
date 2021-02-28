@@ -3,7 +3,9 @@ package com.cybertek.accounting.enums;
 public enum ClientVendorType {
 
     CLIENT("Client"),
-    VENDOR("Vendor");
+    VENDOR("Vendor"),
+    BOTH("Both");
+
 
     private final String value;
     private ClientVendorType(String value){

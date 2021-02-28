@@ -35,27 +35,29 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Transactional
     @Override
     public ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
+
         // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
         Optional<ClientVendor> foundedClientVendor = repository.findByEmailAndCompany(clientVendor.getEmail(),convertedCompany);
 
-        if(foundedClientVendor.isPresent() && foundedClientVendor.get().getType().equals(clientVendor.getType()))
+        if(foundedClientVendor.isPresent() && foundedClientVendor.get().getType().equals(clientVendor.getType()) && foundedClientVendor.get().getEmail().equals(clientVendor.getEmail()))
                 throw new ClientVendorAlreadyExistException("This Client/Vendor is already exist");
 
 
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+        convertedClientVendor.setEnabled(true);
 
         convertedClientVendor.setCompany(convertedCompany);
-        convertedClientVendor.setEnabled(true);
         return mapper.convert(repository.saveAndFlush(convertedClientVendor),new ClientVendorDto());
 
     }
 
     @Override
-    public List<ClientVendorDto> findAll() {
-
-        List<ClientVendor> list = repository.findAll();
+    public List<ClientVendorDto> findAll() throws CompanyNotFoundException {
+// TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+        List<ClientVendor> list = repository.findAllByCompanyAndEnabled(convertedCompany,true);
 
         return list.stream()
                 .map(obj->
@@ -138,8 +140,9 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
         Optional<ClientVendor> foundedClientVendor = repository.findById(clientVendor.getId());
 
-        if(foundedClientVendor.isEmpty())
-            throw new ClientVendorNotFoundException("There is no client/Vendor");
+        if(foundedClientVendor.isEmpty()){
+            throw new ClientVendorNotFoundException("There is no client/Vendor");}
+
 
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
 
@@ -153,12 +156,18 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         return mapper.convert(repository.saveAndFlush(mapper.convert(convertedClientVendor,new ClientVendor())),new ClientVendorDto());
 
             }
-    @Transactional
+
     @Override
     public void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 
+    }
 
-        ClientVendor foundedClientVendor = repository.findByEmail(clientVendor.getEmail())
+    @Transactional
+    @Override
+    public void delete(long id ) throws ClientVendorNotFoundException {
+
+
+        ClientVendor foundedClientVendor = repository.findById(id)
                 .orElseThrow(()->new ClientVendorNotFoundException("There is no record with this "));
 
 

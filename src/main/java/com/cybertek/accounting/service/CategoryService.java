@@ -21,9 +21,14 @@ public interface CategoryService {
 
     List<CategoryDto> findAllByCompanyAndStatus(CompanyDto companyDto, boolean enabled);
 
-    CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException;
+    CategoryDto update(CategoryDto categoryDto,long id) throws CategoryNotFoundException, CompanyNotFoundException;
+
+    CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException, CompanyNotFoundException;
 
     void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException;
+
+    void delete(long id) throws CategoryNotFoundException, CategoryHasProductException;
+
 
 
 

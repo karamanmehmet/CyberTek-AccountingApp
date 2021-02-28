@@ -42,7 +42,7 @@ public class ClientVendor extends BaseEntity {
 
     private String state;
 
-    private boolean enabled;
+    private boolean enabled=true;
 
 
 

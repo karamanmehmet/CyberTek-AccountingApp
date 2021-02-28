@@ -36,6 +36,7 @@ public class CategoryRestController {
 
     @PutMapping
     public CategoryDto updateCategory(@RequestBody CategoryDto categoryDto) throws Exception {
+
        return  service.update(categoryDto);
     }
 

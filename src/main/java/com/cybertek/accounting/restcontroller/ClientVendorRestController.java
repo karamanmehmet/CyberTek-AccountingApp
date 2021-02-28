@@ -26,7 +26,7 @@ public class ClientVendorRestController {
      * @return List<ClientVendorDto>
      */
     @GetMapping
-    public List<ClientVendorDto> getAllClientVendor() {
+    public List<ClientVendorDto> getAllClientVendor() throws CompanyNotFoundException {
         return service.findAll();
     }
 

@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.*;
 public class ClientVendorController {
 
     private final ClientVendorService clientVendorService;
-    private final CompanyService companyService;
 
     @GetMapping("/list")
     public String showClientVendors(Model model) throws CompanyNotFoundException {
-        // TODO This part will update according to valid user
-        model.addAttribute("clientVendors",clientVendorService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
+        model.addAttribute("clientVendors",clientVendorService.findAll());
 
         return "/clientvendor/vendor-client-list";
 
@@ -32,22 +30,6 @@ public class ClientVendorController {
     public String addClientVendorForm(Model model) {
         model.addAttribute("clientvendor", new ClientVendorDto());
         return "/clientvendor/vendor-client-add";
-    }
-
-    @PostMapping("/add")
-    public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
-
-        clientVendorService.create(clientVendorDto);
-        return "redirect:/clientvendor/list";
-
-    }
-    //WILL BE UPDATE
-    @DeleteMapping("/delete")
-    public String deleteClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto) throws ClientVendorNotFoundException {
-
-        clientVendorService.delete(clientVendorDto);
-        return "redirect:/clientvendor/list";
-
     }
 
     @GetMapping("/update/{id}")
@@ -59,9 +41,28 @@ public class ClientVendorController {
     }
     // NEED TO TALK ABOUT LOGIC
     @PostMapping("/update/{id}")
-    public String updateProject(@PathVariable long id,@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,Model model) throws ClientVendorNotFoundException, CompanyNotFoundException {
-        clientVendorService.update(clientVendorDto,id);
+    public String updateClientVendor(@PathVariable long id,@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,@RequestParam(value="action", required=true) String action) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException {
+        if (action.equals("save")) {
+            clientVendorService.update(clientVendorDto,id);
+        }
+        if (action.equals("delete")) {
+            clientVendorService.delete(id);
+        }
+
         return "redirect:/clientvendor/list";
     }
+
+    @PostMapping("/add")
+    public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,@RequestParam(value="action", required=true) String action) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
+
+        if (action.equals("save")) {
+            clientVendorService.create(clientVendorDto);
+        }
+        return "redirect:/clientvendor/list";
+
+    }
+
+
+
 
 }
