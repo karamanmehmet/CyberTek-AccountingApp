@@ -20,6 +20,7 @@ public class InvoiceProduct {
     private Long id;
 
     private int qty;
+    private double tax;
     private double unitPrice;
 
     @ManyToOne()
@@ -32,10 +33,11 @@ public class InvoiceProduct {
 
     private boolean enabled;
 
-    public InvoiceProduct( int qty, double unitPrice,Product product, Invoice invoice) {
+    public InvoiceProduct( int qty, double tax, double unitPrice,Product product, Invoice invoice) {
         this.invoice = invoice;
         this.product = product;
         this.qty = qty;
         this.unitPrice = unitPrice;
+        this.tax = tax;
     }
 }

@@ -60,6 +60,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
             foundInvoiceProduct.setInvoice(foundInvoice);
 
             foundInvoiceProduct.setQty(invoiceProduct.getQty());
+            foundInvoiceProduct.setTax(foundProduct.getTax());
             foundInvoiceProduct.setUnitPrice(foundProduct.getPrice());
 
         }

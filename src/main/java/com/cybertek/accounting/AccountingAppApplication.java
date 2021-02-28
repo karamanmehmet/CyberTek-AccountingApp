@@ -149,11 +149,11 @@ public class AccountingAppApplication {
 
 		//Create Invoice Product
 
-			InvoiceProduct invoiceProduct1 = new InvoiceProduct(2,300,smartPhone,invoiceSales);
+			InvoiceProduct invoiceProduct1 = new InvoiceProduct(2,10,300,smartPhone,invoiceSales);
 
 			invoiceProductRepository.save(invoiceProduct1);
 
-			InvoiceProduct invoiceProduct2 = new InvoiceProduct(4,3.49,showerGel,invoicePurchase);
+			InvoiceProduct invoiceProduct2 = new InvoiceProduct(4,15,3.49,showerGel,invoicePurchase);
 
 			invoiceProductRepository.save(invoiceProduct2);
 

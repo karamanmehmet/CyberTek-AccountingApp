@@ -13,6 +13,8 @@ import com.cybertek.accounting.service.InvoiceMonetaryDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,15 +45,21 @@ public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailSe
         }
 
         for (InvoiceProduct invoiceProduct : invoiceProductList) {
-            Product product = invoiceProduct.getProduct();
-            tax += product.getTax() * invoiceProduct.getQty() * invoiceProduct.getUnitPrice();
+            tax += (invoiceProduct.getTax() / 100) * invoiceProduct.getQty() * invoiceProduct.getUnitPrice();
         }
 
         for (InvoiceProduct invoiceProduct : invoiceProductList) {
             cost += invoiceProduct.getQty() * invoiceProduct.getUnitPrice();
         }
 
+        // Ask about rounding.
+
+        tax = BigDecimal.valueOf(tax).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        cost = BigDecimal.valueOf(cost).setScale(2, RoundingMode.HALF_UP).doubleValue();
+
         totalCost = cost + tax;
+
+        totalCost = BigDecimal.valueOf(totalCost).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
         return new InvoiceMonetaryDetailDto(tax, cost, totalCost);
 
