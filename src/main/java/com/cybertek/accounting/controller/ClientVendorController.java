@@ -50,19 +50,17 @@ public class ClientVendorController {
 
     }
 
-    @GetMapping("/update/{email}/{type}")
-    public String updateClientVendor(@PathVariable String email,@PathVariable String type,Model model) throws CompanyNotFoundException {
-        ClientVendorType a= ClientVendorType.valueOf(type);
-        model.addAttribute("clientvendor",clientVendorService.findByEmailAndType(email,a));
+    @GetMapping("/update/{id}")
+    public String updateClientVendor(@PathVariable long id,Model model) throws ClientVendorNotFoundException {
+        model.addAttribute("clientvendor",clientVendorService.findById(id));
 
         return "/clientvendor/vendor-client-update";
 
     }
     // NEED TO TALK ABOUT LOGIC
-    @PostMapping("/update")
-    public String updateProject(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,Model model) throws ClientVendorNotFoundException, CompanyNotFoundException {
-
-        clientVendorService.update(clientVendorDto);
+    @PostMapping("/update/{id}")
+    public String updateProject(@PathVariable long id,@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,Model model) throws ClientVendorNotFoundException, CompanyNotFoundException {
+        clientVendorService.update(clientVendorDto,id);
         return "redirect:/clientvendor/list";
     }
 

@@ -84,6 +84,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
+    public ClientVendorDto findById(long id) throws ClientVendorNotFoundException {
+        ClientVendor foundedCV = repository.findById(id)
+                .orElseThrow(()->new ClientVendorNotFoundException("This CV does not exist"));
+        return mapper.convert(foundedCV,new ClientVendorDto());    }
+
+    @Override
     public List<ClientVendorDto> findAllByCompany(CompanyDto company) {
 
         Company convertedCompany = mapper.convert(company, new Company());
@@ -119,22 +125,30 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());      }
 
+    @Override
+    public ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException {
+        return null;
+    }
+
     @Transactional
     @Override
-    public ClientVendorDto update(ClientVendorDto clientVendor) throws CompanyNotFoundException {
+    public ClientVendorDto update(ClientVendorDto clientVendor,long id) throws CompanyNotFoundException, ClientVendorNotFoundException {
         // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
-        ClientVendor foundedClientVendor = repository.findByCompanyAndEmailAndType(convertedCompany, clientVendor.getEmail(), clientVendor.getType());
-/*
+        Optional<ClientVendor> foundedClientVendor = repository.findById(clientVendor.getId());
+
         if(foundedClientVendor.isEmpty())
-            throw new ClientVendorNotFoundException("There is no client/Vendor");*/
+            throw new ClientVendorNotFoundException("There is no client/Vendor");
 
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
 
-        convertedClientVendor.setId(foundedClientVendor.getId());
+        convertedClientVendor.setId(foundedClientVendor.get().getId());
         // TODO This part will update according to valid user.how I can trasfer all properties
-        convertedClientVendor.setCompany(convertedCompany);
+        // need to add
+        convertedClientVendor.setCompany(foundedClientVendor.get().getCompany());
+        convertedClientVendor.setEnabled(true);
+
 
         return mapper.convert(repository.saveAndFlush(mapper.convert(convertedClientVendor,new ClientVendor())),new ClientVendorDto());
 

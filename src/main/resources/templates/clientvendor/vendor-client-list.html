@@ -64,7 +64,7 @@
                                                                 <td>
                                                                     <span th:if="${clientVendor.isEnabled()}" class="badge bg-light-success">Active</span>
                                                                     <span th:if="${!clientVendor.isEnabled()}" class="badge bg-light-danger">Passive</span>                                                                <td>
-                                                                    <a th:href="@{/clientvendor/update/{email}/{type}(email=${clientVendor.email},type=${clientVendor.getType()})}">
+                                                                    <a th:href="@{/clientvendor/update/{id}(id=${clientVendor.id})}">
                                                                         <i class="ft-edit"></i>
                                                                     </a>
                                                                 </td>
