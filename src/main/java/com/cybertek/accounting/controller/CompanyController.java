@@ -51,7 +51,7 @@ public class CompanyController {
         return "/company/company-update";
     }
 
-    @PostMapping("/update/{companyEmail}")
+    @PostMapping("/update")
     public String updateCompany(@ModelAttribute("company") CompanyDto companyDto,
                                 @RequestParam(value="action", required=true) String action) throws CompanyNotFoundException {
 
@@ -64,11 +64,5 @@ public class CompanyController {
         return "redirect:/company/list";
     }
 
-//    @PostMapping(value = "/update/{companyEmail}",params ="delete")
-//    public String deleteCompany(@ModelAttribute("company") CompanyDto companyDto) throws CompanyNotFoundException {
-//        companyService.delete(companyDto);
-//
-//        return "redirect:company/list";
-//    }
 
 }

@@ -55,8 +55,6 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDto> findAll() {
 
-       List<Company> list = companyRepository.findAll();
-
         return companyRepository.findAll().stream()
                 .map(company -> mapperGeneric.convert(company,new CompanyDto()))
                 .collect(Collectors.toList());

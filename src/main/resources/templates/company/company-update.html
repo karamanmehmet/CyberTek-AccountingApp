@@ -50,7 +50,7 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel" aria-labelledby="account-tab">
 
                                                 <!-- Account form starts -->
-                                                <form novalidate th:action="@{/company/update/{companyEmail}(companyEmail=${company.email})}" method="post" th:object="${company}" >
+                                                <form class="needs-validation" th:action="@{/company/update}" method="post" th:object="${company}" >
                                                     <div class="row">
                                                         <div class="col-12 col-md-6">
                                                             <div class="form-group">
@@ -74,7 +74,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-email">E-mail</label>
-                                                                    <input th:field="*{email}" type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
+                                                                    <input disabled="disabled" th:field="*{email}" type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
