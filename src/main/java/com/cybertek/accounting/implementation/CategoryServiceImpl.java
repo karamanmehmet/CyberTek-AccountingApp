@@ -32,6 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public CategoryDto create(CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
+
         // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
@@ -110,6 +111,32 @@ public class CategoryServiceImpl implements CategoryService {
         return mapper.convert(repository.saveAndFlush(convertedCategory),new CategoryDto());
     }
 
+
+
+
+    @Transactional
+    @Override
+    public void delete(long id) throws CategoryNotFoundException, CategoryHasProductException {
+
+        Category foundedCategory = repository.findById(id)
+                .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
+
+        CategoryDto convertedCategory = mapper.convert(foundedCategory, new CategoryDto());
+
+        List<ProductDto> products = productService.findByCategory(convertedCategory);
+
+        if(products.size()>0) {
+            productService.deleteByCategory(products);
+        }
+
+        foundedCategory.setEnabled(false);
+
+        repository.saveAndFlush(foundedCategory);
+
+    }
+
+
+
     @Override
     public CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException, CompanyNotFoundException {
         return null;
@@ -134,26 +161,4 @@ public class CategoryServiceImpl implements CategoryService {
         repository.saveAndFlush(foundedCategory);*/
 
     }
-
-    @Transactional
-    @Override
-    public void delete(long id) throws CategoryNotFoundException, CategoryHasProductException {
-
-        Category foundedCategory = repository.findById(id)
-                .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
-
-        CategoryDto convertedCategory = mapper.convert(foundedCategory, new CategoryDto());
-
-        List<ProductDto> products = productService.findByCategory(convertedCategory);
-
-        if(products.size()>0) {
-            productService.deleteByCategory(products);
-        }
-
-        foundedCategory.setEnabled(false);
-
-        repository.saveAndFlush(foundedCategory);
-
-    }
-
 }
