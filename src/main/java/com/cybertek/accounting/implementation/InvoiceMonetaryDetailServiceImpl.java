@@ -4,7 +4,6 @@ import com.cybertek.accounting.dto.InvoiceMonetaryDetailDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
-import com.cybertek.accounting.entity.Product;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
 import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
 import com.cybertek.accounting.repository.InvoiceProductRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
