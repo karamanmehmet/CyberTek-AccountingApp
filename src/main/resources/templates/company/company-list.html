@@ -32,7 +32,7 @@
 
 
                             <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                <a class="btn btn-success bg-light-success mb-1" href="company-add.html"><i
+                                <a class="btn btn-success bg-light-success mb-1" th:href="@{/company/add}"><i
                                         class="fa fa-plus mr-1"></i>Add Company</a>
                             </div>
 
@@ -80,7 +80,7 @@
                                                             <span class="badge bg-light-DANGER">Closed</span>
                                                         </td>
                                                         <td>
-                                                            <a href="page-users-edit.html">
+                                                            <a th:href="@{/company/update/{companyEmail}(companyEmail=${company.email})}">
                                                                 <i class="ft-edit"></i>
                                                             </a>
                                                         </td>

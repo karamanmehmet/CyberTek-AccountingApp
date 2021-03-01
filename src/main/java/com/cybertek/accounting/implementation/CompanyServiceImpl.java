@@ -68,6 +68,16 @@ public class CompanyServiceImpl implements CompanyService {
         Company foundCompany = companyRepository.findByEmail(companyDto.getEmail())
                 .orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
 
+        foundCompany.setTitle(companyDto.getTitle());
+        foundCompany.setZip(companyDto.getZip());
+        foundCompany.setAddress1(companyDto.getAddress1());
+        foundCompany.setEmail(companyDto.getEmail());
+        foundCompany.setEmail(companyDto.getEmail());
+        foundCompany.setState(companyDto.getState());
+        foundCompany.setEnabled(companyDto.isEnabled());
+        foundCompany.setRepresentative(companyDto.getRepresentative());
+        foundCompany.setPhone(companyDto.getPhone());
+
         companyRepository.saveAndFlush(foundCompany);
 
         return companyDto;

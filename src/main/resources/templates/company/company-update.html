@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<!-- BEGIN : Head-->
+
+<head>
+    <head th:replace="fragments :: page_head" />
+
+</head>
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<div th:replace="fragments :: page_header" />
+
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+<div class="wrapper">
+    <div th:replace="fragments :: page_menu" />
+
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <section class="users-list-wrapper">
+                    <!-- Filter starts -->
+                    <div class="users-list-filter px-2">
+
+
+
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/company/list}"><i class="fa fa-list mr-1"></i>Company List</a>
+                        </div>
+
+
+                    </div>
+                    <!-- Filter ends -->
+
+                    <!-- Table starts -->
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+
+                                        <div class="tab-content">
+                                            <!-- Account content starts -->
+                                            <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+
+                                                <!-- Account form starts -->
+                                                <form novalidate th:action="@{/company/update/{companyEmail}(companyEmail=${company.email})}" method="post" th:object="${company}" >
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-username">Title</label>
+                                                                    <input th:field="*{title}" type="text" id="users-edit-username" class="form-control" placeholder="Username" value="dean3004" required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-name">Zip</label>
+                                                                    <input th:field="*{zip}" type="text" id="zip" class="form-control" placeholder="Name" value="43082" required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-name">Address</label>
+                                                                    <input th:field="*{address1}" type="text" id="users-edit-name" class="form-control" placeholder="Name" value="973 Polaris Crossing Way Westerville" required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-email">E-mail</label>
+                                                                    <input th:field="*{email}" type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-date">Establishment date</label>
+                                                                    <input th:field="*{establishmentDate}" type="text" id="users-edit-date" class="form-control" placeholder="Establishment date" value="16.02.2007" required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>State</label>
+                                                                    <select id="state" name="state" class="form-control" required>
+                                                                        <option th:value="''" th:text="Select"></option>
+                                                                        <option th:each="state : ${states}"
+                                                                                th:value="${state}"
+                                                                                th:text="${state}"
+                                                                                th:selected="${state == company.state}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Status</label>
+                                                                    <select th:field="*{enabled}" class="form-control" required>
+                                                                        <option th:value="${true}" th:text="Active" selected="selected"></option>
+                                                                        <option th:value="${false}" th:text="Close"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="representative">Representative</label>
+                                                                    <input  th:field="*{representative}" type="text" id="representative" class="form-control" placeholder="Representative">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="phone">Phone</label>
+                                                                    <input th:field="*{phone}" type="text" id="phone" class="form-control" placeholder="9734157843">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                            <button name="action" value="save" type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Changes</button>
+                                                            <button name="action" value="delete"  type="submit" class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete Company</button>
+                                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- Account form ends -->
+                                            </div>
+                                            <!-- Account content ends -->
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Table ends -->
+                </section>
+
+            </div>
+        </div>
+        <!-- END : End Main Content-->
+
+        <footer th:replace="fragments :: page_footer"></footer>
+
+        <!-- Scroll to top button -->
+        <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+    </div>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+
+<div class="sidenav-overlay"></div>
+
+<!-- BEGIN PAGE LEVEL JS-->
+<script th:src="@{/js/dashboard2.js}"></script>
+<script th:src="@{/js/pickadate/picker.js}"></script>
+<script th:src="@{/js/pickadate/picker.date.js}"></script>
+<script th:src="@{/js/pickadate/picker.time.js}"></script>
+<script th:src="@{/js/pickadate/legacy.js}"></script>
+<script th:src="@{/js/pickadate/form-datetimepicker.js}"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN PAGE VENDOR JS-->
+
+<!-- END PAGE VENDOR JS-->
+<!-- BEGIN: Custom CSS-->
+<script th:src="@{/assets/js/scripts.js}"></script>
+<!-- END: Custom CSS-->
+</body>
+<!-- END : Body-->
+
+</html>
