@@ -7,6 +7,10 @@ import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
 import com.cybertek.accounting.entity.Product;
 import com.cybertek.accounting.enums.InvoiceType;
+import com.cybertek.accounting.exception.InvoiceNotFoundException;
+import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
+import com.cybertek.accounting.exception.NotEnoughProductInStockException;
+import com.cybertek.accounting.exception.ProductNotFoundException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.InvoiceProductRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
@@ -28,20 +32,20 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     private final MapperGeneric mapper;
 
     @Override
-    public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws Exception {
+    public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException {
 
         Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoiceProduct.getInvoice().getInvoiceNo());
 
         if (foundInvoice == null) {
-            throw new Exception("No invoice found");
+            throw new InvoiceNotFoundException("No invoice found");
         }
 
-        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new Exception("No product found"));
+        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
 
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElse(null);
 
         if (foundProduct.getQty() < invoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
-            throw new Exception("Not enough product in the stock");
+            throw new NotEnoughProductInStockException("Not enough product in the stock");
         }else if (foundProduct.getQty() >= invoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES){
             foundProduct.setQty(foundProduct.getQty() - invoiceProduct.getQty());
         }else {
@@ -72,20 +76,20 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public InvoiceProductDto update(InvoiceProductDto invoiceProduct) throws Exception {
+    public InvoiceProductDto update(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException {
 
         Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoiceProduct.getInvoice().getInvoiceNo());
 
         if (foundInvoice == null) {
-            throw new Exception("No invoice found");
+            throw new InvoiceNotFoundException("No invoice found");
         }
 
-        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new Exception("No product found"));
+        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
 
-        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new Exception("No invoice product found"));
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
         if (foundProduct.getQty() < invoiceProduct.getQty() - foundInvoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
-            throw new Exception("Not enough product in the stock");
+            throw new NotEnoughProductInStockException("Not enough product in the stock");
         }else if (foundProduct.getQty() >= invoiceProduct.getQty() - foundInvoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
             foundProduct.setQty(foundProduct.getQty() - (invoiceProduct.getQty() - foundInvoiceProduct.getQty()));
         }else {
@@ -104,24 +108,24 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public void delete(InvoiceProductDto invoiceProduct) throws Exception {
+    public void delete(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException {
 
         Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoiceProduct.getInvoice().getInvoiceNo());
 
         if (foundInvoice == null) {
-            throw new Exception("No invoice found");
+            throw new InvoiceNotFoundException("No invoice found");
         }
 
-        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new Exception("No product found"));
+        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
 
-        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new Exception("No invoice product found"));
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
         if (foundInvoice.getInvoiceType() == InvoiceType.SALES) {
             foundProduct.setQty(foundProduct.getQty() + foundInvoiceProduct.getQty());
         }else if (foundInvoice.getInvoiceType() == InvoiceType.PURCHASE && foundInvoiceProduct.getQty() < foundProduct.getQty()) {
             foundProduct.setQty(foundProduct.getQty() - foundInvoiceProduct.getQty());
         }else {
-            throw new Exception("Not enough product in the stock");
+            throw new NotEnoughProductInStockException("Not enough product in the stock");
         }
 
         productRepository.saveAndFlush(foundProduct);
@@ -146,12 +150,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public InvoiceProductDto findByInvoiceAndProduct(InvoiceDto invoice, ProductDto product) throws Exception {
+    public InvoiceProductDto findByInvoiceAndProduct(InvoiceDto invoice, ProductDto product) throws InvoiceProductNotFoundException, ProductNotFoundException {
 
         Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoice.getInvoiceNo());
-        Product foundProduct = productRepository.findById(product.getId()).orElseThrow(() -> new Exception("No product found"));
+        Product foundProduct = productRepository.findById(product.getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
 
-        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new Exception("No invoice product found"));
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
         return mapper.convert(foundInvoiceProduct, new InvoiceProductDto());
 

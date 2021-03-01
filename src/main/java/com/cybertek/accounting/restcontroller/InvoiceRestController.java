@@ -26,13 +26,13 @@ public class InvoiceRestController {
 
 
     @GetMapping("/{invoiceNo}")
-    public InvoiceDto getInvoiceNumber(@PathVariable String invoiceNo) {
+    public InvoiceDto getInvoiceNumber(@PathVariable String invoiceNo) throws InvoiceNotFoundException {
 
         return invoiceService.findByInvoiceNo(invoiceNo);
     }
 
     @PostMapping
-    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceAlreadyExistsException, Exception {
+    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceAlreadyExistsException, CompanyNotFoundException {
       return invoiceService.create(invoiceDto);
     }
 

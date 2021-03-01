@@ -6,6 +6,7 @@ import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
 import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
@@ -31,7 +32,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceMonetaryDetailService invoiceMonetaryDetailService;
 
     @Override
-    public InvoiceDto create(InvoiceDto invoice) throws InvoiceAlreadyExistsException, Exception {
+    public InvoiceDto create(InvoiceDto invoice) throws InvoiceAlreadyExistsException, CompanyNotFoundException {
 
         Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
 
@@ -91,8 +92,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceDto findByInvoiceNo(String invoiceNo) {
+    public InvoiceDto findByInvoiceNo(String invoiceNo) throws InvoiceNotFoundException{
         Invoice invoice = repository.findByInvoiceNo(invoiceNo);
+
+        if (invoice == null) {
+            throw new InvoiceNotFoundException("Invoice with this invoice number can not be found!");
+        }
+
         return mapper.convert(invoice,new InvoiceDto());
     }
 
