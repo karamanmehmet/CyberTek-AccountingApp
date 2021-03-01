@@ -16,13 +16,13 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAll() throws CompanyNotFoundException;
 
-
     ClientVendorDto findByEmailAndType(String email, ClientVendorType type) throws CompanyNotFoundException;
 
     ClientVendorDto findByEmail(String email) throws ClientVendorNotFoundException;
 
     ClientVendorDto findById(long id) throws ClientVendorNotFoundException;
 
+    List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type);
 
     List<ClientVendorDto> findAllByCompany(CompanyDto company);
 
@@ -30,18 +30,15 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAllByCompanyAndState(CompanyDto company, String state);
 
-    ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException;
     ClientVendorDto update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException;
 
-
-    void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException;
 
     void delete(long id) throws ClientVendorNotFoundException;
 
 
 
-    List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type);
-
+    void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException;
+    ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException;
 
 }
 

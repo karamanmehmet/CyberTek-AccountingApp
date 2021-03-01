@@ -23,13 +23,11 @@ public interface CategoryService {
 
     CategoryDto update(CategoryDto categoryDto,long id) throws CategoryNotFoundException, CompanyNotFoundException;
 
+    void delete(long id) throws CategoryNotFoundException, CategoryHasProductException;
+
     CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException, CompanyNotFoundException;
 
     void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException;
-
-    void delete(long id) throws CategoryNotFoundException, CategoryHasProductException;
-
-
 
 
 }
