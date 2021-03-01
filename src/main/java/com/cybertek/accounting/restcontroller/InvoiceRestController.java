@@ -26,18 +26,18 @@ public class InvoiceRestController {
 
 
     @GetMapping("/{invoiceNo}")
-    public InvoiceDto getInvoiceNumber(@PathVariable String invoiceNo) {
+    public InvoiceDto getInvoiceNumber(@PathVariable String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
 
         return invoiceService.findByInvoiceNo(invoiceNo);
     }
 
     @PostMapping
-    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceAlreadyExistsException, Exception {
+    public InvoiceDto createInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceAlreadyExistsException, CompanyNotFoundException, InvoiceNotFoundException, InvoiceProductNotFoundException {
       return invoiceService.create(invoiceDto);
     }
 
     @PutMapping
-    public InvoiceDto updateInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException {
+    public InvoiceDto updateInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
         return invoiceService.update(invoiceDto);
     }
 
@@ -47,7 +47,7 @@ public class InvoiceRestController {
     }
 
     @GetMapping("/first3ByCompanyAsc/{companyEmail}")
-    public List<InvoiceDto> returnFirst3AscByCompany(@PathVariable("companyEmail") String companyEmail) throws InvoiceNotFoundException, CompanyNotFoundException {
+    public List<InvoiceDto> returnFirst3AscByCompany(@PathVariable("companyEmail") String companyEmail) throws InvoiceNotFoundException, CompanyNotFoundException, InvoiceProductNotFoundException {
 
         CompanyDto foundCompany = companyService.findByEmail(companyEmail);
 
@@ -55,7 +55,7 @@ public class InvoiceRestController {
     }
 
     @GetMapping("/first3ByCompanyDesc/{companyEmail}")
-    public List<InvoiceDto> returnFirst3DescByCompany(@PathVariable String companyEmail) throws InvoiceNotFoundException, CompanyNotFoundException {
+    public List<InvoiceDto> returnFirst3DescByCompany(@PathVariable String companyEmail) throws InvoiceNotFoundException, CompanyNotFoundException, InvoiceProductNotFoundException {
 
         CompanyDto foundCompany = companyService.findByEmail(companyEmail);
 
@@ -63,7 +63,7 @@ public class InvoiceRestController {
     }
 
     @GetMapping("/{companyEmail}/invType/{invoiceType}")
-    public List<InvoiceDto> returnAllByCompanyAndInvoiceType(@PathVariable String companyEmail, @PathVariable InvoiceType invoiceType) throws CompanyNotFoundException {
+    public List<InvoiceDto> returnAllByCompanyAndInvoiceType(@PathVariable String companyEmail, @PathVariable InvoiceType invoiceType) throws CompanyNotFoundException, InvoiceNotFoundException, InvoiceProductNotFoundException {
 
         CompanyDto company = companyService.findByEmail(companyEmail);
 
@@ -71,7 +71,7 @@ public class InvoiceRestController {
     }
 
     @GetMapping("/{companyEmail}/invStatus/{invoiceStatus}")
-    public List<InvoiceDto> returnAllByCompanyAndInvoiceStatus(@PathVariable String companyEmail, @PathVariable  InvoiceStatus invoiceStatus) throws CompanyNotFoundException {
+    public List<InvoiceDto> returnAllByCompanyAndInvoiceStatus(@PathVariable String companyEmail, @PathVariable  InvoiceStatus invoiceStatus) throws CompanyNotFoundException, InvoiceNotFoundException, InvoiceProductNotFoundException {
 
         CompanyDto company = companyService.findByEmail(companyEmail);
 

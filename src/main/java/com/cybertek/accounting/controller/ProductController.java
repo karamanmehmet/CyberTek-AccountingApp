@@ -1,5 +1,6 @@
 package com.cybertek.accounting.controller;
 
+import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.ProductAlreadyExistException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,10 +29,17 @@ public class ProductController {
     private final CategoryService categoryService;
 
     @GetMapping("/list")
-    public String getAllProducts(Model model) throws CompanyNotFoundException {
+    public String getAllProducts(Model model) {
 
         //TODO: Change the static values below.
-        List<ProductDto> products = productService.findByCompany(companyService.findByEmail("karaman@crustycloud.com"));
+
+        List<ProductDto> products = new ArrayList<>();
+
+        try {
+            products = productService.findByCompany(companyService.findByEmail("karaman@crustycloud.com"));
+        } catch (CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
         model.addAttribute("products", products);
 
         return "/product/product-list";
@@ -38,19 +47,31 @@ public class ProductController {
     }
 
     @GetMapping("/add")
-    public String createProduct(Model model) throws CompanyNotFoundException {
+    public String createProduct(Model model) {
 
         //TODO: Change the static values below.
+
+        List<CategoryDto> categories = null;
+        try {
+            categories = categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com"));
+        } catch (CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
+
         model.addAttribute("product", new ProductDto());
-        model.addAttribute("categories", categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
+        model.addAttribute("categories", categories);
 
         return "/product/product-add";
     }
 
     @PostMapping("/add")
-    public String insertProduct(@ModelAttribute ProductDto productDto) throws CompanyNotFoundException, ProductFieldNullException, ProductAlreadyExistException {
+    public String insertProduct(@ModelAttribute ProductDto productDto) {
 
-        productService.create(productDto);
+        try {
+            productService.create(productDto);
+        } catch (ProductFieldNullException | ProductAlreadyExistException | CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/products";
 

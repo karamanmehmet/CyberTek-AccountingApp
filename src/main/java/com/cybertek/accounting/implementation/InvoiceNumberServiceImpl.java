@@ -4,6 +4,8 @@ import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceNumber;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
+import com.cybertek.accounting.exception.InvoiceNumberNotFoundException;
 import com.cybertek.accounting.repository.CompanyRepository;
 import com.cybertek.accounting.repository.InvoiceNumberRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
@@ -23,16 +25,14 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
     private final InvoiceRepository invoiceRepository;
 
     @Override
-    public String create(CompanyDto companyDto) throws Exception {
+    public String create(CompanyDto companyDto) throws CompanyNotFoundException {
 
         String generatedInvoiceNumber;
 
-        Company foundCompany = companyRepository.findById(companyDto.getId()).orElseThrow(() -> new Exception("No company found"));
+        Company foundCompany = companyRepository.findById(companyDto.getId()).orElseThrow(() -> new CompanyNotFoundException("No company found"));
         List<InvoiceNumber> invoiceNumberList = invoiceNumberRepository.findInvoiceNumberByCompany(foundCompany);
 
         InvoiceNumber invoiceNumber = invoiceNumberRepository.findLastInvoiceNumberByCompanyId(foundCompany.getId());
-
-        Invoice invoice = new Invoice();
 
         int lastInvoiceNumber = invoiceNumber.getInvoiceNumber();
 
@@ -40,9 +40,7 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
             generatedInvoiceNumber = generateInvoiceNumber((-1));
             invoiceNumber.setCompany(foundCompany);
 
-            invoice = invoiceRepository.findByInvoiceNo(generatedInvoiceNumber);
-
-            invoiceNumber.setYear(invoice.getInvoiceDate().getYear());
+            invoiceNumber.setYear(invoiceRepository.findByInvoiceNo(generatedInvoiceNumber).getInvoiceDate().getYear());
 
         } else {
             generatedInvoiceNumber = generateInvoiceNumber(lastInvoiceNumber);
@@ -52,13 +50,13 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
     }
 
     @Override
-    public List<String> findInvoiceNumberByCompanyAndYear(CompanyDto company, int year) throws Exception {
+    public List<String> findInvoiceNumberByCompanyAndYear(CompanyDto company, int year) throws CompanyNotFoundException, InvoiceNumberNotFoundException {
 
-        Company foundCompany = companyRepository.findById(company.getId()).orElseThrow(() -> new Exception("No company found"));
+        Company foundCompany = companyRepository.findById(company.getId()).orElseThrow(() -> new CompanyNotFoundException("No company found"));
         List<InvoiceNumber> foundInvoiceNumberList = invoiceNumberRepository.findInvoiceNumberByCompanyAndYear(foundCompany, year);
 
         if (foundInvoiceNumberList == null) {
-            throw new Exception("No invoice number found");
+            throw new InvoiceNumberNotFoundException("No invoice number found");
         }
 
         return foundInvoiceNumberList.stream().map(invoiceNumber -> String.valueOf(invoiceNumber.getInvoiceNumber())).collect(Collectors.toList());
@@ -66,13 +64,13 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
     }
 
     @Override
-    public List<String> findInvoiceNumberByCompany(Company company) throws Exception {
+    public List<String> findInvoiceNumberByCompany(Company company) throws CompanyNotFoundException, InvoiceNumberNotFoundException {
 
-        Company foundCompany = companyRepository.findById(company.getId()).orElseThrow(() -> new Exception("No company found"));
+        Company foundCompany = companyRepository.findById(company.getId()).orElseThrow(() -> new CompanyNotFoundException("No company found"));
         List<InvoiceNumber> foundInvoiceNumberList = invoiceNumberRepository.findInvoiceNumberByCompany(foundCompany);
 
         if (foundInvoiceNumberList == null) {
-            throw new Exception("No invoice number found");
+            throw new InvoiceNumberNotFoundException("No invoice number found");
         }
 
         return foundInvoiceNumberList.stream().map(invoiceNumber -> String.valueOf(invoiceNumber.getInvoiceNumber())).collect(Collectors.toList());

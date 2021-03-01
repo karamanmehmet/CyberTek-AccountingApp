@@ -55,7 +55,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public List<ClientVendorDto> findAll() throws CompanyNotFoundException {
-// TODO This part will update according to valid user
+        // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
         List<ClientVendor> list = repository.findAllByCompanyAndEnabled(convertedCompany,true);
 
@@ -127,10 +127,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());      }
 
-    @Override
-    public ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException {
-        return null;
-    }
+
 
     @Transactional
     @Override
@@ -157,10 +154,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
             }
 
-    @Override
-    public void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 
-    }
 
     @Transactional
     @Override
@@ -190,4 +184,15 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 .map(obj->
                 { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());      }
+
+
+    @Override
+    public void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
+
+    }
+
+    @Override
+    public ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException {
+        return null;
+    }
 }
