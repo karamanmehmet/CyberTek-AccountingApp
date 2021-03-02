@@ -31,7 +31,8 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAllByCompanyAndState(CompanyDto company, String state);
 
-    ClientVendorDto update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException;
+    //ClientVendorDto update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
+    List<ClientVendorDto> update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
 
 
     void delete(long id) throws ClientVendorNotFoundException;
