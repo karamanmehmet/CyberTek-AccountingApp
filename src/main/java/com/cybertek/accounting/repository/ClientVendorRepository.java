@@ -4,6 +4,7 @@ import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.enums.ClientVendorType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public interface ClientVendorRepository extends JpaRepository<ClientVendor,Long>
 
     Optional<ClientVendor> findById(long id );
 
-    Optional<ClientVendor> findByEmailAndCompany(String email,Company company);
+    List<ClientVendor> findByEmailAndCompanyAndEnabled(String email,Company company,boolean enabled);
 
-    Optional<ClientVendor> findByEmailAndCompanyAndEnabled(String email,Company company,boolean enabled);
+   // Optional<ClientVendor> findByEmailAndCompanyAndEnabled(String email,Company company,boolean enabled);
 
     Optional <ClientVendor> findByCompanyAndEmailAndType(Company company,String email,ClientVendorType type);
 

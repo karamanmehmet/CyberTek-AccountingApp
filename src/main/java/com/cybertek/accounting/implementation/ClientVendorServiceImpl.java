@@ -2,8 +2,10 @@ package com.cybertek.accounting.implementation;
 
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.entity.Product;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.exception.ClientVendorNotFoundException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,9 +34,93 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
 
 
-
     @Transactional
     @Override
+    public List<ClientVendorDto> create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
+        ClientVendorType type=ClientVendorType.BOTH;
+        List<ClientVendor> list=new ArrayList<>();
+
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+
+        List<ClientVendor> foundedClientVendor = repository.findByEmailAndCompanyAndEnabled(clientVendor.getEmail(),convertedCompany,true);
+        //Enabled
+
+        if(foundedClientVendor.size()==1 && foundedClientVendor.get(0).getType().equals(clientVendor.getType()))
+            throw new ClientVendorAlreadyExistException("This Client/Vendor is already exist");
+
+        if(foundedClientVendor.size()==2 ){
+            throw new ClientVendorAlreadyExistException("This Client and Vendor is already exist");
+
+        }
+
+        if(foundedClientVendor.size()==1 && clientVendor.getType().equals(ClientVendorType.BOTH)){
+            type= foundedClientVendor.get(0).getType();
+            if(type.equals(ClientVendorType.VENDOR))
+                type=ClientVendorType.CLIENT;
+            else
+                type=ClientVendorType.VENDOR;
+
+            ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+            convertedClientVendor.setEnabled(true);
+            convertedClientVendor.setType(type);
+            convertedClientVendor.setCompany(convertedCompany);
+            list.add(convertedClientVendor);
+
+        }
+
+        if(foundedClientVendor.size()==0 && clientVendor.getType().equals(ClientVendorType.BOTH)) {
+
+            for (int i = 0; i < 2; i++)
+
+             {
+                ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+                convertedClientVendor.setEnabled(true);
+                convertedClientVendor.setCompany(convertedCompany);
+                if(i==0){
+                    convertedClientVendor.setType(ClientVendorType.CLIENT);}
+                else
+                {
+                    convertedClientVendor.setType(ClientVendorType.VENDOR);
+
+                }
+                    list.add(convertedClientVendor);}
+
+
+             }
+
+        if(foundedClientVendor.size()==1 && !clientVendor.getType().equals(ClientVendorType.BOTH) &&  !foundedClientVendor.get(0).getType().equals(clientVendor.getType()))
+
+        {
+
+        ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+        convertedClientVendor.setEnabled(true);
+        convertedClientVendor.setCompany(convertedCompany);
+        list.add(convertedClientVendor);
+        }
+
+        if(foundedClientVendor.size()==0 && !clientVendor.getType().equals(ClientVendorType.BOTH))
+
+        {
+
+            ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+            convertedClientVendor.setEnabled(true);
+            convertedClientVendor.setCompany(convertedCompany);
+            list.add(convertedClientVendor);
+        }
+
+        return  list.stream()
+                .map(cv -> {
+                    ClientVendor clientVendor1=cv;
+                    return mapper.convert(repository.saveAndFlush(clientVendor1),new ClientVendorDto());
+                })
+                .collect(Collectors.toList());
+    }
+
+    /*@Transactional
+    @Override
+
+    NOTES : To use this change Optional<ClientVendor> repository.findByEmailAndCompanyAndEnabled(clientVendor.getEmail(),convertedCompany,true);
     public ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         // TODO This part will update according to valid user
@@ -52,7 +139,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         return mapper.convert(repository.saveAndFlush(convertedClientVendor),new ClientVendorDto());
 
     }
-
+*/
     @Override
     public List<ClientVendorDto> findAll() throws CompanyNotFoundException {
         // TODO This part will update according to valid user

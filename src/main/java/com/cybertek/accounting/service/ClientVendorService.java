@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface ClientVendorService {
 
-    ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
+    //ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
+    List<ClientVendorDto> create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
 
     List<ClientVendorDto> findAll() throws CompanyNotFoundException;
 

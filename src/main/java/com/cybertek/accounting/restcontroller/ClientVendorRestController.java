@@ -31,7 +31,7 @@ public class ClientVendorRestController {
     }
 
     @PostMapping
-    public ClientVendorDto createClientVendor(@RequestBody ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
+    public List<ClientVendorDto> createClientVendor(@RequestBody ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         return service.create(clientVendor);
     }

@@ -59,19 +59,22 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
+                                                                        <label for="users-edit-email">Phone</label>
+                                                                        <input type="email" id="users-edit-phone" th:field="*{phone}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter Phone Number" required aria-invalid="false">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
                                                                         <label for="users-edit-email">E-mail</label>
                                                                         <input type="email" id="users-edit-email" th:field="*{email}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter Email" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
-														
-                                                            </div>
 
-                                                            <div class="col-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label >Type</label>
-                                                                        
-																		
+
+
 
                                                                         <ul class="list-unstyled mb-0">
                                                                             <li class="d-inline-block mr-2">
@@ -86,25 +89,50 @@
                                                                                     <label for="color-radio-2">Client</label>
                                                                                 </div>
                                                                             </li>
+                                                                            <li class="d-inline-block mr-2">
+                                                                                <div class="radio radio-secondary">
+                                                                                    <input type="radio" th:field="*{type}" th:value="BOTH"  name="color-radio" id="color-radio-3">
+                                                                                    <label for="color-radio-3">Both</label>
+                                                                                </div>
+                                                                            </li>
 
                                                                         </ul>
 
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group">
-                                                                    <div class="controls">
-                                                                        <label for="users-edit-company">Phone</label>
-                                                                        <input type="text" id="users-edit-company" th:field="*{phone}" class="form-control" data-validation-containsnumber-regex="([^0-9]*[0-9]+)+" min="10" max="10" data-validation-containsnumber-message="Enter Phone Number between with 10 digit" placeholder="Enter Phone Number" >
-                                                                    </div>
-                                                                </div>																
+
+
+
+
                                                             </div>
 
-       
-                                                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                                <button type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Changes</button>
-																<button type="submit" th:action="@{/clientvendor/delete}" class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete Company</button>
-                                                                <button type="reset" th:href="@{/clientvendor/list}" class="btn btn-secondary">Cancel</button>
+                                                            <div class="col-12 col-md-6">
+
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-zip">ZipCode</label>
+                                                                        <input type="text" id="users-edit-zip" th:field="*{zipCode}" class="form-control" data-validation-containsnumber-regex="([^0-9]*[0-9]+)+" min="10" max="10" data-validation-containsnumber-message="Enter Phone Number between with 10 digit" placeholder="Enter ZipCode " >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-address">Address</label>
+                                                                        <input type="email" id="users-edit-address" th:field="*{address}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter Addresss" required aria-invalid="false">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label for="users-edit-state">State</label>
+                                                                        <input type="email" id="users-edit-state" th:field="*{state}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter State" required aria-invalid="false">
+                                                                    </div>
+                                                                </div>
+
                                                             </div>
+
+
+                                                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                                <button type="submit" name="action" value="save" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Changes</button>
+                                                                <button type="submit" name="action" value="cancel" class="btn btn-secondary">Cancel</button>		                                                            </div>
                                                         </div>
                                                     </form>
                                                     <!-- Account form ends -->
