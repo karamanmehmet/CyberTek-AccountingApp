@@ -15,6 +15,9 @@ public interface ClientVendorService {
     //ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
     List<ClientVendorDto> create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
 
+    List<ClientVendorDto> create1(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
+
+
     List<ClientVendorDto> findAll() throws CompanyNotFoundException;
 
     ClientVendorDto findByEmailAndType(String email, ClientVendorType type) throws CompanyNotFoundException;
@@ -34,6 +37,7 @@ public interface ClientVendorService {
     //ClientVendorDto update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
     List<ClientVendorDto> update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
 
+    List<ClientVendorDto> update1(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
 
     void delete(long id) throws ClientVendorNotFoundException;
 

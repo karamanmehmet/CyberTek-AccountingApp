@@ -20,8 +20,8 @@ public class CategoryController {
 
     @GetMapping("/list")
     public String showCategories(Model model) throws CompanyNotFoundException {
-        // TODO This part will update according to valid user
-        model.addAttribute("categories",categoryService.findAllByCompanyAndStatus(companyService.findByEmail("karaman@crustycloud.com"),true));
+
+        model.addAttribute("categories",categoryService.findAll());
         return "/category/category-list";
     }
 

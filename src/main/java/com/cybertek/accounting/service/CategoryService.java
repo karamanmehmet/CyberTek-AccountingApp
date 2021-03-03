@@ -15,7 +15,7 @@ public interface CategoryService {
 
     CategoryDto findById(long id) throws CategoryNotFoundException;
 
-    List<CategoryDto> findAll();
+    List<CategoryDto> findAll() throws CompanyNotFoundException;
 
     List<CategoryDto> findAllByCompany(CompanyDto companyDto);
 

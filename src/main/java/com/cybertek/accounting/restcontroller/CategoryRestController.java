@@ -1,6 +1,7 @@
 package com.cybertek.accounting.restcontroller;
 
 import com.cybertek.accounting.dto.CategoryDto;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.service.CategoryService;
 import com.cybertek.accounting.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class CategoryRestController {
      * @return List<CategoryDto>
      */
     @GetMapping
-    public List<CategoryDto> getAllCategories(){
+    public List<CategoryDto> getAllCategories() throws CompanyNotFoundException {
         return  service.findAll();
     }
 

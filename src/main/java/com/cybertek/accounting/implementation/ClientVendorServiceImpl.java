@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -117,6 +118,71 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public List<ClientVendorDto> create1(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
+
+        ClientVendorType type=ClientVendorType.BOTH;
+        List<ClientVendor> list=new ArrayList<>();
+
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+
+        List<ClientVendor> foundedClientVendor = repository.findByEmailAndCompanyAndEnabled(clientVendor.getEmail(),convertedCompany,true);
+        //Enabled
+
+        if(foundedClientVendor.size()==1 && foundedClientVendor.get(0).getType().equals(clientVendor.getType()))
+            throw new ClientVendorAlreadyExistException("This Client/Vendor is already exist");
+
+        if(foundedClientVendor.size()==2 ){
+            throw new ClientVendorAlreadyExistException("This Client and Vendor is already exist");
+
+        }
+
+        if(foundedClientVendor.size()==1 && (clientVendor.getType().equals(ClientVendorType.BOTH) || foundedClientVendor.get(0).getType().equals(ClientVendorType.BOTH))){
+            throw new ClientVendorAlreadyExistException("You already have  Client or Vendor");
+
+
+        }
+
+        if(foundedClientVendor.size()==0 && clientVendor.getType().equals(ClientVendorType.BOTH)) {
+
+
+                ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+                convertedClientVendor.setEnabled(true);
+                convertedClientVendor.setCompany(convertedCompany);
+                convertedClientVendor.setType(ClientVendorType.BOTH);
+                list.add(convertedClientVendor);}
+
+
+        if(foundedClientVendor.size()==1 && !clientVendor.getType().equals(ClientVendorType.BOTH) &&  !foundedClientVendor.get(0).getType().equals(clientVendor.getType()))
+
+        {
+
+            ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+            convertedClientVendor.setEnabled(true);
+            convertedClientVendor.setCompany(convertedCompany);
+            list.add(convertedClientVendor);
+        }
+
+        if(foundedClientVendor.size()==0 && !clientVendor.getType().equals(ClientVendorType.BOTH))
+
+        {
+
+            ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+            convertedClientVendor.setEnabled(true);
+            convertedClientVendor.setCompany(convertedCompany);
+            list.add(convertedClientVendor);
+        }
+
+        return  list.stream()
+                .map(cv -> {
+                    ClientVendor clientVendor1=cv;
+                    return mapper.convert(repository.saveAndFlush(clientVendor1),new ClientVendorDto());
+                })
+                .collect(Collectors.toList());
+    }
+
     /*@Transactional
     @Override
 
@@ -144,9 +210,9 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     public List<ClientVendorDto> findAll() throws CompanyNotFoundException {
         // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
-        List<ClientVendor> list = repository.findAllByCompanyAndEnabled(convertedCompany,true);
+        List<ClientVendor> list = repository.findAllByCompany(convertedCompany);
 
-        return list.stream()
+        return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
                      { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());
@@ -185,7 +251,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
         List<ClientVendor> list = repository.findAllByCompany(convertedCompany);
 
-        return list.stream()
+        return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
                 { return mapper.convert(obj,new ClientVendorDto()); })
                 .collect(Collectors.toList());      }
@@ -239,6 +305,60 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         return mapper.convert(repository.saveAndFlush(mapper.convert(convertedClientVendor,new ClientVendor())),new ClientVendorDto());
 
     }*/
+
+
+    @Transactional
+    @Override
+    public List<ClientVendorDto> update1(ClientVendorDto clientVendor,long id) throws CompanyNotFoundException, ClientVendorNotFoundException, ClientVendorAlreadyExistException {
+        List<ClientVendor> list=new ArrayList<>();
+
+
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+
+        Optional<ClientVendor> foundedClientVendor = repository.findById(clientVendor.getId());
+
+        List<ClientVendor> foundedClientVendorList = repository.findByEmailAndCompanyAndEnabled(clientVendor.getEmail(),convertedCompany,true);
+
+        if(foundedClientVendor.isEmpty()){
+            throw new ClientVendorNotFoundException("There is no client/Vendor");}
+
+        if(foundedClientVendorList.size()==2 && !clientVendor.getType().equals(foundedClientVendor.get().getType())){
+            throw new ClientVendorAlreadyExistException("This ClientVendor AlreadyExist");}
+
+        if(foundedClientVendorList.size()==2 && clientVendor.getType().equals(foundedClientVendor.get().getType())) {
+
+            for (int i = 0; i < 2; i++)
+
+            {
+                if(!foundedClientVendorList.get(i).getType().equals(foundedClientVendor.get().getType()))
+                {
+                    ClientVendor updatedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+                    updatedClientVendor.setId(foundedClientVendorList.get(i).getId());
+                    updatedClientVendor.setType(foundedClientVendorList.get(i).getType());
+                    updatedClientVendor.setEnabled(true);
+                    updatedClientVendor.setCompany(convertedCompany);
+                    list.add(updatedClientVendor);}}
+        }
+
+        ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
+
+        convertedClientVendor.setId(foundedClientVendor.get().getId());
+        // TODO This part will update according to valid user.how I can trasfer all properties
+        // need to add
+        convertedClientVendor.setCompany(foundedClientVendor.get().getCompany());
+        convertedClientVendor.setEnabled(true);
+        list.add(convertedClientVendor);
+
+
+        return  list.stream()
+                .map(cv -> {
+                    ClientVendor clientVendor1=cv;
+                    return mapper.convert(repository.saveAndFlush(clientVendor1),new ClientVendorDto());
+                })
+                .collect(Collectors.toList());
+    }
+
 
     @Transactional
     @Override

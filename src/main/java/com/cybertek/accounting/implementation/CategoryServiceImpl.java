@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,23 +60,24 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findAll() {
+    public List<CategoryDto> findAll() throws CompanyNotFoundException {
 
-        List<Category> list = repository.findAll();
+        // TODO This part will update according to valid user
+        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+        List<Category> list = repository.findAllByCompany(convertedCompany);
 
-        return list.stream()
+        return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
                 { return mapper.convert(obj,new CategoryDto()); })
                 .collect(Collectors.toList());
     }
-
     @Override
     public List<CategoryDto> findAllByCompany(CompanyDto companyDto) {
 
         Company convertedCompany = mapper.convert(companyDto, new Company());
         List<Category> list = repository.findAllByCompany(convertedCompany);
 
-        return list.stream()
+        return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
                 { return mapper.convert(obj,new CategoryDto()); })
                 .collect(Collectors.toList());
@@ -88,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         List<Category> list = repository.findAllByCompanyAndEnabled(convertedCompany,enabled);
 
-        return list.stream()
+        return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
                 { return mapper.convert(obj,new CategoryDto()); })
                 .collect(Collectors.toList());
@@ -137,7 +139,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
-
+    // THEY Can DELETE
     @Override
     public CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException, CompanyNotFoundException {
         return null;
