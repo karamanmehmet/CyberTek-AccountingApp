@@ -1,4 +1,4 @@
-package com.cybertek.accounting.security;
+package com.cybertek.accounting.configuration;
 
 import com.cybertek.accounting.entity.User;
 

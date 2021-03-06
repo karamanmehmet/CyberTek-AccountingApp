@@ -19,7 +19,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-        if(roles.contains("ROLE_ROOT")){
+        if(roles.contains("ROOT")){
             httpServletResponse.sendRedirect("/company/list");
         }
         else {

@@ -8,13 +8,16 @@ import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -23,15 +26,14 @@ import java.time.LocalDate;
 @SpringBootApplication
 public class AccountingAppApplication {
 
+	@Autowired
+	PasswordEncoder encoder;
+
 	public static void main(String[] args) {
 		SpringApplication.run(AccountingAppApplication.class, args);
 	}
 
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
 
 	@Bean
 	@Transactional
@@ -57,7 +59,7 @@ public class AccountingAppApplication {
 			companyRepository.save(companyRoot);
 
 			User userRoot = new User("Mehmet","Kara","mehmetkara@gmail.com" , true, "+1954784236",
-					"password",companyRoot);
+					encoder.encode("password"),companyRoot);
 			userRoot.addRole(roleRoot);
 
 			userRepository.save(userRoot);
@@ -81,21 +83,21 @@ public class AccountingAppApplication {
 
 		//Create User for Company - Please continue creating with employee user
 			User userAdmin = new User("admin","Kara","admin@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					encoder.encode("password"),crustyCompany);
 			userAdmin.addRole(roleAdmin);
 			 userRepository.saveAndFlush(userAdmin);
 
 
 
 			User userManager = new User("manager","Kara","manager@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					encoder.encode("password"),crustyCompany);
 			userManager.addRole(roleManager);
 			userRepository.saveAndFlush(userManager);
 
 
 
 			User userEmployee = new User("employee","Mike","employee@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					encoder.encode("password"),crustyCompany);
 			userManager.addRole(roleEmployee);
 			userRepository.saveAndFlush(userEmployee);
 

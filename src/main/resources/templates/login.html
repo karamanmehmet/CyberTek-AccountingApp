@@ -62,7 +62,7 @@
                                         <div class="alert alert-danger"> Invalid email or password.
                                         </div>
                                     </div>
-                                    <form method="POST" th:action="@{/main}">
+                                    <form name="f" th:action="@{/signin}" method="post">
                                     <div class="card-body auth-img">
                                         <div class="row m-0">
                                             <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center auth-img-bg p-3">
@@ -72,8 +72,8 @@
 
                                                 <h4 class="mb-2 card-title">Login</h4>
                                                 <p>Welcome back, please login to your account.</p>
-                                                <input type="text" class="form-control mb-3" placeholder="Username" id="username">
-                                                <input type="password" class="form-control mb-2" placeholder="Password" id="password">
+                                                <input type="text" class="form-control mb-3" placeholder="Username" id="txtUsername" name="txtUsername">
+                                                <input type="password" class="form-control mb-2" placeholder="Password" id="txtPassword" name="txtPassword">
                                                 <div class="d-sm-flex justify-content-between mb-3 font-small-2">
                                                     <div class="remember-me mb-2 mb-sm-0">
                                                         <div class="checkbox auth-checkbox">
