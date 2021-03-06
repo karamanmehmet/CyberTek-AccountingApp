@@ -38,10 +38,6 @@
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="../static/css/core/menu/horizontal-menu.css">
     <link rel="stylesheet" href="../static/css/pages/authentication.css">
-    <!-- END Page Level CSS-->
-    <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
-    <!-- END: Custom CSS-->
 </head>
 <!-- END : Head-->
 
@@ -62,6 +58,10 @@
                         <div class="col-12 d-flex align-items-center justify-content-center">
                             <div class="card overflow-hidden">
                                 <div class="card-content">
+                                    <div th:if="${param.error}">
+                                        <div class="alert alert-danger"> Invalid email or password.
+                                        </div>
+                                    </div>
                                     <form method="POST" th:action="@{/main}">
                                     <div class="card-body auth-img">
                                         <div class="row m-0">
