@@ -43,7 +43,7 @@ public class ClientVendorController {
     @PostMapping("/update/{id}")
     public String updateClientVendor(@PathVariable long id,@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,@RequestParam(value="action", required=true) String action) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException {
         if (action.equals("save")) {
-            clientVendorService.update1(clientVendorDto,id);
+            clientVendorService.update(clientVendorDto,id);
         }
         if (action.equals("delete")) {
             clientVendorService.delete(id);
@@ -56,7 +56,7 @@ public class ClientVendorController {
     public String addClientVendor(@ModelAttribute("clientvendor") ClientVendorDto clientVendorDto,@RequestParam(value="action", required=true) String action) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
         if (action.equals("save")) {
-            clientVendorService.create1(clientVendorDto);
+            clientVendorService.create(clientVendorDto);
         }
         return "redirect:/clientvendor/list";
 
