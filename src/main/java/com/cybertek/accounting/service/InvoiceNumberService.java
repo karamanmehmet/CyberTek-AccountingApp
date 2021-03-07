@@ -1,18 +1,22 @@
 package com.cybertek.accounting.service;
 
 import com.cybertek.accounting.dto.CompanyDto;
-import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.dto.InvoiceDto;
+import com.cybertek.accounting.entity.InvoiceNumber;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
+import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
 import com.cybertek.accounting.exception.InvoiceNumberNotFoundException;
 
 import java.util.List;
 
 public interface InvoiceNumberService {
 
-   String create(CompanyDto companyDto) throws CompanyNotFoundException;
+   InvoiceNumber create(InvoiceDto invoiceDto, CompanyDto companyDto) throws CompanyNotFoundException, InvoiceAlreadyExistsException;
 
-   List<String> findInvoiceNumberByCompanyAndYear(CompanyDto company, int year) throws CompanyNotFoundException, InvoiceNumberNotFoundException;
+   List<InvoiceNumber> findInvoiceNumberByCompanyAndYear(CompanyDto company, int year) throws CompanyNotFoundException, InvoiceNumberNotFoundException;
 
-   List<String> findInvoiceNumberByCompany(Company company) throws CompanyNotFoundException, InvoiceNumberNotFoundException;
+   List<InvoiceNumber> findInvoiceNumberByCompany(CompanyDto company) throws CompanyNotFoundException, InvoiceNumberNotFoundException;
+
+   InvoiceNumber findFirstByCompanyOrderByInvoiceNumberDesc(CompanyDto company) throws CompanyNotFoundException;
 
 }

@@ -1,5 +1,6 @@
 package com.cybertek.accounting.repository;
 
+import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
 import com.cybertek.accounting.entity.Product;
@@ -22,5 +23,6 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct,L
     //will do in future find by Company, Incovice Type / Status and Order By Invoice Date
     //anyone can do with Native / Query will be appreciated
 
+    List<InvoiceProduct> findByInvoiceAndInvoiceCompany(Invoice invoice, Company company);
 
 }

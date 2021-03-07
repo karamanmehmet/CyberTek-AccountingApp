@@ -2,10 +2,13 @@ package com.cybertek.accounting.implementation;
 
 import com.cybertek.accounting.dto.InvoiceMonetaryDetailDto;
 import com.cybertek.accounting.dto.InvoiceDto;
+import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
 import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
+import com.cybertek.accounting.repository.CompanyRepository;
 import com.cybertek.accounting.repository.InvoiceProductRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
 import com.cybertek.accounting.service.InvoiceMonetaryDetailService;
@@ -22,15 +25,20 @@ public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailSe
 
     private final InvoiceRepository invoiceRepository;
     private final InvoiceProductRepository invoiceProductRepository;
+    private final CompanyRepository companyRepository;
 
     @Override
-    public InvoiceMonetaryDetailDto create(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public InvoiceMonetaryDetailDto create(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         double tax = 0;
         double cost = 0;
         double totalCost = 0;
 
-        Invoice invoice = invoiceRepository.findByInvoiceNo(invoiceDto.getInvoiceNo());
+        //TODO SecurityContextHolder
+
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
+
+        Invoice invoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceDto.getInvoiceNo(), foundCompany);
 
         if (invoice == null) {
             throw new InvoiceNotFoundException("No invoice found");
@@ -39,7 +47,7 @@ public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailSe
         List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoice(invoice);
 
         if (invoiceProductList.size() == 0) {
-            throw new InvoiceProductNotFoundException("No invoice product found");
+            return new InvoiceMonetaryDetailDto(0, 0, 0);
         }
 
         for (InvoiceProduct invoiceProduct : invoiceProductList) {

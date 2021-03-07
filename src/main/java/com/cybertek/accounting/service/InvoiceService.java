@@ -16,25 +16,25 @@ public interface InvoiceService {
 
     InvoiceDto create(InvoiceDto invoice) throws InvoiceAlreadyExistsException, CompanyNotFoundException, InvoiceNotFoundException, InvoiceProductNotFoundException;
 
-    InvoiceDto update(InvoiceDto invoice) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    InvoiceDto update(InvoiceDto invoice) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException;
+    boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException;
 
     Invoice findById(long id) throws InvoiceNotFoundException;
 
-    InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
 
-    InvoiceDto findByInvoiceNo(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    InvoiceDto findByInvoiceNo(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    List<InvoiceDto> findAllByCompanyAndInvoiceType(CompanyDto company, InvoiceType invoiceType) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    List<InvoiceDto> findAllByCompanyAndInvoiceType(CompanyDto company, InvoiceType invoiceType) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    List<InvoiceDto> findAllByCompanyAndInvoiceStatus(CompanyDto company, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    List<InvoiceDto> findAllByCompanyAndInvoiceStatus(CompanyDto company, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company,InvoiceType invoiceType, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException;
+    List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company,InvoiceType invoiceType, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
 }

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
+<!-- BEGIN : Head-->
+
+<head th:replace="fragments :: page_head"/>
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover"
+      data-menu="horizontal-menu" data-col="2-columns">
+
+<div th:replace="fragments :: page_header"/>
+<!-- Navbar (Header) Ends-->
+
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+<div class="wrapper">
+
+    <div th:replace="fragments :: page_menu"/>
+
+
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <section class="users-list-wrapper">
+                    <!-- Filter starts -->
+                    <div class="users-list-filter px-2">
+
+
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/invoice/purchaseInvoice/list}"><i
+                                    class="fa fa-list mr-1"></i>Purchase Invoice List</a>
+                        </div>
+                    </div>
+
+                    <!-- Filter ends -->
+
+                    <!-- Table starts -->
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+
+                                        <div class="tab-content">
+                                            <!-- Account content starts -->
+                                            <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
+                                                 aria-labelledby="account-tab">
+
+                                                <!-- Account form starts -->
+                                                <form novalidate>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-username">Invoice No</label>
+                                                                    <input type="text" id="users-edit-username" readonly
+                                                                           class="form-control" placeholder="Username"
+                                                                           value="P INV 001" required
+                                                                           aria-invalid="false">
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-username">Invoice
+                                                                        Date</label>
+                                                                    <input type="text" id="users-edit-username" readonly
+                                                                           class="form-control" placeholder="Username"
+                                                                           value="01.01.2020" required
+                                                                           aria-invalid="false">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                    <div class="row">
+
+                                                        <div class="col-12 col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-role">Vendor</label>
+                                                                    <input type="text" id="users-edit-username" readonly
+                                                                           class="form-control" placeholder="Username"
+                                                                           value="Acme Corp" required
+                                                                           aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-role">Product</label>
+                                                                    <select id="users-edit-role" class="form-control"
+                                                                            required>
+                                                                        <option value="">Select Product</option>
+                                                                        <option value="1">Apple</option>
+                                                                        <option value="2">HP Notebook</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-username">Quantity</label>
+                                                                    <input type="text" id="users-edit-username"
+                                                                           class="form-control" placeholder="Username"
+                                                                           value="2"
+                                                                           required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-12 col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="users-edit-username">Price</label>
+                                                                    <input type="text" id="users-edit-username"
+                                                                           class="form-control" placeholder="Username"
+                                                                           value="648" required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+
+                                                            <button type="submit"
+                                                                    class="btn btn-warning mb-2 mb-sm-0 mr-sm-2">
+                                                                Add Item
+                                                            </button>
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                    <div class="col-12 users-module">
+                                                        <div class="table-responsive">
+                                                            <table class="table mb-0 mt-3">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Product</th>
+                                                                    <th>Price</th>
+                                                                    <th>Quantity</th>
+                                                                    <th>Total</th>
+                                                                    <th>Delete</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td>PC</td>
+                                                                    <td>600$</td>
+                                                                    <td>2</td>
+                                                                    <td>1.200$</td>
+                                                                    <td>
+                                                                        <a href="javascript:;" class="danger">
+                                                                            <i class="ft-trash font-medium-3"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>PC</td>
+                                                                    <td>600$</td>
+                                                                    <td>2</td>
+                                                                    <td>1.200$</td>
+                                                                    <td>
+                                                                        <a href="javascript:;" class="danger">
+                                                                            <i class="ft-trash font-medium-3"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>PC</td>
+                                                                    <td>600$</td>
+                                                                    <td>2</td>
+                                                                    <td>1.200$</td>
+                                                                    <td>
+                                                                        <a href="javascript:;" class="danger">
+                                                                            <i class="ft-trash font-medium-3"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                        <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
+                                                                type="submit">
+                                                            <a href="purchase-invoice-list.html" class="btn-primary">Done</a>
+                                                        </button>
+                                                        <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
+                                                                type="submit">
+                                                            <a href="purchase-invoice-list.html" class="btn-danger">Cancel</a>
+                                                        </button>
+                                                    </div>
+
+
+                                                </form>
+                                                <!-- Account form ends -->
+                                            </div>
+                                            <!-- Account content ends -->
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table ends -->
+                </section>
+
+            </div>
+        </div>
+        <!-- END : End Main Content-->
+
+        <footer th:replace="fragments :: page_footer"></footer>
+
+        <!-- Scroll to top button -->
+        <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+    </div>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+<!-- BEGIN PAGE LEVEL JS-->
+<script th:src="@{/js/dashboard2.js}"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN: Custom CSS-->
+<script th:src="@{/assets/js/scripts.js}"></script>
+<!-- END: Custom CSS-->
+</body>
+<!-- END : Body-->
+
+</html>

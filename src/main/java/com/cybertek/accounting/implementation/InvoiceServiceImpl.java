@@ -4,6 +4,7 @@ import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
+import com.cybertek.accounting.entity.InvoiceNumber;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
@@ -11,6 +12,7 @@ import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
 import com.cybertek.accounting.exception.InvoiceNotFoundException;
 import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
 import com.cybertek.accounting.mapper.MapperGeneric;
+import com.cybertek.accounting.repository.CompanyRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
 import com.cybertek.accounting.service.InvoiceMonetaryDetailService;
 import com.cybertek.accounting.service.InvoiceNumberService;
@@ -29,28 +31,37 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final MapperGeneric mapper;
     private final InvoiceNumberService invoiceNumberService;
     private final InvoiceMonetaryDetailService invoiceMonetaryDetailService;
+    private final CompanyRepository companyRepository;
 
     @Override
     public InvoiceDto create(InvoiceDto invoice) throws InvoiceAlreadyExistsException, CompanyNotFoundException, InvoiceNotFoundException, InvoiceProductNotFoundException {
 
-        Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
 
-        if (foundInvoice != null) throw new InvoiceAlreadyExistsException("This exception already exists");
+        Invoice foundInvoice = repository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), foundCompany);
+
+        if (foundInvoice != null) throw new InvoiceAlreadyExistsException("This invoice already exists");
 
         Invoice createdInvoice = mapper.convert(invoice, new Invoice());
-        createdInvoice.setInvoiceNo(invoiceNumberService.create(invoice.getCompany()));
+
+        InvoiceNumber createdInvoiceNumber = invoiceNumberService.create(invoice, invoice.getCompany());
+
+        createdInvoice.setInvoiceNo(generateInvoiceNumber(createdInvoiceNumber));
 
         repository.saveAndFlush(createdInvoice);
 
-        invoice.setInvoiceNo(createdInvoice.getInvoiceNo());
+        InvoiceDto invoiceDto = mapper.convert(createdInvoice, new InvoiceDto());
 
-        return monetaryDetail(invoice);
+        return monetaryDetail(invoiceDto);
     }
 
     @Override
-    public InvoiceDto update(InvoiceDto invoice) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public InvoiceDto update(InvoiceDto invoice) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
-        Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
+        //TODO SecurityContextHolder
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
+
+        Invoice foundInvoice = repository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), foundCompany);
 
         if (foundInvoice == null) throw new InvoiceNotFoundException("This invoice does not exist");
 
@@ -60,9 +71,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException {
+    public boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException {
 
-        Invoice foundInvoice = repository.findByInvoiceNo(invoice.getInvoiceNo());
+        //TODO SecurityContextHolder
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
+
+        Invoice foundInvoice = repository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), foundCompany);
 
         if (foundInvoice == null) throw new InvoiceNotFoundException("This invoice does not exist");
 
@@ -81,7 +95,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         Invoice invoice = repository.findById(id)
                 .orElseThrow(() -> new InvoiceNotFoundException("Invoice with this id can not be found!"));
@@ -91,8 +105,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceDto findByInvoiceNo(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
-        Invoice invoice = repository.findByInvoiceNo(invoiceNo);
+    public InvoiceDto findByInvoiceNo(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
+
+        //TODO SecurityContextHolder
+
+        Company company = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        Invoice invoice = repository.findByInvoiceNoAndCompany(invoiceNo, company);
 
         if (invoice == null) {
             throw new InvoiceNotFoundException("Invoice with this invoice number can not be found!");
@@ -102,7 +121,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         List<InvoiceDto> invoiceDtoList = repository.findFirst3ByCompanyOrderByInvoiceDateAsc(mapper.convert(company, new Company())).stream()
                 .map(invoice -> mapper.convert(invoice, new InvoiceDto()))
@@ -112,7 +131,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         List<InvoiceDto> invoiceDtoList =  repository.findFirst3ByCompanyOrderByInvoiceDateDesc(mapper.convert(company, new Company())).stream()
                 .map(invoice -> mapper.convert(invoice, new InvoiceDto()))
@@ -122,7 +141,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> findAllByCompanyAndInvoiceType(CompanyDto company, InvoiceType invoiceType) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public List<InvoiceDto> findAllByCompanyAndInvoiceType(CompanyDto company, InvoiceType invoiceType) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         List<InvoiceDto> invoiceDtoList =  repository.findAllByCompanyAndInvoiceType(mapper.convert(company, new Company()), invoiceType).stream()
                 .map(invoice -> mapper.convert(invoice, new InvoiceDto()))
@@ -132,7 +151,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> findAllByCompanyAndInvoiceStatus(CompanyDto company, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public List<InvoiceDto> findAllByCompanyAndInvoiceStatus(CompanyDto company, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         List<InvoiceDto> invoiceDtoList =  repository.findAllByCompanyAndInvoiceStatus(mapper.convert(company, new Company()), invoiceStatus).stream()
                 .map(invoice -> mapper.convert(invoice, new InvoiceDto()))
@@ -142,7 +161,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public List<InvoiceDto> findAllByCompanyAndInvoiceTypeAndInvoiceStatus(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         List<InvoiceDto> invoiceDtoList = repository.findAllByCompanyAndInvoiceTypeAndInvoiceStatus(mapper.convert(company, new Company()), invoiceType, invoiceStatus).stream()
                 .map(invoice -> mapper.convert(invoice, new InvoiceDto()))
@@ -151,7 +170,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         return monetaryDetail(invoiceDtoList);
     }
 
-    private List<InvoiceDto> monetaryDetail(List<InvoiceDto> invoiceDtoList) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    private List<InvoiceDto> monetaryDetail(List<InvoiceDto> invoiceDtoList) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         for (InvoiceDto invoice : invoiceDtoList) {
             invoice.setMonetaryDetailDto(invoiceMonetaryDetailService.create(invoice));
@@ -161,11 +180,25 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     }
 
-    private InvoiceDto monetaryDetail(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    private InvoiceDto monetaryDetail(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         invoiceDto.setMonetaryDetailDto(invoiceMonetaryDetailService.create(invoiceDto));
 
         return invoiceDto;
+
+    }
+
+    private String generateInvoiceNumber(InvoiceNumber invoiceNumber) {
+
+        String invoiceNo = String.valueOf(invoiceNumber.getInvoiceNumber());
+
+        while (invoiceNo.length() < 3) {
+            invoiceNo = "0".concat(invoiceNo);
+        }
+
+        String invoiceNumberString = "INV-" + invoiceNo;
+
+        return invoiceNumberString;
 
     }
 

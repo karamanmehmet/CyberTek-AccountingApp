@@ -26,7 +26,7 @@ public class InvoiceRestController {
 
 
     @GetMapping("/{invoiceNo}")
-    public InvoiceDto getInvoiceNumber(@PathVariable String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public InvoiceDto getInvoiceNumber(@PathVariable String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
         return invoiceService.findByInvoiceNo(invoiceNo);
     }
@@ -37,12 +37,12 @@ public class InvoiceRestController {
     }
 
     @PutMapping
-    public InvoiceDto updateInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException {
+    public InvoiceDto updateInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
         return invoiceService.update(invoiceDto);
     }
 
     @DeleteMapping
-    public boolean deleteInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException {
+    public boolean deleteInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException, CompanyNotFoundException {
         return invoiceService.delete(invoiceDto);
     }
 

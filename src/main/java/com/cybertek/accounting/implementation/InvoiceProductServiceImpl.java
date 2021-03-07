@@ -1,17 +1,17 @@
 package com.cybertek.accounting.implementation;
 
+import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.dto.InvoiceProductDto;
 import com.cybertek.accounting.dto.ProductDto;
+import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
 import com.cybertek.accounting.entity.Product;
 import com.cybertek.accounting.enums.InvoiceType;
-import com.cybertek.accounting.exception.InvoiceNotFoundException;
-import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
-import com.cybertek.accounting.exception.NotEnoughProductInStockException;
-import com.cybertek.accounting.exception.ProductNotFoundException;
+import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.mapper.MapperGeneric;
+import com.cybertek.accounting.repository.CompanyRepository;
 import com.cybertek.accounting.repository.InvoiceProductRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
 import com.cybertek.accounting.repository.ProductRepository;
@@ -29,12 +29,15 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     private final InvoiceProductRepository invoiceProductRepository;
     private final InvoiceRepository invoiceRepository;
     private final ProductRepository productRepository;
+    private final CompanyRepository companyRepository;
     private final MapperGeneric mapper;
 
     @Override
-    public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException {
+    public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
 
-        Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoiceProduct.getInvoice().getInvoiceNo());
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
+
+        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProduct.getInvoice().getInvoiceNo(), foundCompany);
 
         if (foundInvoice == null) {
             throw new InvoiceNotFoundException("No invoice found");
@@ -76,9 +79,11 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public InvoiceProductDto update(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException {
+    public InvoiceProductDto update(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
 
-        Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoiceProduct.getInvoice().getInvoiceNo());
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
+
+        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProduct.getInvoice().getInvoiceNo(), foundCompany);
 
         if (foundInvoice == null) {
             throw new InvoiceNotFoundException("No invoice found");
@@ -108,9 +113,11 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public void delete(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException {
+    public void delete(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
 
-        Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoiceProduct.getInvoice().getInvoiceNo());
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
+
+        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProduct.getInvoice().getInvoiceNo(), foundCompany);
 
         if (foundInvoice == null) {
             throw new InvoiceNotFoundException("No invoice found");
@@ -150,14 +157,37 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public InvoiceProductDto findByInvoiceAndProduct(InvoiceDto invoice, ProductDto product) throws InvoiceProductNotFoundException, ProductNotFoundException {
+    public InvoiceProductDto findByInvoiceAndProduct(InvoiceDto invoice, ProductDto product) throws InvoiceProductNotFoundException, ProductNotFoundException, CompanyNotFoundException {
 
-        Invoice foundInvoice = invoiceRepository.findByInvoiceNo(invoice.getInvoiceNo());
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
+
+        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), foundCompany);
         Product foundProduct = productRepository.findById(product.getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
 
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
         return mapper.convert(foundInvoiceProduct, new InvoiceProductDto());
+
+    }
+
+    @Override
+    public List<InvoiceProductDto> findByInvoiceAndCompany(InvoiceDto invoice, CompanyDto company) throws CompanyNotFoundException, InvoiceNotFoundException {
+
+        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
+
+        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), foundCompany);
+
+        if (foundInvoice == null) {
+            throw new InvoiceNotFoundException("No invoice found");
+        }
+
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceAndInvoiceCompany(foundInvoice, foundCompany);
+
+        List<InvoiceProductDto> invoiceProductDtoList = invoiceProductList.stream().map(invoiceProduct -> {
+            return mapper.convert(invoiceProduct, new InvoiceProductDto());
+        }).collect(Collectors.toList());
+
+        return invoiceProductDtoList;
 
     }
 

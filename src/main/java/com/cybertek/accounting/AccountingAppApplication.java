@@ -67,6 +67,8 @@ public class AccountingAppApplication {
 			InvoiceNumber invoiceNumber = new InvoiceNumber(crustyCompany,2021,1);
 			invoiceNumber = invoiceNumberRepository.save(invoiceNumber);
 
+			InvoiceNumber invoiceNumber2 = new InvoiceNumber(crustyCompany,2020,2);
+			invoiceNumber2 = invoiceNumberRepository.save(invoiceNumber2);
 
 
 		//Create User for Company - Please continue creating with employee user
