@@ -55,20 +55,20 @@
                                                             <div class="col-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-username">Title</label>
-                                                                        <input th:field="*{title}" type="text" id="users-edit-username" class="form-control" placeholder="Username" value="dean3004" required aria-invalid="false">
+                                                                        <label for="users-edit-title">Title</label>
+                                                                        <input th:field="*{title}" type="text" id="users-edit-title" class="form-control" placeholder="Username" value="dean3004" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
 																<div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="zipcode-edit">Zip</label>
-                                                                        <input th:field="*{zip}" type="text" id="zipcode-edit" class="form-control" placeholder="Name" value="43082" required aria-invalid="false">
+                                                                        <label for="users-edit-zipcode">Zip</label>
+                                                                        <input th:field="*{zip}" type="text" id="users-edit-zipcode" class="form-control" placeholder="Name" value="43082" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-name">Address</label>
-                                                                        <input th:field="*{address1}" type="text" id="users-edit-name" class="form-control" placeholder="Name" value="973 Polaris Crossing Way Westerville" required aria-invalid="false">
+                                                                        <label for="users-edit-address1">Address 1</label>
+                                                                        <input th:field="*{address1}" type="text" id="users-edit-address1" class="form-control" placeholder="Name" value="973 Polaris Crossing Way Westerville" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
@@ -120,8 +120,7 @@
 
 
                                                             <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                                <button name="action" value="save" type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Changes</button>
-																<button disabled="disabled" type="submit" class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete Company</button>
+                                                                <button name="action" value="save" type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Create Company</button>
                                                                 <button type="reset" class="btn btn-secondary">Cancel</button>
                                                             </div>
                                                         </div>
