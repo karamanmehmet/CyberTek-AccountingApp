@@ -7,14 +7,10 @@ import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -26,7 +22,6 @@ public class AccountingAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AccountingAppApplication.class, args);
 	}
-
 
 	@Bean
 	@Transactional
@@ -52,7 +47,7 @@ public class AccountingAppApplication {
 			companyRepository.save(companyRoot);
 
 			User userRoot = new User("Mehmet","Kara","mehmetkara@gmail.com" , true, "+1954784236",
-					"password",companyRoot);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",companyRoot);
 			userRoot.addRole(roleRoot);
 
 			userRepository.save(userRoot);
@@ -76,7 +71,7 @@ public class AccountingAppApplication {
 
 		//Create User for Company - Please continue creating with employee user
 			User userAdmin = new User("admin","Kara","admin@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",crustyCompany);
 			userAdmin.addRole(roleAdmin);
 			 userRepository.saveAndFlush(userAdmin);
 
@@ -90,7 +85,7 @@ public class AccountingAppApplication {
 
 
 			User userEmployee = new User("employee","Mike","employee@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",crustyCompany);
 			userManager.addRole(roleEmployee);
 			userRepository.saveAndFlush(userEmployee);
 

@@ -24,14 +24,14 @@ public class UserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
-
-        GrantedAuthority authority = new SimpleGrantedAuthority(this.user.getRoles().toString());
-        authorityList.add(authority);
 //
-//        this.user.getRoles().forEach(role ->{
-//            GrantedAuthority authority = new SimpleGrantedAuthority(this.user.getRoles().toString());
-//            authorityList.add(authority);
-//        });
+//        GrantedAuthority authority = new SimpleGrantedAuthority(this.user.getRoles());
+//        authorityList.add(authority);
+//
+        this.user.getRoles().forEach(role ->{
+            GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
+            authorityList.add(authority);
+        });
         return authorityList;
     }
 

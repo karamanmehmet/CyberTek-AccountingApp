@@ -46,7 +46,7 @@ public class User extends BaseEntity{
 
     }
 
-    public User(long id, LocalDateTime insertDateTime, String insertUserId, LocalDateTime lastUpdateDateTime,
+    public User(Integer id, LocalDateTime insertDateTime, String insertUserId, LocalDateTime lastUpdateDateTime,
                 String lastUpdateUserId, String firstname, String lastname, String username, String email, boolean enabled, String phone,
                 List<Role> roles,String password) {
         super(id, insertDateTime, insertUserId, lastUpdateDateTime, lastUpdateUserId);
