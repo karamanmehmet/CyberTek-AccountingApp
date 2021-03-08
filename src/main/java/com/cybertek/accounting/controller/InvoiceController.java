@@ -30,7 +30,7 @@ public class InvoiceController {
     private final ProductService productService;
     private final ClientVendorService clientVendorService;
 
-    @GetMapping("/purchaseInvoice/list")
+    @GetMapping("/purchaseList")
     public String getPurchaseInvoices(Model model) {
 
         //TODO: Change the static values below.
@@ -46,14 +46,14 @@ public class InvoiceController {
 
     }
 
-    @GetMapping("/purchaseInvoice/create")
+    @GetMapping("/purchaseCreate")
     public String createPurchaseInvoice(Model model) {
 
         return "/invoice/purchase-invoice-add";
 
     }
 
-    @GetMapping("/purchaseInvoice/addItem")
+    @GetMapping("/purchaseAddItem")
     public String addItem(Model model) {
 
         return "/invoice/purchase-invoice-add";
