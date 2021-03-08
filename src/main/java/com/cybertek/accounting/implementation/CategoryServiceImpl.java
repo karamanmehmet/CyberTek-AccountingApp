@@ -98,14 +98,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public CategoryDto update(CategoryDto categoryDto,long id) throws CategoryNotFoundException, CompanyNotFoundException {
+    public CategoryDto update(CategoryDto categoryDto,long id) throws CategoryNotFoundException, CompanyNotFoundException, CategoryAlreadyExistException {
         // TODO This part will update according to valid user
         Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
         Optional<Category> foundedCategory = repository.findById(id);
-
+        Optional<Category> updatedCategory = repository.findByDescriptionAndCompany(categoryDto.getDescription(), convertedCompany);
         if (foundedCategory.isEmpty()) {
-            throw new CategoryNotFoundException("There is no category");
+            throw new CategoryNotFoundException("There is no category ");
         }
+        if(updatedCategory.isPresent() && !updatedCategory.get().getDescription().equals(foundedCategory.get().getDescription())){
+            throw new CategoryAlreadyExistException("This category already exist");
+        }
+
+
+
+
         Category convertedCategory = mapper.convert(categoryDto, new Category());
         convertedCategory.setId(foundedCategory.get().getId());
         convertedCategory.setEnabled(true);

@@ -14,7 +14,10 @@ import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ClientVendorRepository;
 import com.cybertek.accounting.service.ClientVendorService;
 import com.cybertek.accounting.service.CompanyService;
+import com.cybertek.accounting.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.endpoint.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,6 +34,16 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     private final ClientVendorRepository repository;
     private final MapperGeneric mapper;
     private final CompanyService companyService;
+    private final UserService userService;
+
+    /*
+
+    String username= SecurityContextHolder.getContext().getAuthentication().getName();
+    // This part comes from BaseEntityListener
+    User validUser=userService.findByUserName(username);
+    Company convertedCompany = mapper.convert(companyService.findByEmail(validUser.getCompany().getEmail()), new Company());
+
+*/
 
 
     @Transactional
