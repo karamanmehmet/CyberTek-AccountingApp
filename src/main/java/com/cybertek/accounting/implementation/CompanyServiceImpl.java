@@ -81,6 +81,7 @@ public class CompanyServiceImpl implements CompanyService {
         foundCompany.setState(companyDto.getState());
         foundCompany.setEnabled(companyDto.isEnabled());
         foundCompany.setRepresentative(companyDto.getRepresentative());
+        foundCompany.setEstablishmentDate(companyDto.getEstablishmentDate());
         foundCompany.setPhone(companyDto.getPhone());
 
         companyRepository.saveAndFlush(foundCompany);
