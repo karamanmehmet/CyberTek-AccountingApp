@@ -1,7 +1,6 @@
 package com.cybertek.accounting.converter;
 
 import com.cybertek.accounting.dto.CategoryDto;
-import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.service.CategoryService;
 import lombok.SneakyThrows;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;

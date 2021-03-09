@@ -55,16 +55,12 @@ public class ProductController {
 //        String loggedInUser = authentication.getName();
 //        User user = userService.findByEmail(loggedInUser);
 
-        List<CategoryDto> categories = new ArrayList<>();
-
         try {
-            categories = categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com"));
+            model.addAttribute("product", new ProductDto());
+            model.addAttribute("categories", categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
         } catch (CompanyNotFoundException e) {
             e.printStackTrace();
         }
-
-        model.addAttribute("product", new ProductDto());
-        model.addAttribute("categories", categories);
 
         return "/product/product-add";
     }
@@ -81,14 +77,19 @@ public class ProductController {
         return "redirect:/product/list";
     }
 
-    @GetMapping("/update")
-    public String editProduct(@ModelAttribute ProductDto productDto, Model model) {
-        model.addAttribute("product", productDto);
-        return "redirect:/product/add";
+    @GetMapping("/update/{id}")
+    public String editProduct(@PathVariable("id") long id, Model model) {
+        try {
+            model.addAttribute("product", productService.findById(id));
+            model.addAttribute("categories", categoryService.findAllByCompany(companyService.findByEmail("karaman@crustycloud.com")));
+        } catch (CompanyNotFoundException | ProductNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "/product/product-update";
     }
 
-    @PutMapping
-    public String updateProduct(ProductDto productDto) {
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute ProductDto productDto) {
         try {
             productService.update(productDto);
         } catch (ProductFieldNullException | ProductNotFoundException e) {

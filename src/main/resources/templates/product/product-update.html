@@ -4,7 +4,7 @@
 
 <head>
     <head th:replace="fragments :: page_head" />
-    <title>Add Product</title>
+    <title>Edit Product</title>
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/product.png}">
 
 </head>
@@ -86,7 +86,6 @@
                                                                     <select id="products-edit-category"
                                                                             class="form-control" required
                                                                             th:field="*{category}">
-                                                                        <option value="">Select Category</option>
                                                                         <option th:each="theCategory : ${categories}"
                                                                                 th:value="${theCategory.id}"
                                                                                 th:text="${theCategory.description}"></option>
@@ -111,7 +110,6 @@
                                                                     <label for="products-edit-unit">Unit</label>
                                                                     <select id="products-edit-unit" class="form-control"
                                                                             required th:field="*{unit}">
-                                                                        <option value="">Select Unit</option>
                                                                         <option th:each="theUnit : ${T(com.cybertek.accounting.enums.Unit).values()}"
                                                                                 th:value="${theUnit}"
                                                                                 th:text="${theUnit.value}"></option>
@@ -124,7 +122,6 @@
                                                                     <select id="products-edit-status"
                                                                             class="form-control"
                                                                             required th:field="*{enabled}">
-                                                                        <option value="">Select Status</option>
                                                                         <option th:value="${true}">Active</option>
                                                                         <option th:value="${false}">Passive</option>
                                                                     </select>
