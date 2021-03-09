@@ -41,6 +41,6 @@ public class Product extends BaseEntity {
     @NotNull
     private Company company;
 
-    private boolean enabled;
+    private Boolean enabled;
 
 }

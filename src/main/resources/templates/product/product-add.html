@@ -53,7 +53,7 @@
                                                  aria-labelledby="account-tab">
 
                                                 <!-- Account form starts -->
-                                                <form novalidate th:action="@{/product/add}" method="post"
+                                                <form novalidate th:action="@{/product}" method="post"
                                                       th:object="${product}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-6">
@@ -119,7 +119,7 @@
                                                                     <select id="products-edit-status"
                                                                             class="form-control"
                                                                             required th:field="*{enabled}">
-                                                                        <option th:value="${false}">Select Status</option>
+                                                                        <option value="">Select Status</option>
                                                                         <option th:value="${true}">Active</option>
                                                                         <option th:value="${false}">Passive</option>
                                                                     </select>
@@ -132,12 +132,7 @@
 
                                                         <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
                                                             <button type="submit"
-                                                                    class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save
-                                                                Changes
-                                                            </button>
-                                                            <button type="submit"
-                                                                    class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete
-                                                                Company
+                                                                    class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Product
                                                             </button>
                                                             <button type="reset" class="btn btn-secondary">Cancel
                                                             </button>

@@ -48,27 +48,27 @@
                                                 <table id="users-list-datatable" class="table">
                                                     <thead>
                                                     <tr>
-                                                        <th>ID</th>
-                                                        <th>Name</th>
-                                                        <th>Description</th>
-                                                        <th>Quantity</th>
-                                                        <th>Unit</th>
-                                                        <th>Category</th>
-                                                        <th>Status</th>
-                                                        <th>Edit</th>
+                                                        <th class="text-truncate">ID</th>
+                                                        <th class="text-truncate">Name</th>
+                                                        <th class="text-truncate">Description</th>
+                                                        <th class="text-truncate">Quantity</th>
+                                                        <th class="text-truncate">Unit</th>
+                                                        <th class="text-truncate">Category</th>
+                                                        <th class="text-truncate">Status</th>
+                                                        <th class="text-truncate">Edit</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr th:each="product:${products}">
-                                                        <td th:text="${product.id}"></td>
+                                                        <td class="text-truncate" th:text="${product.id}"></td>
                                                         <td class="text-truncate" th:text="${product.name}"></td>
-                                                        <td th:text="${product.description}"></td>
-                                                        <td th:text="${product.qty}"></td>
-                                                        <td th:text="${product.unit}"></td>
-                                                        <td th:text="${product.category.description}"></td>
+                                                        <td class="text-truncate" th:text="${product.description}"></td>
+                                                        <td class="text-truncate" th:text="${product.qty}"></td>
+                                                        <td class="text-truncate" th:text="${product.unit}"></td>
+                                                        <td class="text-truncate" th:text="${product.category.description}"></td>
                                                         <td><span class="badge bg-light-success"
-                                                                  th:if="${product.enabled == true}">Active</span></td>
-                                                        <td><span class="badge bg-light-danger"
+                                                                  th:if="${product.enabled == true}">Active</span>
+                                                            <span class="badge bg-light-danger"
                                                                   th:unless="${product.enabled == true}">Passive</span>
                                                         </td>
                                                         <td>

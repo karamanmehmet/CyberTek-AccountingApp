@@ -1,6 +1,7 @@
 package com.cybertek.accounting.converter;
 
 import com.cybertek.accounting.dto.CategoryDto;
+import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.service.CategoryService;
 import lombok.SneakyThrows;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
@@ -12,9 +13,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationPropertiesBinding
 public class CategoryDtoConverter implements Converter<String, CategoryDto> {
 
-    private final CategoryService service;
+    private CategoryService service;
 
-    public CategoryDtoConverter(@Lazy CategoryService service){
+    public void setCategory(CategoryService service) {
         this.service = service;
     }
 
