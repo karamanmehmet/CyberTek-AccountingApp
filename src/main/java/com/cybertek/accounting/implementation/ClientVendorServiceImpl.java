@@ -3,6 +3,7 @@ package com.cybertek.accounting.implementation;
 import com.cybertek.accounting.dto.ClientVendorDto;
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.ProductDto;
+import com.cybertek.accounting.dto.UserDto;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Product;
@@ -42,8 +43,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     // This part comes from BaseEntityListener
     User validUser=userService.findByUserName(username);
     Company convertedCompany = mapper.convert(companyService.findByEmail(validUser.getCompany().getEmail()), new Company());
-
+ String username= SecurityContextHolder.getContext().getAuthentication().getName();
+    UserDto user=userService.findByUsername(username);
 */
+
+
+
 
 
     @Transactional
