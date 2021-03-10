@@ -1,13 +1,11 @@
 package com.cybertek.accounting.controller;
 
 import com.cybertek.accounting.dto.InvoiceDto;
+import com.cybertek.accounting.dto.InvoiceProductDto;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
-import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
-import com.cybertek.accounting.exception.InvoiceNotFoundException;
-import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
+import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.service.*;
 import lombok.RequiredArgsConstructor;
 
@@ -83,10 +81,26 @@ public class InvoiceController {
     public String addItem(@PathVariable("invoiceNo") String invoiceNo, Model model) {
         try {
             model.addAttribute("invoice", invoiceService.findByInvoiceNo(invoiceNo));
+            model.addAttribute("invoiceProduct", new InvoiceProductDto());
+            model.addAttribute("products", productService.findAll());
+            model.addAttribute("invoiceProductList", invoiceProductService.findByInvoice(invoiceService.findByInvoiceNo(invoiceNo)));
+            model.addAttribute("vendors", clientVendorService.findAllByType(ClientVendorType.VENDOR));
+            model.addAttribute("invoiceDate", invoiceService.findByInvoiceNo(invoiceNo).getInvoiceDate());
         } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
         }
         return "/invoice/purchase-invoice-add-line-item";
+    }
+
+    @PostMapping("/purchaseAddItem/{invoiceNo}")
+    public String insertItem(@PathVariable("invoiceNo") String invoiceNo, @ModelAttribute("invoiceProduct") InvoiceProductDto invoiceProductDto){
+        try {
+            invoiceProductDto.setInvoice(invoiceService.findByInvoiceNo(invoiceNo));
+            invoiceProductService.create(invoiceProductDto);
+        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | ProductNotFoundException | NotEnoughProductInStockException | CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/invoice/purchaseAddItem/" + invoiceNo;
     }
 
 }

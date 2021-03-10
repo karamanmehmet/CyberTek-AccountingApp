@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public ProductDto findById(long id) throws ProductNotFoundException {
+    public ProductDto findById(Long id) throws ProductNotFoundException {
 
         Product foundedProduct = repository.findById(id)
                 .orElseThrow(()->new ProductNotFoundException("This product does not exist"));

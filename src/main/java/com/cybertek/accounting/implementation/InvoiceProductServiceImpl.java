@@ -4,19 +4,15 @@ import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.dto.InvoiceProductDto;
 import com.cybertek.accounting.dto.ProductDto;
-import com.cybertek.accounting.entity.Company;
-import com.cybertek.accounting.entity.Invoice;
-import com.cybertek.accounting.entity.InvoiceProduct;
-import com.cybertek.accounting.entity.Product;
+import com.cybertek.accounting.entity.*;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.mapper.MapperGeneric;
-import com.cybertek.accounting.repository.CompanyRepository;
-import com.cybertek.accounting.repository.InvoiceProductRepository;
-import com.cybertek.accounting.repository.InvoiceRepository;
-import com.cybertek.accounting.repository.ProductRepository;
+import com.cybertek.accounting.repository.*;
 import com.cybertek.accounting.service.InvoiceProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +26,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     private final InvoiceRepository invoiceRepository;
     private final ProductRepository productRepository;
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
     private final MapperGeneric mapper;
 
     @Override
@@ -68,7 +65,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
             foundInvoiceProduct.setQty(invoiceProduct.getQty());
             foundInvoiceProduct.setTax(foundProduct.getTax());
-            foundInvoiceProduct.setUnitPrice(foundProduct.getPrice());
+            foundInvoiceProduct.setUnitPrice(invoiceProduct.getUnitPrice());
 
         }
 
@@ -154,6 +151,18 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         List<InvoiceProductDto> dtos = invoiceProductList.stream().map(invoiceProduct -> {return mapper.convert(invoiceProduct, new InvoiceProductDto());}).collect(Collectors.toList());
 
         return dtos;
+    }
+
+    @Override
+    public List<InvoiceProductDto> findByInvoice(InvoiceDto invoiceDto) throws CompanyNotFoundException, InvoiceNotFoundException {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        Company company = user.getCompany();
+
+        return findByInvoiceAndCompany(invoiceDto, mapper.convert(company, new CompanyDto()));
     }
 
     @Override
