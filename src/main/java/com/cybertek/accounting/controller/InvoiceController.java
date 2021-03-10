@@ -1,6 +1,6 @@
 package com.cybertek.accounting.controller;
 
-import com.cybertek.accounting.dto.*;
+import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
@@ -14,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -43,21 +45,24 @@ public class InvoiceController {
         }
 
         return "/invoice/purchase-invoice-list";
-
     }
 
     @GetMapping("/purchaseCreate")
     public String createPurchaseInvoice(Model model) {
-
+        model.addAttribute("invoice", new InvoiceDto());
+        model.addAttribute("localDate", LocalDate.now());
         return "/invoice/purchase-invoice-add";
 
     }
 
-    @GetMapping("/purchaseAddItem")
-    public String addItem(Model model) {
-
-        return "/invoice/purchase-invoice-add";
-
+    @GetMapping("/purchaseAddItem/{invoiceNo}")
+    public String addItem(@PathVariable("invoiceNo") String invoiceNo, Model model) {
+        try {
+            model.addAttribute("invoice", invoiceService.findByInvoiceNo(invoiceNo));
+        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "/invoice/purchase-invoice-add-line-item";
     }
 
 }

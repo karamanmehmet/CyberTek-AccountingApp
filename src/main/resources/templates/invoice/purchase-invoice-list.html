@@ -53,14 +53,14 @@
                                                 <table id="users-list-datatable" class="table">
                                                     <thead>
                                                     <tr>
-                                                        <th>Invoice No</th>
-                                                        <th>Invoice Date</th>
-                                                        <th>Vendor</th>
-                                                        <th>Cost</th>
-                                                        <th>Tax</th>
-                                                        <th>Total</th>
-                                                        <th>Add Line Item</th>
-                                                        <th>Edit</th>
+                                                        <th class="text-truncate">Invoice No</th>
+                                                        <th class="text-truncate">Invoice Date</th>
+                                                        <th class="text-truncate">Vendor</th>
+                                                        <th class="text-truncate">Cost</th>
+                                                        <th class="text-truncate">Tax</th>
+                                                        <th class="text-truncate">Total</th>
+                                                        <th class="text-truncate">Add Line Item</th>
+                                                        <th class="text-truncate">Edit</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -78,12 +78,12 @@
                                                         <td class="text-truncate"
                                                             th:text="${purchaseInvoice.monetaryDetailDto.totalCost}"></td>
                                                         <td>
-                                                            <a href="page-users-edit.html">
+                                                            <a th:href="@{/invoice/purchaseAddItem/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}">
                                                                 <i class="ft-list"></i>
                                                             </a>
                                                         </td>
                                                         <td>
-                                                            <a href="page-users-edit.html">
+                                                            <a th:href="@{/invoice/purchaseCreate}">
                                                                 <i class="ft-edit"></i>
                                                             </a>
                                                         </td>
