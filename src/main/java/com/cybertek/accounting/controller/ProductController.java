@@ -66,10 +66,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public String insertProduct(@ModelAttribute ProductDto productDto) {
+    public String insertProduct(@ModelAttribute ProductDto productDto, @RequestParam(value="action", required=true) String action) {
 
         try {
-            productService.create(productDto);
+            if (action.equals("save")) {
+                productService.create(productDto);
+            }
         } catch (ProductFieldNullException | ProductAlreadyExistException | CompanyNotFoundException e) {
             e.printStackTrace();
         }
@@ -89,11 +91,16 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable("id") long id, ProductDto productDto) {
+    public String updateProduct(@PathVariable("id") long id, ProductDto productDto, @RequestParam(value="action", required=true) String action) {
         try {
-            productDto.setId(id);
-            productService.update(productDto);
-        } catch (ProductFieldNullException | ProductNotFoundException e) {
+            if (action.equals("save")) {
+                productDto.setId(id);
+                productService.update(productDto);
+            }
+            if (action.equals("delete")) {
+                productService.delete(id);
+            }
+        } catch (ProductFieldNullException | ProductNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
         }
         return "redirect:/product/list";

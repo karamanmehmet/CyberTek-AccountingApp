@@ -26,7 +26,7 @@ public interface ProductService {
 
     ProductDto update(ProductDto productDto) throws ProductFieldNullException, ProductNotFoundException, AccessDeniedException;
 
-    void delete(ProductDto productDto) throws ProductNotFoundException, CompanyNotFoundException;
+    void delete(long id) throws ProductNotFoundException, CompanyNotFoundException;
 
     void deleteByCategory(List<ProductDto> productDto);
 

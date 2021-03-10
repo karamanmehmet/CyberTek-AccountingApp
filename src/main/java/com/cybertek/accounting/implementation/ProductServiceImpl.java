@@ -183,7 +183,7 @@ public class ProductServiceImpl implements ProductService {
     }
     @Transactional
     @Override
-    public void delete(ProductDto productDto) throws ProductNotFoundException, CompanyNotFoundException, AccessDeniedException {
+    public void delete(long id) throws ProductNotFoundException, CompanyNotFoundException, AccessDeniedException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -191,15 +191,14 @@ public class ProductServiceImpl implements ProductService {
         User user = userRepository.findByEmail(username);
         Company company = user.getCompany();
 
-        Company foundedCompany = companyRepository.findByEmail(productDto.getCompany().getEmail()).orElseThrow(() -> new CompanyNotFoundException("No Company Found"));
+        Product foundedProduct = repository.findById(id)
+                .orElseThrow(()->new ProductNotFoundException("There is no record with this product"));
+
+        Company foundedCompany = companyRepository.findByEmail(foundedProduct.getCompany().getEmail()).orElseThrow(() -> new CompanyNotFoundException("No Company Found"));
 
         if (company != foundedCompany) {
             throw new AccessDeniedException("Access Denied");
         }
-
-        Product foundedProduct = repository.findById(productDto.getId())
-                .orElseThrow(()->new ProductNotFoundException("There is no record with this product"));
-
 
         foundedProduct.setName(foundedProduct.getId()+"-"+foundedProduct.getName());
 
