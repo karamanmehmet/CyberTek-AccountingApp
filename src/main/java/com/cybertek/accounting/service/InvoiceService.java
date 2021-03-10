@@ -20,6 +20,8 @@ public interface InvoiceService {
 
     boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException;
 
+    InvoiceDto approve(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+
     Invoice findById(long id) throws InvoiceNotFoundException;
 
     InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;

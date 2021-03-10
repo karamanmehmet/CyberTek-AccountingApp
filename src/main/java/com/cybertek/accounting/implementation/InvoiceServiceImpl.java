@@ -80,7 +80,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         if (foundInvoice == null) throw new InvoiceNotFoundException("This invoice does not exist");
 
-        repository.saveAndFlush(mapper.convert(invoice, new Invoice()));
+        Invoice updatedInvoice = mapper.convert(invoice, new Invoice());
+
+        updatedInvoice.setId(foundInvoice.getId());
+        updatedInvoice.setEnabled(foundInvoice.isEnabled());
+        updatedInvoice.setInvoiceDate(foundInvoice.getInvoiceDate());
+        updatedInvoice.setClientVendor(foundInvoice.getClientVendor());
+        updatedInvoice.setCompany(foundInvoice.getCompany());
+        updatedInvoice.setInvoiceType(foundInvoice.getInvoiceType());
+
+        repository.saveAndFlush(updatedInvoice);
 
         return monetaryDetail(invoice);
     }
@@ -89,9 +98,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     public boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException {
 
         //TODO SecurityContextHolder
-        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
 
-        Invoice foundInvoice = repository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), foundCompany);
+        User user = userRepository.findByEmail(email);
+        Company company = user.getCompany();
+
+        Invoice foundInvoice = repository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), company);
 
         if (foundInvoice == null) throw new InvoiceNotFoundException("This invoice does not exist");
 
@@ -101,6 +114,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         repository.saveAndFlush(foundInvoice);
 
         return !foundInvoice.isEnabled();
+    }
+
+    @Override
+    public InvoiceDto approve(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
+        invoiceDto.setInvoiceStatus(InvoiceStatus.APPROVED);
+        update(invoiceDto);
+        return invoiceDto;
     }
 
     @Override

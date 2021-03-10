@@ -52,7 +52,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/purchaseCreate")
-    public String insertPurchaseInvoice(@ModelAttribute InvoiceDto invoiceDto, @RequestParam(value="action", required=true) String action) {
+    public String insertPurchaseInvoice(@ModelAttribute InvoiceDto invoiceDto, @RequestParam(value = "action", required = true) String action) {
         if (action.equals("save")) {
             try {
                 invoiceDto.setInvoiceType(InvoiceType.PURCHASE);
@@ -60,6 +60,21 @@ public class InvoiceController {
             } catch (InvoiceAlreadyExistsException | CompanyNotFoundException | InvoiceNotFoundException | InvoiceProductNotFoundException e) {
                 e.printStackTrace();
             }
+        }
+        return "redirect:/invoice/purchaseList";
+    }
+
+    @PostMapping("/update/{invoiceNo}")
+    public String update(@PathVariable("invoiceNo") String invoiceNo, InvoiceDto invoiceDto, @RequestParam(value = "action", required = true) String action) {
+
+        try {
+            if (action.equals("approve")) {
+                invoiceService.approve(invoiceDto);
+            } else if (action.equals("delete")) {
+                invoiceService.delete(invoiceDto);
+            }
+        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
+            e.printStackTrace();
         }
         return "redirect:/invoice/purchaseList";
     }
