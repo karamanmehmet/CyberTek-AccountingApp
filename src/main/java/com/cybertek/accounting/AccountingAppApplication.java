@@ -80,7 +80,7 @@ public class AccountingAppApplication {
 
 
 			User userManager = new User("manager","Kara","manager@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",crustyCompany);
 			userManager.addRole(roleManager);
 			userRepository.saveAndFlush(userManager);
 
@@ -135,12 +135,12 @@ public class AccountingAppApplication {
 
 		//Create Invoice
 
-			Invoice invoiceSales = new Invoice("1", InvoiceStatus.OPEN, InvoiceType.SALES,LocalDate.now().minusDays(1),
+			Invoice invoiceSales = new Invoice("INV-001", InvoiceStatus.OPEN, InvoiceType.SALES,LocalDate.now().minusDays(1),
 					vendorSP,crustyCompany,true);
 
 			invoiceSales=	invoiceRepository.saveAndFlush(invoiceSales);
 
-			Invoice invoicePurchase = new Invoice("2", InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
+			Invoice invoicePurchase = new Invoice("INV-002", InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
 					vendorSP,crustyCompany,true);
 
 			invoiceRepository.saveAndFlush(invoicePurchase);

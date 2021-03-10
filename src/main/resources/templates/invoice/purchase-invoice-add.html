@@ -81,8 +81,9 @@
                                                                     <select id="select-vendor" class="form-control"
                                                                             required th:field="*{clientVendor}">
                                                                         <option value="">Select Vendor</option>
-                                                                        <option th:value="theClientVendor" th:each="theClientVendor : ${T(com.cybertek.accounting.enums.ClientVendorType).values()}"
-                                                                                th:text="${theClientVendor.value}"></option>
+                                                                        <option th:each="theClientVendor : ${vendors}"
+                                                                                th:value="${theClientVendor.id}"
+                                                                                th:text="${theClientVendor.companyName}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>

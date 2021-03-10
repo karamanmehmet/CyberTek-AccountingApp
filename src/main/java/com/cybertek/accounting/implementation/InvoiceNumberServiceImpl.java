@@ -39,6 +39,8 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
 
         InvoiceNumber createdInvoiceNumber = generate(companyDto);
 
+        invoiceNumberRepository.saveAndFlush(createdInvoiceNumber);
+
         return createdInvoiceNumber;
 
     }

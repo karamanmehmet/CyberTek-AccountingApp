@@ -7,17 +7,21 @@ import com.cybertek.accounting.dto.UserDto;
 import com.cybertek.accounting.entity.ClientVendor;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Product;
+import com.cybertek.accounting.entity.User;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.exception.ClientVendorNotFoundException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.exception.ClientVendorAlreadyExistException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.ClientVendorRepository;
+import com.cybertek.accounting.repository.CompanyRepository;
+import com.cybertek.accounting.repository.UserRepository;
 import com.cybertek.accounting.service.ClientVendorService;
 import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.endpoint.SecurityContext;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +40,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     private final MapperGeneric mapper;
     private final CompanyService companyService;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     /*
 
@@ -101,9 +106,14 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public List<ClientVendorDto> findAll() throws CompanyNotFoundException {
-        // TODO This part will update according to valid user
-        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
-        List<ClientVendor> list = repository.findAllByCompany(convertedCompany);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        Company company = user.getCompany();
+
+        List<ClientVendor> list = repository.findAllByCompany(company);
 
         return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
@@ -132,10 +142,24 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
-    public ClientVendorDto findById(long id) throws ClientVendorNotFoundException {
+    public ClientVendorDto findById(Long id) throws ClientVendorNotFoundException {
         ClientVendor foundedCV = repository.findById(id)
                 .orElseThrow(()->new ClientVendorNotFoundException("This CV does not exist"));
         return mapper.convert(foundedCV,new ClientVendorDto());    }
+
+    @Override
+    public List<ClientVendorDto> findAllByType(ClientVendorType type) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        Company company = user.getCompany();
+
+        List<ClientVendor> list = repository.findAllByCompanyAndType(company, type);
+
+        return list.stream().map(clientVendor -> {return mapper.convert(clientVendor, new ClientVendorDto());}).collect(Collectors.toList());
+    }
 
     @Override
     public List<ClientVendorDto> findAllByCompany(CompanyDto company) {
@@ -147,7 +171,10 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
                 { return mapper.convert(obj,new ClientVendorDto()); })
-                .collect(Collectors.toList());      }
+                .collect(Collectors.toList());
+    }
+
+
 
     @Override
     public List<ClientVendorDto> findAllByCompanyAndType(CompanyDto company, ClientVendorType type) {
