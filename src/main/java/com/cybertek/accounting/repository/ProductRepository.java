@@ -14,11 +14,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCompany(Company company);
 
-    List<Product> findAllByCategory(Category category);
+    List<Product> findAllByCategoryAndCompany(Category category, Company company);
 
     Optional<Product> findByNameAndCompany(String name, Company company);
-
-    List<Product> findAllByCategoryAndEnabled(Category category, boolean enabled);
 
     List<Product> findAllByCompanyAndEnabled(Company company, boolean enabled);
 

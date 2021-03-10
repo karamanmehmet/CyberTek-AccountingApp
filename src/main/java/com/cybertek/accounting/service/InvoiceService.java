@@ -20,6 +20,8 @@ public interface InvoiceService {
 
     boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException;
 
+    InvoiceDto approve(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+
     Invoice findById(long id) throws InvoiceNotFoundException;
 
     InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
@@ -32,6 +34,8 @@ public interface InvoiceService {
     List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
     List<InvoiceDto> findAllByCompanyAndInvoiceType(CompanyDto company, InvoiceType invoiceType) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+
+    List<InvoiceDto> findAllByInvoiceType(InvoiceType invoiceType) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
     List<InvoiceDto> findAllByCompanyAndInvoiceStatus(CompanyDto company, InvoiceStatus invoiceStatus) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 

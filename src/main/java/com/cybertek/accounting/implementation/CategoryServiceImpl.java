@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto findById(long id) throws CategoryNotFoundException {
+    public CategoryDto findById(Long id) throws CategoryNotFoundException {
 
         Category foundedCategory = repository.findById(id)
                 .orElseThrow(()->new CategoryNotFoundException("This category does not exist"));

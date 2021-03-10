@@ -1,6 +1,6 @@
 package com.cybertek.accounting.controller;
 
-import com.cybertek.accounting.dto.*;
+import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.enums.ClientVendorType;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
@@ -13,10 +13,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -33,31 +32,61 @@ public class InvoiceController {
     @GetMapping("/purchaseList")
     public String getPurchaseInvoices(Model model) {
 
-        //TODO: Change the static values below.
-
         try {
-            List<InvoiceDto> purchaseInvoices = invoiceService.findAllByCompanyAndInvoiceTypeAndInvoiceStatus(companyService.findByEmail("karaman@crustycloud.com"), InvoiceType.PURCHASE, InvoiceStatus.OPEN);
+            List<InvoiceDto> purchaseInvoices = invoiceService.findAllByInvoiceType(InvoiceType.PURCHASE);
             model.addAttribute("purchaseInvoices", purchaseInvoices);
         } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
         }
 
         return "/invoice/purchase-invoice-list";
-
     }
 
     @GetMapping("/purchaseCreate")
     public String createPurchaseInvoice(Model model) {
-
+        model.addAttribute("invoice", new InvoiceDto());
+        model.addAttribute("localDate", LocalDate.now());
+        model.addAttribute("vendors", clientVendorService.findAllByType(ClientVendorType.VENDOR));
         return "/invoice/purchase-invoice-add";
 
     }
 
-    @GetMapping("/purchaseAddItem")
-    public String addItem(Model model) {
+    @PostMapping("/purchaseCreate")
+    public String insertPurchaseInvoice(@ModelAttribute InvoiceDto invoiceDto, @RequestParam(value = "action", required = true) String action) {
+        if (action.equals("save")) {
+            try {
+                invoiceDto.setInvoiceType(InvoiceType.PURCHASE);
+                invoiceService.create(invoiceDto);
+            } catch (InvoiceAlreadyExistsException | CompanyNotFoundException | InvoiceNotFoundException | InvoiceProductNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/invoice/purchaseList";
+    }
 
-        return "/invoice/purchase-invoice-add";
+    @PostMapping("/update/{invoiceNo}")
+    public String update(@PathVariable("invoiceNo") String invoiceNo, InvoiceDto invoiceDto, @RequestParam(value = "action", required = true) String action) {
 
+        try {
+            if (action.equals("approve")) {
+                invoiceService.approve(invoiceDto);
+            } else if (action.equals("delete")) {
+                invoiceService.delete(invoiceDto);
+            }
+        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/invoice/purchaseList";
+    }
+
+    @GetMapping("/purchaseAddItem/{invoiceNo}")
+    public String addItem(@PathVariable("invoiceNo") String invoiceNo, Model model) {
+        try {
+            model.addAttribute("invoice", invoiceService.findByInvoiceNo(invoiceNo));
+        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "/invoice/purchase-invoice-add-line-item";
     }
 
 }

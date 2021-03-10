@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
 <!-- BEGIN : Head-->
 
-<head th:replace="fragments :: page_head"/>
+<head>
+    <head th:replace="fragments :: page_head"/>
+    <title>Create Purchase</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/purchase.png}">
+
+</head>
 <!-- END : Head-->
 
 <!-- BEGIN : Body-->
@@ -51,126 +56,52 @@
                                                  aria-labelledby="account-tab">
 
                                                 <!-- Account form starts -->
-                                                <form novalidate th:action="@{/product/add}" method="post"
-                                                      th:object="${product}">
+                                                <form novalidate th:action="@{/invoice/purchaseCreate}" method="post"
+                                                      th:object="${invoice}">
                                                     <div class="row">
-                                                        <div class="col-12 col-md-6">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label for="invoice-no">Invoice No</label>
-                                                                    <input type="text" id="invoice-no"
-                                                                           class="form-control" placeholder="Invoice No"
-                                                                           required aria-invalid="false">
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
                                                         <div class="col-12 col-md-6">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="invoice-date">Invoice Date</label>
                                                                     <input type="text" id="invoice-date" readonly=""
                                                                            class="form-control"
-                                                                           placeholder="Invoice Date"
-                                                                           value="01.01.2020" required=""
-                                                                           aria-invalid="false">
+                                                                           aria-invalid="false"
+                                                                           th:field="*{invoiceDate}"
+                                                                           th:placeholder="${#temporals.format(localDate, 'yyyy-MM-dd')}">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
-                                                        <div class="col-12 col-md-3">
+                                                        <div class="col-12 col-md-6">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="select-vendor">Vendor</label>
                                                                     <select id="select-vendor" class="form-control"
-                                                                            required>
+                                                                            required th:field="*{clientVendor}">
                                                                         <option value="">Select Vendor</option>
-                                                                        <option value="1">Acme Corp</option>
-                                                                        <option value="2">Pepsi Co</option>
+                                                                        <option th:each="theClientVendor : ${vendors}"
+                                                                                th:value="${theClientVendor.id}"
+                                                                                th:text="${theClientVendor.companyName}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-12 col-md-3">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label for="select-product">Product</label>
-                                                                    <select id="select-product" class="form-control"
-                                                                            required="">
-                                                                        <option value="">Select Product</option>
-                                                                        <option value="1">Apple</option>
-                                                                        <option value="2">HP Notebook</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    </div>
 
-                                                        <div class="col-12 col-md-3">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label for="quantity">Quantity</label>
-                                                                    <input type="text" id="quantity"
-                                                                           class="form-control" placeholder="Quantity"
-                                                                           value="2" required="" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-3">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label for="price">Price</label>
-                                                                    <input type="text" id="price"
-                                                                           class="form-control" placeholder="Price"
-                                                                           value="648" required="" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-
-                                                            <button type="submit"
-                                                                    class="btn btn-warning mb-2 mb-sm-0 mr-sm-2">Add
-                                                                Item
-                                                            </button>
-
-                                                        </div>
+                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-start mt-3 mt-sm-2">
+                                                        <button type="submit" name="action" value="save" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Create Invoice</button>
+                                                        <button type="submit" name="action" value="cancel" class="btn btn-secondary">Cancel</button>
                                                     </div>
 
                                                 </form>
 
-                                                <div class="col-12 users-module">
-                                                    <div class="table-responsive">
-                                                        <table class="table mb-0 mt-3">
-                                                            <thead>
-                                                            <tr>
-                                                                <th>Product</th>
-                                                                <th>Price</th>
-                                                                <th>Quantity</th>
-                                                                <th>Total</th>
-                                                                <th>Delete</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                            </tbody>
-                                                        </table>
-
-                                                    </div>
-
-                                                </div>
-
                                             </div>
 
                                         </div>
-                                        <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                            <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2" type="submit">Create
-                                            </button>
-                                            <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2" type="submit">Cancel
-                                            </button>
-                                        </div>
+
                                     </div>
 
                                 </div>
@@ -180,20 +111,20 @@
                         </div>
 
                     </div>
-            <!-- Table ends -->
+                    <!-- Table ends -->
 
-            </section>
+                </section>
 
+            </div>
         </div>
+        <!-- END : End Main Content-->
+
+        <footer th:replace="fragments :: page_footer"></footer>
+
+        <!-- Scroll to top button -->
+        <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
     </div>
-    <!-- END : End Main Content-->
-
-    <footer th:replace="fragments :: page_footer"></footer>
-
-    <!-- Scroll to top button -->
-    <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
-
-</div>
 </div>
 <!-- ////////////////////////////////////////////////////////////////////////////-->
 

@@ -20,7 +20,9 @@ public interface ClientVendorService {
 
     ClientVendorDto findByEmail(String email) throws ClientVendorNotFoundException;
 
-    ClientVendorDto findById(long id) throws ClientVendorNotFoundException;
+    ClientVendorDto findById(Long id) throws ClientVendorNotFoundException;
+
+    List<ClientVendorDto> findAllByType(ClientVendorType type);
 
     List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type);
 

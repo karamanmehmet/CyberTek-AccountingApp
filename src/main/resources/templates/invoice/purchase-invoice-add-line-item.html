@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
 <!-- BEGIN : Head-->
 
-<head th:replace="fragments :: page_head"/>
+<head>
+    <head th:replace="fragments :: page_head" />
+    <title>Add Item</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/purchase.png}">
+
+</head>
 <!-- END : Head-->
 
 <!-- BEGIN : Body-->
@@ -52,15 +57,16 @@
                                                  aria-labelledby="account-tab">
 
                                                 <!-- Account form starts -->
-                                                <form novalidate>
+                                                <form novalidate th:action="@{/invoice/purchaseAddItem}" method="post"
+                                                      th:object="${invoice}">
                                                     <div class="row">
-                                                        <div class="col-12 col-md-6">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="users-edit-username">Invoice No</label>
-                                                                    <input type="text" id="users-edit-username" readonly
-                                                                           class="form-control" placeholder="Username"
-                                                                           value="P INV 001" required
+                                                                    <label for="invoice-no">Invoice No</label>
+                                                                    <input type="text" id="invoice-no" readonly
+                                                                           class="form-control" th:placeholder="${invoice.invoiceNo}"
+                                                                           required th:value="${invoice.invoiceNo}" th:field="*{invoiceNo}"
                                                                            aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -68,7 +74,7 @@
 
                                                         </div>
 
-                                                        <div class="col-12 col-md-6">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-username">Invoice
@@ -81,14 +87,7 @@
                                                             </div>
 
                                                         </div>
-
-
-                                                    </div>
-
-
-                                                    <div class="row">
-
-                                                        <div class="col-12 col-md-3">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-role">Vendor</label>
@@ -99,7 +98,13 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-3">
+
+                                                    </div>
+
+
+                                                    <div class="row">
+
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-role">Product</label>
@@ -112,7 +117,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-3">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-username">Quantity</label>
@@ -124,7 +129,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="col-12 col-md-3">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-username">Price</label>
@@ -202,11 +207,7 @@
                                                     <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
                                                         <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
                                                                 type="submit">
-                                                            <a href="purchase-invoice-list.html" class="btn-primary">Done</a>
-                                                        </button>
-                                                        <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
-                                                                type="submit">
-                                                            <a href="purchase-invoice-list.html" class="btn-danger">Cancel</a>
+                                                            <a th:href="@{/invoice/purchaseList}" class="btn-primary">Done</a>
                                                         </button>
                                                     </div>
 
