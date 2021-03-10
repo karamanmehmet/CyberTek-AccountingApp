@@ -3,7 +3,7 @@
 <!-- BEGIN : Head-->
 
 <head>
-    <head th:replace="fragments :: page_head" />
+    <head th:replace="fragments :: page_head"/>
     <title>Add Item</title>
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/purchase.png}">
 
@@ -57,16 +57,17 @@
                                                  aria-labelledby="account-tab">
 
                                                 <!-- Account form starts -->
-                                                <form novalidate th:action="@{/invoice/purchaseAddItem}" method="post"
-                                                      th:object="${invoice}">
+                                                <form novalidate th:object="${invoice}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="invoice-no">Invoice No</label>
                                                                     <input type="text" id="invoice-no" readonly
-                                                                           class="form-control" th:placeholder="${invoice.invoiceNo}"
-                                                                           required th:value="${invoice.invoiceNo}" th:field="*{invoiceNo}"
+                                                                           class="form-control"
+                                                                           th:placeholder="${invoice.invoiceNo}"
+                                                                           required th:value="${invoice.invoiceNo}"
+                                                                           th:field="*{invoiceNo}"
                                                                            aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -77,12 +78,12 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="users-edit-username">Invoice
-                                                                        Date</label>
-                                                                    <input type="text" id="users-edit-username" readonly
-                                                                           class="form-control" placeholder="Username"
-                                                                           value="01.01.2020" required
-                                                                           aria-invalid="false">
+                                                                    <label for="invoice-date">Invoice Date</label>
+                                                                    <input type="text" id="invoice-date" readonly=""
+                                                                           class="form-control"
+                                                                           aria-invalid="false"
+                                                                           th:field="*{invoiceDate}"
+                                                                           th:placeholder="${#temporals.format(invoiceDate, 'dd.MM.yyyy')}">
                                                                 </div>
                                                             </div>
 
@@ -90,18 +91,23 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="users-edit-role">Vendor</label>
-                                                                    <input type="text" id="users-edit-username" readonly
-                                                                           class="form-control" placeholder="Username"
-                                                                           value="Acme Corp" required
-                                                                           aria-invalid="false">
+                                                                    <label for="select-vendor">Vendor</label>
+                                                                    <select id="select-vendor" class="form-control"
+                                                                            required disabled readonly th:field="*{clientVendor}">
+                                                                        <option th:each="theClientVendor : ${vendors}"
+                                                                                th:value="${theClientVendor.id}"
+                                                                                th:text="${theClientVendor.companyName}"></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                     </div>
 
+                                                </form>
 
+                                                <form novalidate th:action="@{/invoice/purchaseAddItem/{invoiceNo}(invoiceNo=${invoice.invoiceNo})}" method="post"
+                                                      th:object="${invoiceProduct}">
                                                     <div class="row">
 
                                                         <div class="col-12 col-md-4">
@@ -109,10 +115,11 @@
                                                                 <div class="controls">
                                                                     <label for="users-edit-role">Product</label>
                                                                     <select id="users-edit-role" class="form-control"
-                                                                            required>
+                                                                            th:field="*{product}" required>
                                                                         <option value="">Select Product</option>
-                                                                        <option value="1">Apple</option>
-                                                                        <option value="2">HP Notebook</option>
+                                                                        <option th:each="theProduct : ${products}"
+                                                                                th:value="${theProduct.id}"
+                                                                                th:text="${theProduct.name}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -120,10 +127,10 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="users-edit-username">Quantity</label>
-                                                                    <input type="text" id="users-edit-username"
-                                                                           class="form-control" placeholder="Username"
-                                                                           value="2"
+                                                                    <label for="quantity">Quantity</label>
+                                                                    <input type="number" id="quantity"
+                                                                           class="form-control" placeholder="Quantity"
+                                                                           th:field="*{qty}"
                                                                            required aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -132,10 +139,11 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="users-edit-username">Price</label>
-                                                                    <input type="text" id="users-edit-username"
-                                                                           class="form-control" placeholder="Username"
-                                                                           value="648" required aria-invalid="false">
+                                                                    <label for="price">Price</label>
+                                                                    <input type="text" id="price"
+                                                                           class="form-control" placeholder="Price"
+                                                                           th:field="*{unitPrice}"
+                                                                           required aria-invalid="false">
                                                                 </div>
                                                             </div>
 
@@ -143,8 +151,8 @@
 
                                                         <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
 
-                                                            <button type="submit"
-                                                                    class="btn btn-warning mb-2 mb-sm-0 mr-sm-2">
+                                                            <button type="submit" name="action" value="addItem"
+                                                                    class="btn btn-success mb-2 mb-sm-0 mr-sm-2">
                                                                 Add Item
                                                             </button>
 
@@ -159,43 +167,22 @@
                                                             <table class="table mb-0 mt-3">
                                                                 <thead>
                                                                 <tr>
-                                                                    <th>Product</th>
-                                                                    <th>Price</th>
-                                                                    <th>Quantity</th>
-                                                                    <th>Total</th>
-                                                                    <th>Delete</th>
+                                                                    <th class="text-truncate">Product</th>
+                                                                    <th class="text-truncate">Price</th>
+                                                                    <th class="text-truncate">Quantity</th>
+                                                                    <th class="text-truncate">Total</th>
+                                                                    <th class="text-truncate">Delete</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <tr>
-                                                                    <td>PC</td>
-                                                                    <td>600$</td>
-                                                                    <td>2</td>
-                                                                    <td>1.200$</td>
-                                                                    <td>
-                                                                        <a href="javascript:;" class="danger">
-                                                                            <i class="ft-trash font-medium-3"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>PC</td>
-                                                                    <td>600$</td>
-                                                                    <td>2</td>
-                                                                    <td>1.200$</td>
-                                                                    <td>
-                                                                        <a href="javascript:;" class="danger">
-                                                                            <i class="ft-trash font-medium-3"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>PC</td>
-                                                                    <td>600$</td>
-                                                                    <td>2</td>
-                                                                    <td>1.200$</td>
-                                                                    <td>
-                                                                        <a href="javascript:" class="danger">
+                                                                <tr th:each="theInvoiceProduct : ${invoiceProductList}">
+                                                                    <td class="text-truncate" th:text="${theInvoiceProduct.product.name}"></td>
+                                                                    <td class="text-truncate" th:text="${theInvoiceProduct.unitPrice}"></td>
+                                                                    <td class="text-truncate" th:text="${theInvoiceProduct.qty}"></td>
+                                                                    <td class="text-truncate" th:text="${(theInvoiceProduct.unitPrice * theInvoiceProduct.qty)}"></td>
+                                                                    <td class="text-truncate">
+                                                                        <a type="submit" name="action" value="delete"
+                                                                           class="danger">
                                                                             <i class="ft-trash font-medium-3"></i>
                                                                         </a>
                                                                     </td>
@@ -205,12 +192,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                        <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
-                                                                type="submit">
+                                                        <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">
                                                             <a th:href="@{/invoice/purchaseList}" class="btn-primary">Done</a>
                                                         </button>
                                                     </div>
-
 
                                                 </form>
                                                 <!-- Account form ends -->

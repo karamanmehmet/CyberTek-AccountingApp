@@ -97,7 +97,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException {
 
-        //TODO SecurityContextHolder
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 

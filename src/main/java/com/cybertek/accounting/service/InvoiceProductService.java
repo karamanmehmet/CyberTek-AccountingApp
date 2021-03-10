@@ -18,6 +18,8 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDto> findAll();
 
+    List<InvoiceProductDto> findByInvoice(InvoiceDto invoiceDto) throws CompanyNotFoundException, InvoiceNotFoundException;
+
     InvoiceProductDto findByInvoiceAndProduct(InvoiceDto invoice, ProductDto product) throws InvoiceProductNotFoundException, ProductNotFoundException, CompanyNotFoundException;
 
 //    InvoiceProductDto findById(long id);

@@ -12,7 +12,7 @@ public interface ProductService {
 
     ProductDto create(ProductDto productDto) throws ProductFieldNullException, ProductAlreadyExistException, CompanyNotFoundException;
 
-    ProductDto findById(long id) throws ProductNotFoundException;
+    ProductDto findById(Long id) throws ProductNotFoundException;
 
     List<ProductDto> findAll();
 
