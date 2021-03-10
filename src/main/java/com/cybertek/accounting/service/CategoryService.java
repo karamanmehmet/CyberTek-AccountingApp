@@ -13,7 +13,7 @@ public interface CategoryService {
 
     CategoryDto create(CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException;
 
-    CategoryDto findById(long id) throws CategoryNotFoundException;
+    CategoryDto findById(Long id) throws CategoryNotFoundException;
 
     List<CategoryDto> findAll() throws CompanyNotFoundException;
 

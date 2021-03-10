@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @ConfigurationPropertiesBinding
 public class CategoryDtoConverter implements Converter<String, CategoryDto> {
 
-    private CategoryService service;
+    private final CategoryService service;
 
-    public void setCategory(CategoryService service) {
+    public CategoryDtoConverter(@Lazy CategoryService service) {
         this.service = service;
     }
 
     @SneakyThrows
     @Override
-    public CategoryDto convert(String s) {
-        return service.findById(Long.parseLong(s));
+    public CategoryDto convert(String id) {
+        return service.findById(Long.valueOf(id));
     }
 }

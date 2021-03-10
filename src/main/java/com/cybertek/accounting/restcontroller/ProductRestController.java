@@ -41,7 +41,7 @@ public class ProductRestController {
     }
 
     @DeleteMapping("/id}")
-    public void delete(@PathVariable("id") Long id) throws ProductNotFoundException {
+    public void delete(@PathVariable("id") Long id) throws ProductNotFoundException, CompanyNotFoundException {
 
         service.delete(service.findById(id));
         System.out.println(id+ " Product is deleted");

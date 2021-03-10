@@ -88,9 +88,10 @@ public class ProductController {
         return "/product/product-update";
     }
 
-    @PostMapping("/update")
-    public String updateProduct(@ModelAttribute ProductDto productDto) {
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable("id") long id, ProductDto productDto) {
         try {
+            productDto.setId(id);
             productService.update(productDto);
         } catch (ProductFieldNullException | ProductNotFoundException e) {
             e.printStackTrace();
