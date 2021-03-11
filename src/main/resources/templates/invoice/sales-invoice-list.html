@@ -4,7 +4,7 @@
 
 <head>
     <head th:replace="fragments :: page_head" />
-    <title>Purchase List</title>
+    <title>Sales List</title>
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/invoice.png}">
 
 </head>
@@ -34,8 +34,8 @@
                     <div class="users-list-filter px-2">
 
                         <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                            <a class="btn btn-success bg-light-success mb-1" th:href="@{/invoice/purchaseCreate}"><i
-                                    class="fa fa-plus mr-1"></i>Create Purchase Invoice</a>
+                            <a class="btn btn-success bg-light-success mb-1" th:href="@{/invoice/salesCreate}"><i
+                                    class="fa fa-plus mr-1"></i>Create Sales Invoice</a>
                         </div>
 
                     </div>
@@ -55,7 +55,7 @@
                                                     <tr>
                                                         <th class="text-truncate">Invoice No</th>
                                                         <th class="text-truncate">Invoice Date</th>
-                                                        <th class="text-truncate">Vendor</th>
+                                                        <th class="text-truncate">Client</th>
                                                         <th class="text-truncate">Cost</th>
                                                         <th class="text-truncate">Tax</th>
                                                         <th class="text-truncate">Total</th>
@@ -64,34 +64,34 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="purchaseInvoice : ${purchaseInvoices}">
+                                                    <tr th:each="salesInvoice : ${salesInvoices}">
                                                         <td class="text-truncate"
-                                                            th:text="${purchaseInvoice.invoiceNo}"></td>
+                                                            th:text="${salesInvoice.invoiceNo}"></td>
                                                         <td class="text-truncate"
-                                                            th:text="${#temporals.format(purchaseInvoice.invoiceDate, 'dd.MM.yyyy')}"></td>
+                                                            th:text="${#temporals.format(salesInvoice.invoiceDate, 'dd.MM.yyyy')}"></td>
                                                         <td class="text-truncate"
-                                                            th:text="${purchaseInvoice.clientVendor.companyName}"></td>
+                                                            th:text="${salesInvoice.clientVendor.companyName}"></td>
                                                         <td class="text-truncate"
-                                                            th:text="${purchaseInvoice.monetaryDetailDto.cost}"></td>
+                                                            th:text="${salesInvoice.monetaryDetailDto.cost}"></td>
                                                         <td class="text-truncate"
-                                                            th:text="${purchaseInvoice.monetaryDetailDto.tax}"></td>
+                                                            th:text="${salesInvoice.monetaryDetailDto.tax}"></td>
                                                         <td class="text-truncate"
-                                                            th:text="${purchaseInvoice.monetaryDetailDto.totalCost}"></td>
+                                                            th:text="${salesInvoice.monetaryDetailDto.totalCost}"></td>
                                                         <td>
-                                                            <a th:href="@{/invoice/purchaseAddItem/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}">
+                                                            <a th:href="@{/invoice/salesAddItem/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}">
                                                                 <i class="ft-list"></i>
                                                             </a>
                                                         </td>
                                                         <td>
-                                                            <form novalidate th:if="${purchaseInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/purchaseUpdate/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}" method="post">
+                                                            <form novalidate th:if="${salesInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/salesUpdate/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}" method="post">
                                                                 <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="approve">Approve</button>
                                                                 <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="delete">Delete</button>
                                                             </form>
                                                             <div class="row">
-                                                                <form novalidate th:unless="${purchaseInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}" method="get">
+                                                                <form novalidate th:unless="${salesInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}" method="get">
                                                                     <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="toInvoice">To Invoice</button>
                                                                 </form>
-                                                                <form novalidate th:unless="${purchaseInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/purchaseUpdate/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}" method="post">
+                                                                <form novalidate th:unless="${salesInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/salesUpdate/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}" method="post">
                                                                     <button class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="archive">Archive</button>
                                                                 </form>
                                                             </div>

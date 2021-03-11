@@ -36,7 +36,7 @@ public class AccountingAppApplication {
 			Role roleManager  = new Role("ROLE_MANAGER");
 			Role roleEmployee = new Role("ROLE_EMPLOYEE");
 
-			 roleRepository.save(roleRoot);
+			roleRepository.save(roleRoot);
 			roleRepository.save(roleAdmin);
 			roleRepository.save(roleManager);
 			roleRepository.save(roleEmployee);
@@ -122,12 +122,12 @@ public class AccountingAppApplication {
 		//Create SP Table 1- Vendor 1 Client
 
 			ClientVendor vendorSP = new ClientVendor("Active azure","+142356662","active@azure.com",crustyCompany,
-					ClientVendorType.VENDOR,"3245324","TX","Auckland Hill 14",true);
+					ClientVendorType.VENDOR,"3245324","Auckland Hill 14","TX",true);
 
 			clientVendorRepository.saveAndFlush(vendorSP);
 
 			ClientVendor clientSP = new ClientVendor("Bayou Tracking","+142356662","bayou@tracking.com",crustyCompany,
-					ClientVendorType.CLIENT,"234245","PH","Chesterfield Industrial Park 26",true);
+					ClientVendorType.CLIENT,"234245","Chesterfield Industrial Park 26","PH",true);
 
 			clientVendorRepository.saveAndFlush(clientSP);
 
@@ -136,7 +136,7 @@ public class AccountingAppApplication {
 		//Create Invoice
 
 			Invoice invoiceSales = new Invoice("INV-001", InvoiceStatus.OPEN, InvoiceType.SALES,LocalDate.now().minusDays(1),
-					vendorSP,crustyCompany,true);
+					clientSP,crustyCompany,true);
 
 			invoiceSales=	invoiceRepository.saveAndFlush(invoiceSales);
 

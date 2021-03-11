@@ -33,6 +33,7 @@ public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailSe
         double tax = 0;
         double cost = 0;
         double totalCost = 0;
+        double balanceDue = 0;
 
         //TODO SecurityContextHolder
 
@@ -47,7 +48,7 @@ public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailSe
         List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoice(invoice);
 
         if (invoiceProductList.size() == 0) {
-            return new InvoiceMonetaryDetailDto(0, 0, 0);
+            return new InvoiceMonetaryDetailDto(tax, cost, totalCost, balanceDue);
         }
 
         for (InvoiceProduct invoiceProduct : invoiceProductList) {
@@ -64,10 +65,12 @@ public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailSe
         cost = BigDecimal.valueOf(cost).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
         totalCost = cost + tax;
+        balanceDue = totalCost / 2;
 
         totalCost = BigDecimal.valueOf(totalCost).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        balanceDue = BigDecimal.valueOf(balanceDue).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
-        return new InvoiceMonetaryDetailDto(tax, cost, totalCost);
+        return new InvoiceMonetaryDetailDto(tax, cost, totalCost, balanceDue);
 
     }
 

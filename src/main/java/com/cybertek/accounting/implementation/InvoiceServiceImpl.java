@@ -98,7 +98,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException {
+    public boolean delete(String invoiceNo) throws InvoiceNotFoundException, CompanyNotFoundException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
@@ -106,12 +106,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         User user = userRepository.findByEmail(email);
         Company company = user.getCompany();
 
-        Invoice foundInvoice = repository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), company);
+        Invoice foundInvoice = repository.findByInvoiceNoAndCompany(invoiceNo, company);
 
         if (foundInvoice == null) throw new InvoiceNotFoundException("This invoice does not exist");
 
         foundInvoice.setEnabled(false);
-        foundInvoice.setInvoiceNo(invoice.getInvoiceNo() + "-" + foundInvoice.getId());
+        foundInvoice.setInvoiceNo(invoiceNo + "-" + foundInvoice.getId());
 
         repository.saveAndFlush(foundInvoice);
 
@@ -119,10 +119,19 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceDto approve(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
-        invoiceDto.setInvoiceStatus(InvoiceStatus.APPROVED);
-        update(invoiceDto);
-        return invoiceDto;
+    public InvoiceDto approve(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
+        InvoiceDto foundedInvoiceDto = findByInvoiceNo(invoiceNo);
+        foundedInvoiceDto.setInvoiceStatus(InvoiceStatus.APPROVED);
+        update(foundedInvoiceDto);
+        return foundedInvoiceDto;
+    }
+
+    @Override
+    public InvoiceDto archive(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
+        InvoiceDto foundedInvoiceDto = findByInvoiceNo(invoiceNo);
+        foundedInvoiceDto.setInvoiceStatus(InvoiceStatus.ARCHIVED);
+        update(foundedInvoiceDto);
+        return foundedInvoiceDto;
     }
 
     @Override
