@@ -51,7 +51,7 @@ public class InvoiceRestController {
 
         CompanyDto foundCompany = companyService.findByEmail(companyEmail);
 
-        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateAsc(foundCompany);
+        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateAsc();
     }
 
     @GetMapping("/first3ByCompanyDesc/{companyEmail}")

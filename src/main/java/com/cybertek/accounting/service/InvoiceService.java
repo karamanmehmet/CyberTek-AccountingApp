@@ -29,7 +29,7 @@ public interface InvoiceService {
 
     InvoiceDto findByInvoiceNo(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc() throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
     List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
