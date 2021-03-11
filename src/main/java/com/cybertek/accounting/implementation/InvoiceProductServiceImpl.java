@@ -32,30 +32,18 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     @Override
     public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
 
-        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
+        Company foundCompany = getCompanyFromSecurity();
+        Invoice foundInvoice = checkInvoice(invoiceProduct, foundCompany);
+        Product foundProduct = checkProduct(invoiceProduct);
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProductAndInvoiceCompany(foundInvoice, foundProduct, foundCompany).orElse(null);
 
-        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProduct.getInvoice().getInvoiceNo(), foundCompany);
-
-        if (foundInvoice == null) {
-            throw new InvoiceNotFoundException("No invoice found");
-        }
-
-        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
-
-        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElse(null);
-
-        if (foundProduct.getQty() < invoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
-            throw new NotEnoughProductInStockException("Not enough product in the stock");
-        }else if (foundProduct.getQty() >= invoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES){
-            foundProduct.setQty(foundProduct.getQty() - invoiceProduct.getQty());
-        }else {
-            foundProduct.setQty(foundProduct.getQty() + invoiceProduct.getQty());
-        }
+        checkStocks(foundProduct, foundInvoice, foundInvoiceProduct, invoiceProduct);
 
         productRepository.saveAndFlush(foundProduct);
 
         if (foundInvoiceProduct != null) {
             foundInvoiceProduct.setQty(foundInvoiceProduct.getQty() + invoiceProduct.getQty());
+            foundInvoiceProduct.setUnitPrice(invoiceProduct.getUnitPrice());
         } else {
 
             foundInvoiceProduct = new InvoiceProduct();
@@ -78,25 +66,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     @Override
     public InvoiceProductDto update(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
 
-        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
+        Company foundCompany = getCompanyFromSecurity();
+        Invoice foundInvoice = checkInvoice(invoiceProduct, foundCompany);
+        Product foundProduct = checkProduct(invoiceProduct);
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProductAndInvoiceCompany(foundInvoice, foundProduct, foundCompany).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
-        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProduct.getInvoice().getInvoiceNo(), foundCompany);
-
-        if (foundInvoice == null) {
-            throw new InvoiceNotFoundException("No invoice found");
-        }
-
-        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
-
-        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
-
-        if (foundProduct.getQty() < invoiceProduct.getQty() - foundInvoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
-            throw new NotEnoughProductInStockException("Not enough product in the stock");
-        }else if (foundProduct.getQty() >= invoiceProduct.getQty() - foundInvoiceProduct.getQty() && foundInvoice.getInvoiceType() == InvoiceType.SALES) {
-            foundProduct.setQty(foundProduct.getQty() - (invoiceProduct.getQty() - foundInvoiceProduct.getQty()));
-        }else {
-            foundProduct.setQty(foundProduct.getQty() + (invoiceProduct.getQty() - foundInvoiceProduct.getQty()));
-        }
+        checkStocks(foundProduct, foundInvoice, foundInvoiceProduct, invoiceProduct);
 
         productRepository.saveAndFlush(foundProduct);
 
@@ -106,31 +81,15 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
 
         return mapper.convert(foundInvoiceProduct, new InvoiceProductDto());
-
     }
 
     @Override
     public void delete(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
 
-        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
-
-        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProduct.getInvoice().getInvoiceNo(), foundCompany);
-
-        if (foundInvoice == null) {
-            throw new InvoiceNotFoundException("No invoice found");
-        }
-
-        Product foundProduct = productRepository.findById(invoiceProduct.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
-
-        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
-
-        if (foundInvoice.getInvoiceType() == InvoiceType.SALES) {
-            foundProduct.setQty(foundProduct.getQty() + foundInvoiceProduct.getQty());
-        }else if (foundInvoice.getInvoiceType() == InvoiceType.PURCHASE && foundInvoiceProduct.getQty() < foundProduct.getQty()) {
-            foundProduct.setQty(foundProduct.getQty() - foundInvoiceProduct.getQty());
-        }else {
-            throw new NotEnoughProductInStockException("Not enough product in the stock");
-        }
+        Company foundCompany = getCompanyFromSecurity();
+        Invoice foundInvoice = checkInvoice(invoiceProduct, foundCompany);
+        Product foundProduct = checkProduct(invoiceProduct);
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProductAndInvoiceCompany(foundInvoice, foundProduct, foundCompany).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
         productRepository.saveAndFlush(foundProduct);
 
@@ -140,43 +99,29 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         productRepository.saveAndFlush(foundProduct);
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
-
     }
 
     @Override
     public List<InvoiceProductDto> findAll() {
-
-        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAll();
-
-        List<InvoiceProductDto> dtos = invoiceProductList.stream().map(invoiceProduct -> {return mapper.convert(invoiceProduct, new InvoiceProductDto());}).collect(Collectors.toList());
-
-        return dtos;
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceCompany(getCompanyFromSecurity());
+        return invoiceProductList.stream().map(invoiceProduct -> {return mapper.convert(invoiceProduct, new InvoiceProductDto());}).collect(Collectors.toList());
     }
 
     @Override
     public List<InvoiceProductDto> findByInvoice(InvoiceDto invoiceDto) throws CompanyNotFoundException, InvoiceNotFoundException {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
-        User user = userRepository.findByEmail(email);
-        Company company = user.getCompany();
-
-        return findByInvoiceAndCompany(invoiceDto, mapper.convert(company, new CompanyDto()));
+        Company foundCompany = getCompanyFromSecurity();
+        return findByInvoiceAndCompany(invoiceDto, mapper.convert(foundCompany, new CompanyDto()));
     }
 
     @Override
     public InvoiceProductDto findByInvoiceAndProduct(InvoiceDto invoice, ProductDto product) throws InvoiceProductNotFoundException, ProductNotFoundException, CompanyNotFoundException {
 
-        Company foundCompany = companyRepository.findByEmail("karaman@crustycloud.com").orElseThrow(() -> new CompanyNotFoundException("No company found"));
-
+        Company foundCompany = getCompanyFromSecurity();
         Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoice.getInvoiceNo(), foundCompany);
         Product foundProduct = productRepository.findById(product.getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
-
-        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProduct(foundInvoice, foundProduct).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProductAndInvoiceCompany(foundInvoice, foundProduct, foundCompany).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
         return mapper.convert(foundInvoiceProduct, new InvoiceProductDto());
-
     }
 
     @Override
@@ -198,6 +143,47 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         return invoiceProductDtoList;
 
+    }
+
+    private Invoice checkInvoice(InvoiceProductDto invoiceProductDto, Company company) throws InvoiceNotFoundException {
+
+        Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProductDto.getInvoice().getInvoiceNo(), company);
+
+        if (foundInvoice == null) {
+            throw new InvoiceNotFoundException("No invoice found");
+        }
+        return foundInvoice;
+    }
+
+    private Product checkProduct(InvoiceProductDto invoiceProductDto) throws ProductNotFoundException {
+        Product foundProduct = productRepository.findById(invoiceProductDto.getProduct().getId()).orElseThrow(() -> new ProductNotFoundException("No product found"));
+        return foundProduct;
+    }
+
+    private Company getCompanyFromSecurity() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        Company foundCompany = user.getCompany();
+
+        return foundCompany;
+    }
+
+    private void checkStocks(Product product, Invoice invoice, InvoiceProduct invoiceProduct, InvoiceProductDto invoiceProductDto) throws NotEnoughProductInStockException {
+
+        if (invoiceProduct == null) {
+            invoiceProduct = new InvoiceProduct();
+        }
+
+        if (product.getQty() < invoiceProductDto.getQty() - invoiceProduct.getQty() && invoice.getInvoiceType() == InvoiceType.SALES) {
+            throw new NotEnoughProductInStockException("Not enough product in the stock");
+        }else if (product.getQty() >= invoiceProductDto.getQty() - invoiceProduct.getQty() && invoice.getInvoiceType() == InvoiceType.SALES) {
+            product.setQty(product.getQty() - (invoiceProductDto.getQty() - invoiceProduct.getQty()));
+        }else {
+            product.setQty(product.getQty() + (invoiceProductDto.getQty() - invoiceProduct.getQty()));
+        }
     }
 
 }
