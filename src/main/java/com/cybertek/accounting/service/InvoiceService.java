@@ -18,18 +18,19 @@ public interface InvoiceService {
 
     InvoiceDto update(InvoiceDto invoice) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    boolean delete(InvoiceDto invoice) throws InvoiceNotFoundException, CompanyNotFoundException;
+    boolean delete(String invoiceNo) throws InvoiceNotFoundException, CompanyNotFoundException;
 
-    InvoiceDto approve(InvoiceDto invoiceDto) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+    InvoiceDto approve(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+
+    InvoiceDto archive(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
     Invoice findById(long id) throws InvoiceNotFoundException;
 
     InvoiceDto findByIdDto(long id) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-
     InvoiceDto findByInvoiceNo(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
-    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+    List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateAsc() throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 
     List<InvoiceDto> findFirst3ByCompanyOrderByInvoiceDateDesc(CompanyDto company) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 

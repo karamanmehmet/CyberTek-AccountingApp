@@ -4,7 +4,7 @@
 
 <head>
     <head th:replace="fragments :: page_head"/>
-    <title>Create Purchase</title>
+    <title>Create Sales</title>
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/invoice.png}">
 
 </head>
@@ -35,8 +35,8 @@
 
 
                         <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/invoice/purchaseList}"><i
-                                    class="fa fa-list mr-1"></i>Purchase Invoice List</a>
+                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/invoice/salesList}"><i
+                                    class="fa fa-list mr-1"></i>Sales Invoice List</a>
                         </div>
                     </div>
                     <!-- Filter ends -->
@@ -56,7 +56,7 @@
                                                  aria-labelledby="account-tab">
 
                                                 <!-- Account form starts -->
-                                                <form novalidate th:action="@{/invoice/purchaseCreate}" method="post"
+                                                <form novalidate th:action="@{/invoice/salesCreate}" method="post"
                                                       th:object="${invoice}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-6">
@@ -77,11 +77,11 @@
                                                         <div class="col-12 col-md-6">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="select-vendor">Vendor</label>
+                                                                    <label for="select-vendor">Client</label>
                                                                     <select id="select-vendor" class="form-control"
                                                                             required th:field="*{clientVendor}">
                                                                         <option value="">Select Vendor</option>
-                                                                        <option th:each="theClientVendor : ${vendors}"
+                                                                        <option th:each="theClientVendor : ${clients}"
                                                                                 th:value="${theClientVendor.id}"
                                                                                 th:text="${theClientVendor.companyName}"></option>
                                                                     </select>
@@ -93,7 +93,7 @@
 
                                                     <div class="col-12 d-flex flex-sm-row flex-column justify-content-start mt-3 mt-sm-2">
                                                         <button type="submit" name="action" value="save" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Create Invoice</button>
-                                                        <a type="reset" value="cancel" class="btn btn-secondary" th:href="@{/invoice/purchaseList}">Cancel</a>
+                                                        <a type="reset" value="cancel" class="btn btn-secondary" th:href="@{/invoice/salesList}">Cancel</a>
                                                     </div>
 
                                                 </form>

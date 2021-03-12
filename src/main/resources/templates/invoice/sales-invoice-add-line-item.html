@@ -35,8 +35,8 @@
 
 
                         <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/invoice/purchaseList}"><i
-                                    class="fa fa-list mr-1"></i>Purchase Invoice List</a>
+                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/invoice/salesList}"><i
+                                    class="fa fa-list mr-1"></i>Sales Invoice List</a>
                         </div>
                     </div>
 
@@ -94,7 +94,7 @@
                                                                     <label for="select-vendor">Vendor</label>
                                                                     <select id="select-vendor" class="form-control"
                                                                             required disabled readonly th:field="*{clientVendor}">
-                                                                        <option th:each="theClientVendor : ${vendors}"
+                                                                        <option th:each="theClientVendor : ${clients}"
                                                                                 th:value="${theClientVendor.id}"
                                                                                 th:text="${theClientVendor.companyName}"></option>
                                                                     </select>
@@ -106,7 +106,7 @@
 
                                                 </form>
 
-                                                <form novalidate th:action="@{/invoice/purchaseAddItem/{invoiceNo}(invoiceNo=${invoice.invoiceNo})}" method="post"
+                                                <form novalidate th:action="@{/invoice/salesAddItem/{invoiceNo}(invoiceNo=${invoice.invoiceNo})}" method="post"
                                                       th:object="${invoiceProduct}">
                                                     <div class="row">
 
@@ -183,7 +183,7 @@
                                                                     <td class="text-truncate" th:text="${theInvoiceProduct.qty}"></td>
                                                                     <td class="text-truncate" th:text="${(theInvoiceProduct.unitPrice * theInvoiceProduct.qty)}"></td>
                                                                     <td class="text-truncate">
-                                                                        <form th:action="@{/invoice/purchaseRemoveItem/{id}(id=${theInvoiceProduct.id})}" method="post" th:object="${theInvoiceProduct}">
+                                                                        <form th:action="@{/invoice/salesRemoveItem/{id}(id=${theInvoiceProduct.id})}" method="post" th:object="${theInvoiceProduct}">
                                                                             <button class="danger">
                                                                                 <i class="ft-trash font-medium-3"></i>
                                                                             </button>
@@ -196,7 +196,7 @@
                                                     </div>
 
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                    <a th:href="@{/invoice/purchaseList}" type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Done</a>
+                                                    <a th:href="@{/invoice/salesList}" type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Done</a>
                                                 </div>
 
                                             </div>

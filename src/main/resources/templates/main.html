@@ -170,30 +170,14 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>INV-001</td>
-                                                <td>2/12/2021</td>
-                                                <td>$19.94</td>
-                                                <td>
-                                                    <span class="badge badge-pill bg-light-primary cursor-pointer">Sales</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>INV-002</td>
-                                                <td>2/12/2021</td>
-                                                <td>$99.00</td>
-                                                <td>
-                                                    <span class="badge badge-pill bg-light-success cursor-pointer">Purchase</span>
-                                                </td>
 
-
-                                            </tr>
-                                            <tr>
-                                                <td>INV-003</td>
-                                                <td>2/12/2021</td>
-                                                <td>$299.00</td>
-                                                <td>
-                                                    <span class="badge badge-pill bg-light-primary cursor-pointer">Sales</span>
+                                            <tr th:each="invoice:${invoices}">
+                                                <td th:text="${invoice.getInvoiceNo()}"></td>
+                                                <td th:text="${invoice.getInvoiceDate()}" class="text-truncate"></td>
+                                                <td th:text="'$'+${invoice.getMonetaryDetailDto().getTotalCost()}" class="text-truncate"></td>
+                                                <td th:switch="${invoice.getInvoiceType().value}">
+                                                    <span th:case="'Sales'" class="badge badge-pill bg-light-primary cursor-pointer">Sales</span>
+                                                    <span th:case="'Purchase'" class="badge badge-pill bg-light-success cursor-pointer">Purchase</span>
                                                 </td>
                                             </tr>
 

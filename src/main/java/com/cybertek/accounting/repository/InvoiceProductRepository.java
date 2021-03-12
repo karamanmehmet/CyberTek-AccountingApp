@@ -18,7 +18,9 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct,L
 
     List<InvoiceProduct> findByProduct(Product product);
 
-    Optional<InvoiceProduct> findByInvoiceAndProduct(Invoice invoice, Product product);
+    List<InvoiceProduct> findAllByInvoiceCompany(Company company);
+
+    Optional<InvoiceProduct> findByInvoiceAndProductAndInvoiceCompany(Invoice invoice, Product product, Company company);
 
     //will do in future find by Company, Incovice Type / Status and Order By Invoice Date
     //anyone can do with Native / Query will be appreciated

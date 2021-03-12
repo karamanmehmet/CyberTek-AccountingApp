@@ -43,7 +43,7 @@ public class InvoiceRestController {
 
     @DeleteMapping
     public boolean deleteInvoice(@RequestBody InvoiceDto invoiceDto) throws InvoiceNotFoundException, CompanyNotFoundException {
-        return invoiceService.delete(invoiceDto);
+        return invoiceService.delete(invoiceDto.getInvoiceNo());
     }
 
     @GetMapping("/first3ByCompanyAsc/{companyEmail}")
@@ -51,7 +51,7 @@ public class InvoiceRestController {
 
         CompanyDto foundCompany = companyService.findByEmail(companyEmail);
 
-        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateAsc(foundCompany);
+        return invoiceService.findFirst3ByCompanyOrderByInvoiceDateAsc();
     }
 
     @GetMapping("/first3ByCompanyDesc/{companyEmail}")

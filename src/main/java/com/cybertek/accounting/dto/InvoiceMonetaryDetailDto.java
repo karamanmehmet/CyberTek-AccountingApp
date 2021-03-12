@@ -14,5 +14,6 @@ public class InvoiceMonetaryDetailDto {
     private double tax;
     private double cost;
     private double totalCost;
+    private double balanceDue;
 
 }

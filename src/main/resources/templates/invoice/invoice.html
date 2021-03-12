@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
+<!-- BEGIN : Head-->
+
+<head>
+    <head th:replace="fragments :: page_head"/>
+    <title>Invoice</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/invoice.png}">
+
+</head>
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover"
+      data-menu="horizontal-menu" data-col="2-columns">
+
+<div th:replace="fragments :: page_header"/>
+<!-- Navbar (Header) Ends-->
+
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+<div class="wrapper">
+
+    <div th:replace="fragments :: page_menu"/>
+
+
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <!-- Invoice template starts -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="content-header">Invoice</div>
+                    </div>
+                </div>
+                <section class="invoice-template">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content p-3">
+                                    <div id="invoice-template" class="card-body pb-0">
+                                        <!-- Invoice Company Details starts -->
+                                        <div id="invoice-company-details" class="row">
+                                            <div class="col-md-6 col-12">
+                                                <div class="media">
+
+                                                    <div class="media-body ml-4">
+                                                        <ul class="m-0 list-unstyled">
+                                                            <li class="text-bold-800" th:text="${invoice.company.title}"></li>
+                                                            <li class="text-bold-800" th:text="${invoice.company.address1 + ', ' + invoice.company.address2 + ','}"></li>
+                                                            <li class="text-bold-800" th:text="${invoice.company.zip + ', ' + invoice.company.state}"></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 col-12 text-right">
+                                                <h2 class="primary text-uppercase">Invoice</h2>
+                                                <p class="pb-3" th:text="${invoice.invoiceNo}"></p>
+                                                <ul class="px-0 list-unstyled">
+                                                    <li>Balance Due</li>
+                                                    <li class="font-medium-2 text-bold-700" th:text="${'$' + invoice.monetaryDetailDto.balanceDue}"></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- Invoice Company Details ends -->
+                                        <!-- Invoice Customer Details starts -->
+                                        <div id="invoice-customer-details" class="row">
+                                            <div class="col-12 text-left">
+                                                <p class="text-muted mb-1">Bill To</p>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <ul class="m-0 list-unstyled">
+                                                    <li class="text-bold-800" th:text="${invoice.clientVendor.companyName}"></li>
+                                                    <li class="text-bold-800" th:text="${invoice.clientVendor.address + ','}"></li>
+                                                    <li class="text-bold-800" th:text="${invoice.clientVendor.zipCode + ', ' + invoice.clientVendor.state}"></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-12 text-right">
+                                                <p>
+                                                    <span class="text-muted">Invoice Date :</span>
+                                                    <span th:text="${#temporals.format(invoice.invoiceDate, 'dd.MM.yyyy')}"></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Invoice Customer Details ends -->
+                                        <!-- Invoice Items Details starts -->
+                                        <div id="invoice-items-details">
+                                            <div class="row">
+                                                <div class="table-responsive col-12">
+                                                    <table class="table mt-3">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Item &amp; Description</th>
+                                                            <th class="text-right">Qty</th>
+                                                            <th class="text-right">Price</th>
+                                                            <th class="text-right">Amount</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="invoiceProduct : ${invoiceProductList}">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <p th:text="${invoiceProduct.product.name}"></p>
+                                                                <p class="text-muted" th:text="${invoiceProduct.product.description}"></p>
+                                                            </td>
+                                                            <td class="text-right" th:text="${invoiceProduct.qty}"></td>
+                                                            <td class="text-right" th:text="${'$' + invoiceProduct.unitPrice}"></td>
+                                                            <td class="text-right" th:text="${invoiceProduct.qty * invoiceProduct.unitPrice}"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3 mt-md-0">
+                                                <div class="col-md-6 col-12 text-left">
+
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <p class="text-bold-700 mb-2 ml-4">Total due</p>
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>Sub Total</td>
+                                                                <td class="text-right" th:text="${'$' + invoice.monetaryDetailDto.cost}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>TAX (12%)</td>
+                                                                <td class="text-right" th:text="${'$' + invoice.monetaryDetailDto.tax}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-bold-800">Total</td>
+                                                                <td class="text-bold-800 text-right" th:text="${'$' + invoice.monetaryDetailDto.totalCost}"></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Invoice Items Details ends -->
+                                        <!-- Invoice Footer starts -->
+                                        <div id="invoice-footer">
+                                            <div class="row mt-2 mt-sm-0">
+
+                                                <div class="col-md-6 col-12">
+                                                    <div class="signature text-center">
+                                                        <p>Authorized person</p>
+
+                                                        <h6 class="mt-4">Amanda Orton</h6>
+                                                        <p class="text-muted">Managing Director</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 text-center text-sm-right">
+                                                    <button type="button" class="btn btn-primary btn-print mt-2 mt-md-1"><i class="ft-printer mr-1"></i>Print Invoice</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Invoice Footer ends -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Invoice template ends -->
+
+            </div>
+        </div>
+        <!-- END : End Main Content-->
+
+        <footer th:replace="fragments :: page_footer"></footer>
+
+        <!-- Scroll to top button -->
+        <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+    </div>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+<!-- BEGIN PAGE LEVEL JS-->
+<script th:src="@{/js/dashboard2.js}"></script>
+<script th:src="@{/js/page-invoice.js}"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN: Custom CSS-->
+<script th:src="@{/assets/js/scripts.js}"></script>
+<!-- END: Custom CSS-->
+</body>
+<!-- END : Body-->
+
+</html>
