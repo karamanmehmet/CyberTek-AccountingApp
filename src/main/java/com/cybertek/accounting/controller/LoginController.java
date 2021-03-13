@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequiredArgsConstructor
 public class LoginController {
-    private final InvoiceService invoiceService;
+
 
     @RequestMapping(value = {"/","/login"})
     public String login(){
@@ -24,10 +23,5 @@ public class LoginController {
 
 
 
-    @RequestMapping("/main")
-    public String welcome(Model model) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
-        model.addAttribute("invoices",invoiceService.findFirst3ByCompanyOrderByInvoiceDateAsc());
 
-        return "main";
-    }
 }

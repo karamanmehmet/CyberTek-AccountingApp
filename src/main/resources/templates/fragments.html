@@ -86,7 +86,7 @@
 		<div class="navbar-container main-menu-content center-layout" data-menu="menu-container">
 
 			<ul class="navigation-main nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-				<li data-menu=""><a class="dropdown-toggle nav-link d-flex align-items-center" th:href="@{/main}" data-toggle="dropdown"><i class="ft-home"></i><span data-i18n="Dashboard">Home Page</span></a>
+				<li data-menu="" sec:authorize="hasRole('ROLE_ADMIN') || hasRole('ROLE_EMPLOYEE') || hasRole('ROLE_MANAGER')"><a class="dropdown-toggle nav-link d-flex align-items-center" th:href="@{/main}" data-toggle="dropdown"><i class="ft-home"></i><span data-i18n="Dashboard">Home Page</span></a>
 				</li>
 				<li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;" data-toggle="dropdown"><i class="ft-box"></i><span data-i18n="Apps">Management</span></a>
 					<ul class="dropdown-menu">
