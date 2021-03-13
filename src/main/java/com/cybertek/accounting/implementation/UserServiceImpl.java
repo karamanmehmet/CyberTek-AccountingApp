@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) throws UserAlreadyExist {
-       User user = userRepository.findByEmail(userDto.getEmail());
-        if (user != null) throw new UserAlreadyExist("This user already exists");
+        Optional<User> user = userRepository.findByEmail(userDto.getEmail());
+        if (user.isPresent()) throw new UserAlreadyExist("This user already exists");
 
         return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
 
@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto userDto) throws UserNotFound {
-       User user = userRepository.findByEmail(userDto.getEmail());
+        Optional<User> user = userRepository.findByEmail(userDto.getEmail());
 
-        if (!user.isEnabled()) {
+        if (user.isEmpty()) {
             throw new UserNotFound("The user is not exist");
         }
         userRepository.saveAndFlush(mapper.convert(userDto,new User()));
@@ -54,9 +54,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(UserDto userDto)  {
-       User user = userRepository.findByEmail(userDto.getEmail());
-
+    public void delete(UserDto userDto) throws Exception {
+       User user = userRepository.findByEmail(userDto.getEmail())
+                .orElseThrow(() -> new Exception("this email is not exist"));
        user.setEmail(userDto.getEmail());
        user.setEnabled(false);
        userRepository.saveAndFlush(user);

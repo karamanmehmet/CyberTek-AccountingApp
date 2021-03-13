@@ -23,7 +23,7 @@ public class UserDto {
     private boolean active;
     private String phone;
     private String email;
-
+    private boolean enabled=true;
     private CompanyDto company;
 
     private List<RoleDto> role;
