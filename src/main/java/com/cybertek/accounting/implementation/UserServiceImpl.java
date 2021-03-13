@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) throws UserAlreadyExist {
         Optional<User> user = userRepository.findByEmail(userDto.getEmail());
-        if (user != null) throw new UserAlreadyExist("This user already exists");
+        if (user.isPresent()) throw new UserAlreadyExist("This user already exists");
 
         return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
 

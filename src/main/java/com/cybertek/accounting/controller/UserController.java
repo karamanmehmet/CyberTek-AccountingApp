@@ -9,10 +9,7 @@ import com.cybertek.accounting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
@@ -36,10 +33,10 @@ public class UserController {
         return "user/user-add";
     }
     @PostMapping("/add")
-    public String insertUser(UserDto user,Model model) throws  UserAlreadyExist {
+    public String insertUser(@ModelAttribute UserDto user, Model model) throws  UserAlreadyExist {
 
         userService.create(user);
-        return "redirect:/user/user-add";
+        return "redirect:/user/add";
     }
     //
     @GetMapping("/list")
