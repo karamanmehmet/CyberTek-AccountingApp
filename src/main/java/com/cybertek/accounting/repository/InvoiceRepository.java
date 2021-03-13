@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice,Long> {
 
-    Invoice findByInvoiceNo(String invoiceNo);
+    Invoice findByInvoiceNoAndCompany(String invoiceNo, Company company);
 
     List<Invoice> findFirst3ByCompanyOrderByInvoiceDateDesc(Company company);
 

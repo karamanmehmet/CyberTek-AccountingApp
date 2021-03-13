@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface InvoiceNumberRepository extends JpaRepository<InvoiceNumber,Long> {
@@ -16,7 +17,6 @@ public interface InvoiceNumberRepository extends JpaRepository<InvoiceNumber,Lon
 
     List<InvoiceNumber> findInvoiceNumberByCompany(Company company);
 
-    @Query(value = "SELECT * FROM invoicenumber i WHERE i.invoicenumber = CAST ((SELECT invoiceno FROM invoice i WHERE i.company_id = :id ORDER BY i.invoicedate DESC limit 1) AS INTEGER)", nativeQuery = true)
-    InvoiceNumber findLastInvoiceNumberByCompanyId(@Param("id") long id);
+    Optional<InvoiceNumber> findFirstByCompanyOrderByInvoiceNumberDesc(Company company);
 
 }

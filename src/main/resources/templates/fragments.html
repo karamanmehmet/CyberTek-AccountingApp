@@ -9,11 +9,10 @@
 	<meta name="description" content="Apex admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
 	<meta name="keywords" content="admin template, Apex admin template, dashboard template, flat admin template, responsive admin template, web app">
 	<meta name="author" content="PIXINVENT">
-	<title>Dashboard2 - Apex responsive bootstrap 4 admin template</title>
 
 
-	<link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/favicon.ico}">
-	<link rel="shortcut icon" type="image/png" th:href="@{/img/ico/favicon-32.png}">
+	<!--<link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/favicon.ico}">
+	<link rel="shortcut icon" type="image/png" th:href="@{/img/ico/favicon-32.png}"> -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-touch-fullscreen" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -34,8 +33,9 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/colors.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/components.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/themes/layout-dark.css}">
-	<link rel="stylesheet" th:href="@{/css/plugins/switchery.css}">
-<!--	<link rel="stylesheet" type="text/css" th:href="@{/css/pickadate/pickadate.css}">-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/plugins/switchery.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/vendors/css/pickadate/pickadate.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/plugins/form-validation.css}">
 	<!-- END APEX CSS-->
 	<!-- BEGIN Page Level CSS-->
 	<link rel="stylesheet" type="text/css" th:href="@{/css/core/menu/horizontal-menu.css}">
@@ -86,7 +86,7 @@
 		<div class="navbar-container main-menu-content center-layout" data-menu="menu-container">
 
 			<ul class="navigation-main nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-				<li data-menu=""><a class="dropdown-toggle nav-link d-flex align-items-center" href="main.html" data-toggle="dropdown"><i class="ft-home"></i><span data-i18n="Dashboard">Home Page</span></a>
+				<li data-menu=""><a class="dropdown-toggle nav-link d-flex align-items-center" th:href="@{/main}" data-toggle="dropdown"><i class="ft-home"></i><span data-i18n="Dashboard">Home Page</span></a>
 				</li>
 				<li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;" data-toggle="dropdown"><i class="ft-box"></i><span data-i18n="Apps">Management</span></a>
 					<ul class="dropdown-menu">
@@ -154,6 +154,18 @@
 		<script th:src="@{/js/customizer.js}"></script>
 		<script th:src="@{/js/scroll-top.js}"></script>
 		<!-- END APEX JS-->
+
+		<!-- BEGIN PAGE VENDOR JS-->
+		<script th:src="@{/vendors/js/jqBootstrapValidation.js}"></script>
+		<!-- END PAGE VENDOR JS-->
+
+		<!-- BEGIN PAGE LEVEL JS-->
+		<script th:src="@{/js/form-validation.js}"></script>
+		<!-- END PAGE LEVEL JS-->
+		<!-- BEGIN: Custom CSS-->
+		<script th:src="@{/assets/js/scripts.js}"></script>
+		<!-- END: Custom CSS-->
+		<!-- END PAGE LEVEL JS-->
 	</footer>
 
 

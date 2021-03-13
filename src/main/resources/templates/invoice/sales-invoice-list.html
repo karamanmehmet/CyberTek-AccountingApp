@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
+<!-- BEGIN : Head-->
+
+<head>
+    <head th:replace="fragments :: page_head" />
+    <title>Sales List</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/invoice.png}">
+
+</head>
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover"
+      data-menu="horizontal-menu" data-col="2-columns">
+
+<div th:replace="fragments :: page_header"/>
+<!-- Navbar (Header) Ends-->
+
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+<div class="wrapper">
+
+    <div th:replace="fragments :: page_menu"/>
+
+
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <section class="users-list-wrapper">
+                    <!-- Filter starts -->
+                    <div class="users-list-filter px-2">
+
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                            <a class="btn btn-success bg-light-success mb-1" th:href="@{/invoice/salesCreate}"><i
+                                    class="fa fa-plus mr-1"></i>Create Sales Invoice</a>
+                        </div>
+
+                    </div>
+                    <!-- Filter ends -->
+
+                    <!-- Table starts -->
+                    <div class="users-list-table">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-body">
+                                            <!-- Datatable starts -->
+                                            <div class="table-responsive">
+                                                <table id="users-list-datatable" class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="text-truncate">Invoice No</th>
+                                                        <th class="text-truncate">Invoice Date</th>
+                                                        <th class="text-truncate">Client</th>
+                                                        <th class="text-truncate">Cost</th>
+                                                        <th class="text-truncate">Tax</th>
+                                                        <th class="text-truncate">Total</th>
+                                                        <th class="text-truncate">Add Line Item</th>
+                                                        <th class="text-truncate">Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="salesInvoice : ${salesInvoices}">
+                                                        <td class="text-truncate"
+                                                            th:text="${salesInvoice.invoiceNo}"></td>
+                                                        <td class="text-truncate"
+                                                            th:text="${#temporals.format(salesInvoice.invoiceDate, 'dd.MM.yyyy')}"></td>
+                                                        <td class="text-truncate"
+                                                            th:text="${salesInvoice.clientVendor.companyName}"></td>
+                                                        <td class="text-truncate"
+                                                            th:text="${salesInvoice.monetaryDetailDto.cost}"></td>
+                                                        <td class="text-truncate"
+                                                            th:text="${salesInvoice.monetaryDetailDto.tax}"></td>
+                                                        <td class="text-truncate"
+                                                            th:text="${salesInvoice.monetaryDetailDto.totalCost}"></td>
+                                                        <td>
+                                                            <a th:href="@{/invoice/salesAddItem/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}">
+                                                                <i class="ft-list"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <form novalidate th:if="${salesInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/salesUpdate/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}" method="post">
+                                                                <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="approve">Approve</button>
+                                                                <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="delete">Delete</button>
+                                                            </form>
+                                                            <div class="row">
+                                                                <form novalidate th:unless="${salesInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}" method="get">
+                                                                    <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="toInvoice">To Invoice</button>
+                                                                </form>
+                                                                <form novalidate th:unless="${salesInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/salesUpdate/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}" method="post">
+                                                                    <button class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="archive">Archive</button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- Datatable ends -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table ends -->
+                </section>
+
+            </div>
+        </div>
+        <!-- END : End Main Content-->
+
+        <footer th:replace="fragments :: page_footer"></footer>
+
+        <!-- Scroll to top button -->
+        <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+    </div>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+<!-- BEGIN PAGE LEVEL JS-->
+<script th:src="@{/js/dashboard2.js}"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN: Custom CSS-->
+<script th:src="@{/assets/js/scripts.js}"></script>
+<!-- END: Custom CSS-->
+</body>
+<!-- END : Body-->
+
+</html>

@@ -4,15 +4,19 @@ import com.cybertek.accounting.dto.CategoryDto;
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.entity.Category;
 import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.entity.User;
 import com.cybertek.accounting.exception.CategoryNotFoundException;
 import com.cybertek.accounting.exception.CompanyAlreadyExistsException;
 import com.cybertek.accounting.exception.CompanyNotFoundException;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CompanyRepository;
+import com.cybertek.accounting.repository.UserRepository;
 import com.cybertek.accounting.service.CompanyService;
+import com.cybertek.accounting.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,8 +25,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
 
-    private  final CompanyRepository companyRepository;
-    private  final MapperGeneric mapperGeneric;
+    private final CompanyRepository companyRepository;
+    private final MapperGeneric mapperGeneric;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -40,6 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
         return mapperGeneric.convert(foundCompany,new CompanyDto());
     }
 
+    @Transactional
     @Override
     public CompanyDto create(CompanyDto companyDto) throws CompanyAlreadyExistsException {
 
@@ -60,10 +66,11 @@ public class CompanyServiceImpl implements CompanyService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public CompanyDto update(CompanyDto companyDto) throws CompanyNotFoundException {
 
-        Company foundCompany = companyRepository.findByEmail(companyDto.getEmail())
+        Company foundCompany = companyRepository.findById(companyDto.getId())
                 .orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
 
         foundCompany.setTitle(companyDto.getTitle());
@@ -74,6 +81,7 @@ public class CompanyServiceImpl implements CompanyService {
         foundCompany.setState(companyDto.getState());
         foundCompany.setEnabled(companyDto.isEnabled());
         foundCompany.setRepresentative(companyDto.getRepresentative());
+        foundCompany.setEstablishmentDate(companyDto.getEstablishmentDate());
         foundCompany.setPhone(companyDto.getPhone());
 
         companyRepository.saveAndFlush(foundCompany);
@@ -81,13 +89,26 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDto;
     }
 
+    @Transactional
     @Override
     public boolean delete(CompanyDto companyDto) throws CompanyNotFoundException {
 
-        Company foundCompany = companyRepository.findByEmail(companyDto.getEmail())
+        Company foundCompany = companyRepository.findById(companyDto.getId())
                 .orElseThrow(() -> new CompanyNotFoundException("This company does not exist"));
 
         foundCompany.setEnabled(false);
+
+        List<User> userList = userRepository.findByCompanyAndEnabled(foundCompany, true);
+
+        for (User user : userList) {
+            user.setEnabled(false);
+            userRepository.saveAndFlush(user);
+        }
+
+//                .forEach(user -> {
+//                    user.setEnabled(false);
+//                    userRepository.saveAndFlush(user);
+//                });
 
         companyRepository.saveAndFlush(foundCompany);
         return !foundCompany.isEnabled();

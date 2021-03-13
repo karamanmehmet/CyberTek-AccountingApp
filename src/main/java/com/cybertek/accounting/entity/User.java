@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,16 +26,16 @@ public class User extends BaseEntity{
     private boolean enabled;
     private String phone;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "company_id",nullable = false)
     private Company company;
 
     public User(String firstname, String lastname,  String email, boolean enabled, String phone,
-                Set<Role> roles,String password) {
+                List<Role> roles,String password) {
 
         this.firstname = firstname;
         this.lastname = lastname;
@@ -45,9 +47,9 @@ public class User extends BaseEntity{
 
     }
 
-    public User(long id, LocalDateTime insertDateTime, String insertUserId, LocalDateTime lastUpdateDateTime,
+    public User(Integer id, LocalDateTime insertDateTime, String insertUserId, LocalDateTime lastUpdateDateTime,
                 String lastUpdateUserId, String firstname, String lastname, String username, String email, boolean enabled, String phone,
-                Set<Role> roles,String password) {
+                List<Role> roles,String password) {
         super(id, insertDateTime, insertUserId, lastUpdateDateTime, lastUpdateUserId);
         this.firstname = firstname;
         this.lastname = lastname;

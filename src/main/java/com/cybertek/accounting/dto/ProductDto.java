@@ -21,6 +21,6 @@ public class ProductDto {
     private Unit unit;
     private double tax;
     private CompanyDto company;
-    private boolean enabled = true;
+    private Boolean enabled;
 
 }

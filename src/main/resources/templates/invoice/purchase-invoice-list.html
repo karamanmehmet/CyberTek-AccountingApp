@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
 <!-- BEGIN : Head-->
 
-<head th:replace="fragments :: page_head"/>
+<head>
+    <head th:replace="fragments :: page_head" />
+    <title>Purchase List</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/invoice.png}">
+
+</head>
 <!-- END : Head-->
 
 <!-- BEGIN : Body-->
@@ -29,7 +34,7 @@
                     <div class="users-list-filter px-2">
 
                         <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                            <a class="btn btn-success bg-light-success mb-1" href="purchase-invoice-add.html"><i
+                            <a class="btn btn-success bg-light-success mb-1" th:href="@{/invoice/purchaseCreate}"><i
                                     class="fa fa-plus mr-1"></i>Create Purchase Invoice</a>
                         </div>
 
@@ -48,14 +53,14 @@
                                                 <table id="users-list-datatable" class="table">
                                                     <thead>
                                                     <tr>
-                                                        <th>Invoice No</th>
-                                                        <th>Invoice Date</th>
-                                                        <th>Vendor</th>
-                                                        <th>Cost</th>
-                                                        <th>Tax</th>
-                                                        <th>Total</th>
-                                                        <th>Add Line Item</th>
-                                                        <th>Edit</th>
+                                                        <th class="text-truncate">Invoice No</th>
+                                                        <th class="text-truncate">Invoice Date</th>
+                                                        <th class="text-truncate">Vendor</th>
+                                                        <th class="text-truncate">Cost</th>
+                                                        <th class="text-truncate">Tax</th>
+                                                        <th class="text-truncate">Total</th>
+                                                        <th class="text-truncate">Add Line Item</th>
+                                                        <th class="text-truncate">Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -73,14 +78,23 @@
                                                         <td class="text-truncate"
                                                             th:text="${purchaseInvoice.monetaryDetailDto.totalCost}"></td>
                                                         <td>
-                                                            <a href="page-users-edit.html">
+                                                            <a th:href="@{/invoice/purchaseAddItem/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}">
                                                                 <i class="ft-list"></i>
                                                             </a>
                                                         </td>
                                                         <td>
-                                                            <a href="page-users-edit.html">
-                                                                <i class="ft-edit"></i>
-                                                            </a>
+                                                            <form novalidate th:if="${purchaseInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/purchaseUpdate/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}" method="post">
+                                                                <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="approve">Approve</button>
+                                                                <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="delete">Delete</button>
+                                                            </form>
+                                                            <div class="row">
+                                                                <form novalidate th:unless="${purchaseInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}" method="get">
+                                                                    <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="toInvoice">To Invoice</button>
+                                                                </form>
+                                                                <form novalidate th:unless="${purchaseInvoice.invoiceStatus.name() != 'APPROVED'}" th:action="@{/invoice/purchaseUpdate/{invoiceNo}(invoiceNo=${purchaseInvoice.invoiceNo})}" method="post">
+                                                                    <button class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="archive">Archive</button>
+                                                                </form>
+                                                            </div>
                                                         </td>
                                                     </tbody>
                                                 </table>

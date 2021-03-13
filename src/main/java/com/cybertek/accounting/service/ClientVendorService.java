@@ -12,11 +12,7 @@ import java.util.List;
 
 public interface ClientVendorService {
 
-    //ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
-    List<ClientVendorDto> create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
-
-    List<ClientVendorDto> create1(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
-
+    ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException;
 
     List<ClientVendorDto> findAll() throws CompanyNotFoundException;
 
@@ -24,7 +20,9 @@ public interface ClientVendorService {
 
     ClientVendorDto findByEmail(String email) throws ClientVendorNotFoundException;
 
-    ClientVendorDto findById(long id) throws ClientVendorNotFoundException;
+    ClientVendorDto findById(Long id) throws ClientVendorNotFoundException;
+
+    List<ClientVendorDto> findAllByType(ClientVendorType type);
 
     List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type);
 
@@ -34,10 +32,8 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAllByCompanyAndState(CompanyDto company, String state);
 
-    //ClientVendorDto update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
-    List<ClientVendorDto> update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
+    ClientVendorDto update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
 
-    List<ClientVendorDto> update1(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
 
     void delete(long id) throws ClientVendorNotFoundException;
 

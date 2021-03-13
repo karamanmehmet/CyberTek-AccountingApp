@@ -50,7 +50,7 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel" aria-labelledby="account-tab">
 
                                                 <!-- Account form starts -->
-                                                <form class="needs-validation" th:action="@{/company/update}" method="post" th:object="${company}" >
+                                                <form class="needs-validation" th:action="@{/company/update/{id}(id=${company.id})}" method="post" th:object="${company}" >
                                                     <div class="row">
                                                         <div class="col-12 col-md-6">
                                                             <div class="form-group">
@@ -74,14 +74,20 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-email">E-mail</label>
-                                                                    <input disabled="disabled" th:field="*{email}" type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
+                                                                    <input th:field="*{email}" type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label for="users-edit-date">Establishment date</label>
-                                                                    <input th:field="*{establishmentDate}" type="text" id="users-edit-date" class="form-control" placeholder="Establishment date" value="16.02.2007" required aria-invalid="false">
+                                                                <label>Establishment date</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <span class="ft-calendar font-medium-2"></span>
+                                                                    </span>
+                                                                    </div>
+                                                                    <input th:field="*{establishmentDate}" type='text' class="form-control pickadate-ct-format" placeholder="Company Establishment Date" required aria-invalid="false">
                                                                 </div>
+
                                                             </div>
                                                         </div>
 
@@ -163,19 +169,33 @@
 <div class="sidenav-overlay"></div>
 
 <!-- BEGIN PAGE LEVEL JS-->
-<script th:src="@{/js/dashboard2.js}"></script>
-<script th:src="@{/js/pickadate/picker.js}"></script>
-<script th:src="@{/js/pickadate/picker.date.js}"></script>
-<script th:src="@{/js/pickadate/picker.time.js}"></script>
-<script th:src="@{/js/pickadate/legacy.js}"></script>
-<script th:src="@{/js/pickadate/form-datetimepicker.js}"></script>
-<!-- END PAGE LEVEL JS-->
-<!-- BEGIN PAGE VENDOR JS-->
 
-<!-- END PAGE VENDOR JS-->
+<script th:src="@{/vendors/js/pickadate/picker.js}"></script>
+<script th:src="@{/vendors/js/pickadate/picker.date.js}"></script>
+<script th:src="@{/vendors/js/pickadate/picker.time.js}"></script>
+<script th:src="@{/vendors/js/pickadate/legacy.js}"></script>
+
+<!-- END PAGE LEVEL JS-->
 <!-- BEGIN: Custom CSS-->
-<script th:src="@{/assets/js/scripts.js}"></script>
+<script th:src="@{/js/form-datetimepicker.js}"></script>
+<script th:src="@{/js/scripts.js}"></script>
 <!-- END: Custom CSS-->
+
+<script type="text/javascript">
+
+    // Format options
+    if ($('.pickadate-ct-format').length > 0) {
+        $('.pickadate-ct-format').pickadate({
+            // Escape any 'rule' characters with an exclamation mark (!).
+            format: 'yyyy-mm-dd',
+            formatSubmit: 'mm/dd/yyyy'
+
+        });
+    }
+
+
+</script>
+
 </body>
 <!-- END : Body-->
 

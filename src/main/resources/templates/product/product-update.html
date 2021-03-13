@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
+<!-- BEGIN : Head-->
+
+<head>
+    <head th:replace="fragments :: page_head" />
+    <title>Edit Product</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/product.png}">
+
+</head>
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover"
+      data-menu="horizontal-menu" data-col="2-columns">
+
+<div th:replace="fragments :: page_header"/>
+<!-- Navbar (Header) Ends-->
+
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+<div class="wrapper">
+
+    <div th:replace="fragments :: page_menu"/>
+
+
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <section class="users-list-wrapper">
+                    <!-- Filter starts -->
+                    <div class="users-list-filter px-2">
+
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/product/list}"><i
+                                    class="fa fa-list mr-1"></i>Product List</a>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Filter ends -->
+
+                    <!-- Table starts -->
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+
+                                        <div class="tab-content">
+                                            <!-- Account content starts -->
+                                            <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
+                                                 aria-labelledby="account-tab">
+
+                                                <!-- Account form starts -->
+                                                <form novalidate th:action="@{/product/update/{id}(id=${product.id})}" method="post"
+                                                      th:object="${product}">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="products-edit-name">Name</label>
+                                                                    <input type="text" id="products-edit-name"
+                                                                           class="form-control" placeholder="Name"
+                                                                           required aria-invalid="false"
+                                                                           th:field="*{name}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="products-edit-quantity">Quantity</label>
+                                                                    <input type="number" id="products-edit-quantity"
+                                                                           class="form-control" placeholder="Quantity"
+                                                                           required aria-invalid="false"
+                                                                           th:field="*{qty}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="products-edit-category">Category</label>
+                                                                    <select id="products-edit-category"
+                                                                            class="form-control" required
+                                                                            th:field="*{category}">
+                                                                        <option th:each="theCategory : ${categories}"
+                                                                                th:value="${theCategory.id}"
+                                                                                th:text="${theCategory.description}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="products-edit-description">Description</label>
+                                                                    <input type="text" id="products-edit-description"
+                                                                           class="form-control"
+                                                                           placeholder="Description"
+                                                                           th:field="*{description}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="products-edit-unit">Unit</label>
+                                                                    <select id="products-edit-unit" class="form-control"
+                                                                            required th:field="*{unit}">
+                                                                        <option th:each="theUnit : ${T(com.cybertek.accounting.enums.Unit).values()}"
+                                                                                th:value="${theUnit}"
+                                                                                th:text="${theUnit.value}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="products-edit-status">Status</label>
+                                                                    <select id="products-edit-status"
+                                                                            class="form-control"
+                                                                            required th:field="*{enabled}">
+                                                                        <option th:value="${true}">Active</option>
+                                                                        <option th:value="${false}">Passive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                        <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                            <button type="submit" name="action" value="save" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Product</button>
+                                                            <button type="submit" name="action" value="delete" class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete </button>
+                                                            <a type="reset" value="cancel" class="btn btn-secondary" th:href="@{/product/list}">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- Account form ends -->
+                                            </div>
+                                            <!-- Account content ends -->
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table ends -->
+                </section>
+
+            </div>
+        </div>
+        <!-- END : End Main Content-->
+
+        <footer th:replace="fragments :: page_footer"></footer>
+
+        <!-- Scroll to top button -->
+        <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+    </div>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+<!-- BEGIN PAGE LEVEL JS-->
+<script th:src="@{/js/dashboard2.js}"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN: Custom CSS-->
+<script th:src="@{/assets/js/scripts.js}"></script>
+<!-- END: Custom CSS-->
+</body>
+<!-- END : Body-->
+
+</html>

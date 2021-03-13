@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
 <!-- BEGIN : Head-->
-<head th:replace="fragments :: page_head"></head>
+<head>
+    <head th:replace="fragments :: page_head" />
+    <title>Add ClientVendor</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/cv.png}">
+
+
+</head>
 
 <!-- END : Head-->
 
@@ -53,20 +59,20 @@
                                                             <div class="col-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-username">Name</label>
-                                                                        <input type="text" id="users-edit-username" th:field="*{companyName}"class="form-control" data-validation-required-message="This field is required" placeholder="Enter Client/Vendor Name" required>
+                                                                        <label for="companyName">Name</label>
+                                                                        <input type="text" id="companyName" th:field="*{companyName}"class="form-control" data-validation-required-message="This field is required" placeholder="Enter Client/Vendor Name" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-email">Phone</label>
-                                                                        <input type="email" id="users-edit-phone" th:field="*{phone}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter Phone Number" required aria-invalid="false">
+                                                                        <label for="phonenumber">Phone</label>
+                                                                        <input id="phonenumber" type="tel" placeholder="phone number" th:field="*{phone}" class="form-control"  data-validation-required-message="Must be a valid phone number" pattern="^\+(?:[0-9] ?){6,14}[0-9]$" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-email">E-mail</label>
-                                                                        <input type="email" id="users-edit-email" th:field="*{email}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter Email" required aria-invalid="false">
+                                                                        <label for="email">E-mail</label>
+                                                                        <input type="email" id="email" th:field="*{email}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter Email" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
 
@@ -79,7 +85,7 @@
                                                                         <ul class="list-unstyled mb-0">
                                                                             <li class="d-inline-block mr-2">
                                                                                 <div class="radio radio-primary">
-                                                                                    <input type="radio" th:field="*{type}" th:value="VENDOR" name="color-radio" id="color-radio-1" checked>
+                                                                                    <input type="radio" checked="checked" th:field="*{type}" th:value="VENDOR" name="color-radio" id="color-radio-1" >
                                                                                     <label for="color-radio-1">Vendor</label>
                                                                                 </div>
                                                                             </li>
@@ -90,7 +96,7 @@
                                                                                 </div>
                                                                             </li>
                                                                             <li class="d-inline-block mr-2">
-                                                                                <div class="radio radio-secondary">
+                                                                                <div class="radio radio-third">
                                                                                     <input type="radio" th:field="*{type}" th:value="BOTH"  name="color-radio" id="color-radio-3">
                                                                                     <label for="color-radio-3">Both</label>
                                                                                 </div>
@@ -111,19 +117,19 @@
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-zip">ZipCode</label>
-                                                                        <input type="text" id="users-edit-zip" th:field="*{zipCode}" class="form-control" data-validation-containsnumber-regex="([^0-9]*[0-9]+)+" min="10" max="10" data-validation-containsnumber-message="Enter Phone Number between with 10 digit" placeholder="Enter ZipCode " >
+                                                                        <input type="number" id="users-edit-zip" th:field="*{zipCode}" class="form-control" data-validation-required-message="This field is required" pattern="[0-9]{7}" placeholder="Enter ZipCode " >
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-address">Address</label>
-                                                                        <input type="email" id="users-edit-address" th:field="*{address}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter Addresss" required aria-invalid="false">
+                                                                        <input type="text" id="users-edit-address" th:field="*{address}" class="form-control" data-validation-required-message="This field is required" placeholder="Enter Addresss" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label for="users-edit-state">State</label>
-                                                                        <input type="email" id="users-edit-state" th:field="*{state}" class="form-control" data-validation-required-message="Must be a valid email" placeholder="Enter State" required aria-invalid="false">
+                                                                        <input type="text" id="users-edit-state" th:field="*{state}" class="form-control" data-validation-required-message="This field is required" placeholder="Enter State" required aria-invalid="false">
                                                                     </div>
                                                                 </div>
 

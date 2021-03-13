@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="loading" lang="en">
+<!-- BEGIN : Head-->
+
+<head>
+    <head th:replace="fragments :: page_head"/>
+    <title>Create Sales</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/invoice.png}">
+
+</head>
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover"
+      data-menu="horizontal-menu" data-col="2-columns">
+
+<div th:replace="fragments :: page_header"/>
+<!-- Navbar (Header) Ends-->
+
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+<div class="wrapper">
+
+    <div th:replace="fragments :: page_menu"/>
+
+
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <section class="users-list-wrapper">
+                    <!-- Filter starts -->
+                    <div class="users-list-filter px-2">
+
+
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                            <a class="btn btn-primary bg-light-primary mb-1" th:href="@{/invoice/salesList}"><i
+                                    class="fa fa-list mr-1"></i>Sales Invoice List</a>
+                        </div>
+                    </div>
+                    <!-- Filter ends -->
+
+                    <!-- Table starts -->
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+
+                                        <div class="tab-content">
+                                            <!-- Account content starts -->
+                                            <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
+                                                 aria-labelledby="account-tab">
+
+                                                <!-- Account form starts -->
+                                                <form novalidate th:action="@{/invoice/salesCreate}" method="post"
+                                                      th:object="${invoice}">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="invoice-date">Invoice Date</label>
+                                                                    <input type="text" id="invoice-date" readonly=""
+                                                                           class="form-control"
+                                                                           aria-invalid="false"
+                                                                           th:field="*{invoiceDate}"
+                                                                           th:placeholder="${#temporals.format(localDate, 'yyyy-MM-dd')}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="select-vendor">Client</label>
+                                                                    <select id="select-vendor" class="form-control"
+                                                                            required th:field="*{clientVendor}">
+                                                                        <option value="">Select Vendor</option>
+                                                                        <option th:each="theClientVendor : ${clients}"
+                                                                                th:value="${theClientVendor.id}"
+                                                                                th:text="${theClientVendor.companyName}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-start mt-3 mt-sm-2">
+                                                        <button type="submit" name="action" value="save" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Create Invoice</button>
+                                                        <a type="reset" value="cancel" class="btn btn-secondary" th:href="@{/invoice/salesList}">Cancel</a>
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- Table ends -->
+
+                </section>
+
+            </div>
+        </div>
+        <!-- END : End Main Content-->
+
+        <footer th:replace="fragments :: page_footer"></footer>
+
+        <!-- Scroll to top button -->
+        <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+    </div>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+<!-- BEGIN PAGE LEVEL JS-->
+<script th:src="@{/js/dashboard2.js}"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN: Custom CSS-->
+<script th:src="@{/assets/js/scripts.js}"></script>
+<!-- END: Custom CSS-->
+</body>
+<!-- END : Body-->
+
+</html>

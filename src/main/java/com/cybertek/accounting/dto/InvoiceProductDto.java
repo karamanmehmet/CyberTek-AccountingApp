@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class InvoiceProductDto {
 
+    private long id;
     private int qty;
     private double unitPrice;
     private ProductDto product;

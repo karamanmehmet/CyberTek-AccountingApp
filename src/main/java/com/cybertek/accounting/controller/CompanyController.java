@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyController {
 
     private final CompanyService companyService;
-    private String[] states = {"AK", "AL", "AR", "AS", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MP", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UM", "UT", "VA", "VI", "VT", "WA", "WI", "WV", "WY"};
+    private final String[] STATES = {"AK", "AL", "AR", "AS", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MP", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UM", "UT", "VA", "VI", "VT", "WA", "WI", "WV", "WY"};
 
 
     @GetMapping("/list")
@@ -29,7 +29,7 @@ public class CompanyController {
     public String addNewCompanyForm(Model model){
 
         model.addAttribute("company", new CompanyDto());
-        model.addAttribute("states", states);
+        model.addAttribute("states", STATES);
 
         return "/company/company-add";
     }
@@ -45,21 +45,19 @@ public class CompanyController {
     @GetMapping("/update/{companyEmail}")
     public String editCompany(@PathVariable String companyEmail, Model model) throws CompanyNotFoundException {
 
-        model.addAttribute("states", states);
+        model.addAttribute("states", STATES);
         model.addAttribute("company",companyService.findByEmail(companyEmail));
 
         return "/company/company-update";
     }
 
-    @PostMapping("/update")
-    public String updateCompany(@ModelAttribute("company") CompanyDto companyDto,
+    @PostMapping("/update/{id}")
+    public String updateCompany(@PathVariable Long id, CompanyDto companyDto,
                                 @RequestParam(value="action", required=true) String action) throws CompanyNotFoundException {
-
+        companyDto.setId(id);
         if (action.equals("save")) companyService.update(companyDto);
 
         if (action.equals("delete")) companyService.delete(companyDto);
-
-        if (action.equals("reset")) return "redirect:/company/list";
 
         return "redirect:/company/list";
     }

@@ -50,7 +50,7 @@ public class CategoryController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateCategory(@PathVariable long id, @ModelAttribute("category") CategoryDto categoryDto, @RequestParam(value="action", required=true) String action) throws CompanyNotFoundException, CategoryNotFoundException, CategoryHasProductException {
+    public String updateCategory(@PathVariable long id, @ModelAttribute("category") CategoryDto categoryDto, @RequestParam(value="action", required=true) String action) throws CompanyNotFoundException, CategoryNotFoundException, CategoryHasProductException, CategoryAlreadyExistException {
 
         if (action.equals("save")) {
             categoryService.update(categoryDto,id);

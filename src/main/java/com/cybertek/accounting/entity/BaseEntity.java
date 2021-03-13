@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(BaseEntityListener.class)
 public abstract class BaseEntity {
 
 	@Id
@@ -20,14 +21,14 @@ public abstract class BaseEntity {
 	private Long id;
 	
 	@Column(name = "insertDateTime", columnDefinition = "TIMESTAMP")
-	private LocalDateTime insertDateTime;
+	public LocalDateTime insertDateTime;
 
-	private String insertUserId;
+	public String insertUserId;
 	
 	@Column(name = "lastUpdateDateTime", columnDefinition = "TIMESTAMP")
-	private LocalDateTime lastUpdateDateTime;
+	public LocalDateTime lastUpdateDateTime;
 	
-	private String lastUpdateUserId;
+	public String lastUpdateUserId;
 
 
 	@Override

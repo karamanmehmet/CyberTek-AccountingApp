@@ -9,16 +9,14 @@ import com.cybertek.accounting.enums.Unit;
 import com.cybertek.accounting.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
+@SpringBootApplication
 public class AccountingAppApplication {
 
 	public static void main(String[] args) {
@@ -38,7 +36,7 @@ public class AccountingAppApplication {
 			Role roleManager  = new Role("ROLE_MANAGER");
 			Role roleEmployee = new Role("ROLE_EMPLOYEE");
 
-			 roleRepository.save(roleRoot);
+			roleRepository.save(roleRoot);
 			roleRepository.save(roleAdmin);
 			roleRepository.save(roleManager);
 			roleRepository.save(roleEmployee);
@@ -49,7 +47,7 @@ public class AccountingAppApplication {
 			companyRepository.save(companyRoot);
 
 			User userRoot = new User("Mehmet","Kara","mehmetkara@gmail.com" , true, "+1954784236",
-					"password",companyRoot);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",companyRoot);
 			userRoot.addRole(roleRoot);
 
 			userRepository.save(userRoot);
@@ -69,25 +67,27 @@ public class AccountingAppApplication {
 			InvoiceNumber invoiceNumber = new InvoiceNumber(crustyCompany,2021,1);
 			invoiceNumber = invoiceNumberRepository.save(invoiceNumber);
 
+			InvoiceNumber invoiceNumber2 = new InvoiceNumber(crustyCompany,2020,2);
+			invoiceNumber2 = invoiceNumberRepository.save(invoiceNumber2);
 
 
 		//Create User for Company - Please continue creating with employee user
 			User userAdmin = new User("admin","Kara","admin@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",crustyCompany);
 			userAdmin.addRole(roleAdmin);
 			 userRepository.saveAndFlush(userAdmin);
 
 
 
 			User userManager = new User("manager","Kara","manager@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",crustyCompany);
 			userManager.addRole(roleManager);
 			userRepository.saveAndFlush(userManager);
 
 
 
 			User userEmployee = new User("employee","Mike","employee@crustycloud.com" , true, "+1954784236",
-					"password",crustyCompany);
+					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",crustyCompany);
 			userManager.addRole(roleEmployee);
 			userRepository.saveAndFlush(userEmployee);
 
@@ -122,12 +122,12 @@ public class AccountingAppApplication {
 		//Create SP Table 1- Vendor 1 Client
 
 			ClientVendor vendorSP = new ClientVendor("Active azure","+142356662","active@azure.com",crustyCompany,
-					ClientVendorType.VENDOR,"3245324","TX","Auckland Hill 14",true);
+					ClientVendorType.VENDOR,"3245324","Auckland Hill 14","TX",true);
 
 			clientVendorRepository.saveAndFlush(vendorSP);
 
 			ClientVendor clientSP = new ClientVendor("Bayou Tracking","+142356662","bayou@tracking.com",crustyCompany,
-					ClientVendorType.CLIENT,"234245","PH","Chesterfield Industrial Park 26",true);
+					ClientVendorType.CLIENT,"234245","Chesterfield Industrial Park 26","PH",true);
 
 			clientVendorRepository.saveAndFlush(clientSP);
 
@@ -135,12 +135,12 @@ public class AccountingAppApplication {
 
 		//Create Invoice
 
-			Invoice invoiceSales = new Invoice("1", InvoiceStatus.OPEN, InvoiceType.SALES,LocalDate.now().minusDays(1),
-					vendorSP,crustyCompany,true);
+			Invoice invoiceSales = new Invoice("INV-001", InvoiceStatus.OPEN, InvoiceType.SALES,LocalDate.now().minusDays(1),
+					clientSP,crustyCompany,true);
 
 			invoiceSales=	invoiceRepository.saveAndFlush(invoiceSales);
 
-			Invoice invoicePurchase = new Invoice("2", InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
+			Invoice invoicePurchase = new Invoice("INV-002", InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
 					vendorSP,crustyCompany,true);
 
 			invoiceRepository.saveAndFlush(invoicePurchase);
@@ -160,5 +160,7 @@ public class AccountingAppApplication {
 
 		};
 	}
+
+
 
 }

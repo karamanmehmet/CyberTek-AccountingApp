@@ -4,6 +4,8 @@
 
 <head>
     <head th:replace="fragments :: page_head" />
+    <title>Add Category</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/ico/category.png}">
 
 </head>
 <!-- END : Head-->
@@ -56,8 +58,8 @@
                                                             <div class="col-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-username">Description</label>
-                                                                        <input type="text" id="users-edit-username" class="form-control" data-validation-required-message="This field is required"  th:field="*{description}" placeholder="Please Enter Category Description"  required>
+                                                                        <label for="users-edit-desc">Description</label>
+                                                                        <input type="text" id="users-edit-desc" class="form-control" data-validation-required-message="This field is required"  th:field="*{description}" placeholder="Please Enter Category Description"  required>
 
                                                                     </div>
 
@@ -92,6 +94,7 @@
             </div>
             <!-- END : End Main Content-->
 
+            <footer th:replace="fragments :: page_footer"></footer>
 
             <!-- Scroll to top button -->
             <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
