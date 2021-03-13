@@ -1,10 +1,15 @@
 package com.cybertek.accounting.repository;
 
+import com.cybertek.accounting.dto.CompanyDto;
+import com.cybertek.accounting.dto.InvoiceProductDto;
 import com.cybertek.accounting.entity.Company;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.entity.InvoiceProduct;
 import com.cybertek.accounting.entity.Product;
+import com.cybertek.accounting.enums.InvoiceStatus;
+import com.cybertek.accounting.enums.InvoiceType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,5 +31,8 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct,L
     //anyone can do with Native / Query will be appreciated
 
     List<InvoiceProduct> findByInvoiceAndInvoiceCompany(Invoice invoice, Company company);
+
+    @Query(" SELECT u FROM InvoiceProduct u Where u.invoice.company=:company and u.invoice.invoiceType=:invoiceType and u.invoice.invoiceStatus=:invoiceStatus")
+    List<InvoiceProduct>  findByInvoiceStatusAndInvoiceTypeAndCompany(Company company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) ;
 
 }

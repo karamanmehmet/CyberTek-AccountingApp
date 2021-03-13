@@ -4,6 +4,8 @@ import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.dto.InvoiceProductDto;
 import com.cybertek.accounting.dto.ProductDto;
+import com.cybertek.accounting.enums.InvoiceStatus;
+import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.*;
 
 import java.util.List;
@@ -26,4 +28,5 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDto> findByInvoiceAndCompany(InvoiceDto invoice, CompanyDto company) throws CompanyNotFoundException, InvoiceNotFoundException;
 
+    List<InvoiceProductDto> findByInvoiceStatusAndInvoiceTypeAndCompany(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus);
 }

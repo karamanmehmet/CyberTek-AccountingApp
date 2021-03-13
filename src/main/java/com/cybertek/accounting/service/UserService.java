@@ -2,6 +2,7 @@ package com.cybertek.accounting.service;
 
 import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.UserDto;
+import com.cybertek.accounting.entity.User;
 import com.cybertek.accounting.exception.UserAlreadyExist;
 import com.cybertek.accounting.exception.UserNotFound;
 
@@ -19,4 +20,6 @@ public interface UserService {
     void delete(UserDto userDto) throws Exception;
 
     List<UserDto> findByCompanyAndEnabled(CompanyDto companyDto, Boolean enabled);
+
+    UserDto findByEmail(String email);
 }

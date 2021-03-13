@@ -1,13 +1,21 @@
 package com.cybertek.accounting.configuration;
 
+import com.cybertek.accounting.dto.CompanyDto;
 import com.cybertek.accounting.dto.JwtResponse;
 import com.cybertek.accounting.dto.LoginRequest;
+import com.cybertek.accounting.dto.UserDto;
+import com.cybertek.accounting.entity.Company;
+import com.cybertek.accounting.entity.User;
+import com.cybertek.accounting.exception.CompanyNotFoundException;
+import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.TokenService;
+import com.cybertek.accounting.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -24,6 +32,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final HttpSession httpSession;
     private final TokenService tokenService;
+    private final UserService userService;
 
 
     @Override
@@ -42,6 +51,12 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         JwtResponse tokenResponse = tokenService.authenticateUser(loginRequest);
 
         httpSession.setAttribute("Authorization", tokenResponse.getType()+" "+tokenResponse.getToken());
+
+        //company session set
+
+      UserDto user = userService.findByEmail(username);
+        httpSession.setAttribute("company", user.getCompany());
+
 
 
         if(roles.contains("ROLE_ROOT")){

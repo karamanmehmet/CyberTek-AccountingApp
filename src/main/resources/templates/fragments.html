@@ -26,6 +26,7 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/vendors/css/prism.min.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/vendors/css/switchery.min.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/vendors/css/chartist.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{vendors/css/datatables/dataTables.bootstrap4.min.css}">
 	<!-- END VENDOR CSS-->
 	<!-- BEGIN APEX CSS-->
 	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}">
@@ -118,9 +119,9 @@
 				<li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;" data-toggle="dropdown"><i class="ft-briefcase"></i><span data-i18n="Components">Reporting</span></a>
 					<ul class="dropdown-menu">
 
-						<li data-menu=""><a class="dropdown-item d-flex align-items-center" th:href="@{/stockreport/stock-report}"  data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Grid">Stock Report</span></a>
+						<li data-menu=""><a class="dropdown-item d-flex align-items-center" th:href="@{/report/stock}"  data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Grid">Stock Report</span></a>
 						</li>
-						<li data-menu=""><a class="dropdown-item d-flex align-items-center" th:href="@{/stockreport/profit-loss-report}"  data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Typography">Profit / Loss Report</span></a>
+						<li data-menu=""><a class="dropdown-item d-flex align-items-center" th:href="@{/report/profit-loss}"  data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span data-i18n="Typography">Profit / Loss Report</span></a>
 						</li>
 					</ul>
 				</li>

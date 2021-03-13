@@ -77,4 +77,10 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public UserDto findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return mapper.convert(user, new UserDto());
+    }
+
 }

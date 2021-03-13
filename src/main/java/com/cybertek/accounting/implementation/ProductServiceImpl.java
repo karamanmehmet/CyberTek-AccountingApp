@@ -21,7 +21,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.InitBinder;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+
 
     @Transactional
     @Override
@@ -132,9 +135,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> findByCompany(CompanyDto companyDto) throws CompanyNotFoundException {
 
-        Company foundedCategory = companyRepository.findByEmail(companyDto.getEmail()).orElseThrow(() -> new CompanyNotFoundException("No Company Found"));
+     //   Company foundedCategory = companyRepository.findByEmail(companyDto.getEmail()).orElseThrow(() -> new CompanyNotFoundException("No Company Found"));
 
-        List<Product> list = repository.findAllByCompany(foundedCategory);
+        List<Product> list = repository.findAllByCompany(mapper.convert(companyDto,new Company()));
 
         return list.stream()
                 .map(obj->
@@ -237,7 +240,6 @@ public class ProductServiceImpl implements ProductService {
 
 
     }
-
 
 
 }

@@ -5,6 +5,7 @@ import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.dto.InvoiceProductDto;
 import com.cybertek.accounting.dto.ProductDto;
 import com.cybertek.accounting.entity.*;
+import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.mapper.MapperGeneric;
@@ -143,6 +144,18 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         return invoiceProductDtoList;
 
+    }
+
+    @Override
+    public List<InvoiceProductDto> findByInvoiceStatusAndInvoiceTypeAndCompany(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) {
+
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceStatusAndInvoiceTypeAndCompany(mapper.convert(company,new Company()), invoiceType,invoiceStatus);
+
+        List<InvoiceProductDto> invoiceProductDtoList = invoiceProductList.stream().map(invoiceProduct -> {
+            return mapper.convert(invoiceProduct, new InvoiceProductDto());
+        }).collect(Collectors.toList());
+
+        return invoiceProductDtoList;
     }
 
     private Invoice checkInvoice(InvoiceProductDto invoiceProductDto, Company company) throws InvoiceNotFoundException {
