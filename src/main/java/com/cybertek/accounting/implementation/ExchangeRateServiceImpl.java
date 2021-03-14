@@ -23,7 +23,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     }
 
     @Override
-    public Rates exhangeRates() {
+    public Rates exchangeRates() {
         return webClient
                 .get()
                 .uri(RATE_URI)

@@ -4,5 +4,5 @@ import com.cybertek.accounting.dto.Rates;
 
 public interface ExchangeRateService {
 
-    Rates exhangeRates();
+    Rates exchangeRates();
 }
