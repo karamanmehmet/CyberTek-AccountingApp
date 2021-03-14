@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
+
     List<Category> findAllByCompany(Company company);
 
     List<Category> findAllByCompanyAndEnabled(Company company, boolean enabled);

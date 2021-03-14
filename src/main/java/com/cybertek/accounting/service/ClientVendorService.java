@@ -24,13 +24,13 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAllByType(ClientVendorType type);
 
-    List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type);
+    List<ClientVendorDto> findAllByStateAndType(String state, ClientVendorType type);
 
     List<ClientVendorDto> findAllByCompany(CompanyDto company);
 
     List<ClientVendorDto> findAllByCompanyAndType(CompanyDto company, ClientVendorType type);
 
-    List<ClientVendorDto> findAllByCompanyAndState(CompanyDto company, String state);
+    List<ClientVendorDto> findAllByState(String state);
 
     ClientVendorDto update(ClientVendorDto clientVendor,long id) throws ClientVendorNotFoundException, CompanyNotFoundException, ClientVendorAlreadyExistException;
 

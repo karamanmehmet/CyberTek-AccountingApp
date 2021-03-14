@@ -59,7 +59,7 @@ public class CategoryRestController {
 
     @GetMapping("/company/enable/{email}")
     public List<CategoryDto> findCategoryByCompanyAndStatus(@PathVariable String  email) throws Exception {
-        return  service.findAllByCompanyAndStatus(companyService.findByEmail(email),true);
+        return  service.findAllByStatus(true);
     }
 
 }

@@ -38,32 +38,18 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     private final ClientVendorRepository repository;
     private final MapperGeneric mapper;
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-
-    /*
-
-    String username= SecurityContextHolder.getContext().getAuthentication().getName();
-    // This part comes from BaseEntityListener
-    User validUser=userService.findByUserName(username);
-    Company convertedCompany = mapper.convert(companyService.findByEmail(validUser.getCompany().getEmail()), new Company());
- String username= SecurityContextHolder.getContext().getAuthentication().getName();
-    UserDto user=userService.findByUsername(username);
-*/
-
-
-
-
 
     @Transactional
     @Override
     public ClientVendorDto create(ClientVendorDto clientVendor) throws ClientVendorAlreadyExistException, CompanyNotFoundException {
 
-        // TODO This part will update according to valid user
-        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+        Company company = getCompanyFromSecurity();
 
-        Optional<ClientVendor> foundedClientVendor = repository.findByEmailAndCompanyAndEnabled(clientVendor.getEmail(),convertedCompany,true);
+
+        Optional<ClientVendor> foundedClientVendor = repository.findByEmailAndCompanyAndEnabled(clientVendor.getEmail(),company,true);
         //Enabled
 
         if(foundedClientVendor.isPresent())
@@ -73,7 +59,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
         convertedClientVendor.setEnabled(true);
 
-        convertedClientVendor.setCompany(convertedCompany);
+        convertedClientVendor.setCompany(company);
 
         return mapper.convert(repository.saveAndFlush(convertedClientVendor),new ClientVendorDto());
 
@@ -83,11 +69,9 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public ClientVendorDto update(ClientVendorDto clientVendor,long id) throws CompanyNotFoundException, ClientVendorNotFoundException, ClientVendorAlreadyExistException {
 
-        // TODO This part will update according to valid user
-        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
+        Company company = getCompanyFromSecurity();
 
         Optional<ClientVendor> foundedClientVendor = repository.findById(clientVendor.getId());
-
 
         if(foundedClientVendor.isEmpty()){
             throw new ClientVendorNotFoundException("There is no client/Vendor");}
@@ -96,7 +80,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         ClientVendor convertedClientVendor = mapper.convert(clientVendor, new ClientVendor());
 
         convertedClientVendor.setId(foundedClientVendor.get().getId());
-        convertedClientVendor.setCompany(convertedCompany);
+        convertedClientVendor.setCompany(company);
         convertedClientVendor.setEnabled(true);
 
         return mapper.convert(repository.saveAndFlush(mapper.convert(convertedClientVendor,new ClientVendor())),new ClientVendorDto());
@@ -107,11 +91,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public List<ClientVendorDto> findAll() throws CompanyNotFoundException {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
-        User user = userRepository.findByEmail(email);
-        Company company = user.getCompany();
+        Company company = getCompanyFromSecurity();
 
         List<ClientVendor> list = repository.findAllByCompany(company);
 
@@ -125,10 +105,10 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public ClientVendorDto findByEmailAndType(String email, ClientVendorType type) throws CompanyNotFoundException {
-        // TODO This part will update according to valid user
-        Company convertedCompany = mapper.convert(companyService.findByEmail("karaman@crustycloud.com"), new Company());
 
-        return mapper.convert(repository.findByCompanyAndEmailAndType(convertedCompany,email,type),new ClientVendorDto());
+        Company company = getCompanyFromSecurity();
+
+        return mapper.convert(repository.findByCompanyAndEmailAndType(company,email,type),new ClientVendorDto());
 
 
     }
@@ -150,11 +130,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public List<ClientVendorDto> findAllByType(ClientVendorType type) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
-        User user = userRepository.findByEmail(email);
-        Company company = user.getCompany();
+        Company company = getCompanyFromSecurity();
 
         List<ClientVendor> list = repository.findAllByCompanyAndType(company, type);
 
@@ -163,6 +139,8 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public List<ClientVendorDto> findAllByCompany(CompanyDto company) {
+
+        //Company company = getCompanyFromSecurity();
 
         Company convertedCompany = mapper.convert(company, new Company());
 
@@ -175,7 +153,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
 
-
+    // No need
     @Override
     public List<ClientVendorDto> findAllByCompanyAndType(CompanyDto company, ClientVendorType type) {
 
@@ -189,11 +167,11 @@ public class ClientVendorServiceImpl implements ClientVendorService {
                 .collect(Collectors.toList());      }
 
     @Override
-    public List<ClientVendorDto> findAllByCompanyAndState(CompanyDto company, String state) {
+    public List<ClientVendorDto> findAllByState( String state) {
 
-        Company convertedCompany = mapper.convert(company, new Company());
+        Company company = getCompanyFromSecurity();
 
-        List<ClientVendor> list = repository.findAllByCompanyAndState(convertedCompany,state);
+        List<ClientVendor> list = repository.findAllByCompanyAndState(company,state);
 
         return list.stream()
                 .map(obj->
@@ -219,19 +197,6 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
           }
 
-
-    @Override
-    public List<ClientVendorDto> findAllByCompanyAndStateAndType(CompanyDto company, String state, ClientVendorType type) {
-        Company convertedCompany = mapper.convert(company, new Company());
-
-        List<ClientVendor> list = repository.findAllByCompanyAndStateAndType(convertedCompany,state,type);
-
-        return list.stream()
-                .map(obj->
-                { return mapper.convert(obj,new ClientVendorDto()); })
-                .collect(Collectors.toList());      }
-
-
     @Override
     public void delete(ClientVendorDto clientVendor) throws ClientVendorNotFoundException {
 
@@ -241,5 +206,30 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     public ClientVendorDto update(ClientVendorDto clientVendor) throws ClientVendorNotFoundException, CompanyNotFoundException {
         return null;
     }
+
+    @Override
+    public List<ClientVendorDto> findAllByStateAndType(String state, ClientVendorType type) {
+
+        Company company = getCompanyFromSecurity();
+
+        List<ClientVendor> list = repository.findAllByCompanyAndStateAndType(company,state,type);
+
+        return list.stream()
+                .map(obj->
+                { return mapper.convert(obj,new ClientVendorDto()); })
+                .collect(Collectors.toList());      }
+
+
+   private Company getCompanyFromSecurity() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        return user.getCompany();
+
+    }
+
+
 
 }

@@ -69,13 +69,13 @@ public class ClientVendorRestController {
     }
     @GetMapping("/company/{email}/{state}")
     public List<ClientVendorDto> findCVByCompanyAndState(@PathVariable String state,@PathVariable String email) throws CompanyNotFoundException {
-        return  service.findAllByCompanyAndState(companyService.findByEmail(email),state);
+        return  service.findAllByState(state);
     }
 
     @GetMapping("/company/{email}/{state}/{type}")
     public List<ClientVendorDto> findCVByCompanyAndStateAndType(@PathVariable String email,@PathVariable String state,@PathVariable ClientVendorType type) throws CompanyNotFoundException {
 
-        return service.findAllByCompanyAndStateAndType(companyService.findByEmail(email), state, type);
+        return service.findAllByStateAndType(state, type);
 
     }
 }

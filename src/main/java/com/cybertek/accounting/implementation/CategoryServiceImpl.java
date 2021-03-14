@@ -10,12 +10,14 @@ import com.cybertek.accounting.entity.User;
 import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CategoryRepository;
+import com.cybertek.accounting.repository.CompanyRepository;
 import com.cybertek.accounting.repository.UserRepository;
 import com.cybertek.accounting.service.CategoryService;
 import com.cybertek.accounting.service.CompanyService;
 import com.cybertek.accounting.service.ProductService;
 import com.cybertek.accounting.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,20 +36,16 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
     private final MapperGeneric mapper;
     private final ProductService productService;
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
+
 
 
     @Transactional
     @Override
     public CategoryDto create(CategoryDto categoryDto) throws CategoryAlreadyExistException, CompanyNotFoundException {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-        User user = userRepository.findByEmail(username);
-        Company company = user.getCompany();
-
+        Company company = getCompanyFromSecurity();
         Optional<Category> foundedCategory = repository.findByDescriptionAndCompany(categoryDto.getDescription(),company);
 
         if(foundedCategory.isPresent())
@@ -72,11 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> findAll() throws CompanyNotFoundException {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-        User user = userRepository.findByEmail(username);
-        Company company = user.getCompany();
+        Company company = getCompanyFromSecurity();
 
         List<Category> list = repository.findAllByCompany(company);
 
@@ -85,6 +79,8 @@ public class CategoryServiceImpl implements CategoryService {
                 { return mapper.convert(obj,new CategoryDto()); })
                 .collect(Collectors.toList());
     }
+
+    // No need
     @Override
     public List<CategoryDto> findAllByCompany(CompanyDto companyDto) {
 
@@ -98,11 +94,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findAllByCompanyAndStatus(CompanyDto companyDto, boolean enabled) {
+    public List<CategoryDto> findAllByStatus(boolean enabled) {
 
-        Company convertedCompany = mapper.convert(companyDto, new Company());
+        Company company = getCompanyFromSecurity();
 
-        List<Category> list = repository.findAllByCompanyAndEnabled(convertedCompany,enabled);
+        List<Category> list = repository.findAllByCompanyAndEnabled(company,enabled);
 
         return list.stream().sorted(Comparator.comparing(obj->!obj.isEnabled(),Boolean::compareTo))
                 .map(obj->
@@ -113,23 +109,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public CategoryDto update(CategoryDto categoryDto,long id) throws CategoryNotFoundException, CompanyNotFoundException, CategoryAlreadyExistException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
 
-        User user = userRepository.findByEmail(username);
-        Company company = user.getCompany();
+        Company company = getCompanyFromSecurity();
 
         Optional<Category> foundedCategory = repository.findById(id);
         Optional<Category> updatedCategory = repository.findByDescriptionAndCompany(categoryDto.getDescription(), company);
+
         if (foundedCategory.isEmpty()) {
             throw new CategoryNotFoundException("There is no category ");
         }
         if(updatedCategory.isPresent() && !updatedCategory.get().getDescription().equals(foundedCategory.get().getDescription())){
             throw new CategoryAlreadyExistException("This category already exist");
         }
-
-
-
 
         Category convertedCategory = mapper.convert(categoryDto, new Category());
         convertedCategory.setId(foundedCategory.get().getId());
@@ -139,15 +130,20 @@ public class CategoryServiceImpl implements CategoryService {
         return mapper.convert(repository.saveAndFlush(convertedCategory),new CategoryDto());
     }
 
-
-
-
     @Transactional
     @Override
-    public void delete(long id) throws CategoryNotFoundException, CategoryHasProductException {
+    public void delete(long id) throws CategoryNotFoundException, CompanyNotFoundException {
+
+        Company company = getCompanyFromSecurity();
 
         Category foundedCategory = repository.findById(id)
                 .orElseThrow(()->new CategoryNotFoundException("There is no record with this "));
+
+        Company foundedCompany = companyRepository.findByEmail(foundedCategory.getCompany().getEmail()).orElseThrow(() -> new CompanyNotFoundException("No Company Found"));
+
+        if (company != foundedCompany) {
+            throw new AccessDeniedException("Access Denied");
+        }
 
         CategoryDto convertedCategory = mapper.convert(foundedCategory, new CategoryDto());
 
@@ -163,17 +159,24 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
-
-    // THEY Can DELETE
     @Override
     public CategoryDto update(CategoryDto categoryDto) throws CategoryNotFoundException, CompanyNotFoundException {
         return null;
     }
 
-    @Transactional
     @Override
     public void delete(CategoryDto categoryDto) throws CategoryNotFoundException, CategoryHasProductException {
 
-
     }
+
+    // Should be under UserRepo
+    private Company getCompanyFromSecurity() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        return user.getCompany();
+    }
+
 }
