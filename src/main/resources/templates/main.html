@@ -205,19 +205,19 @@
                                     <ul class="list-group mb-3">
                                         <li class="list-group-item">
                                             <span>Euro</span>
-                                            <span class="badge bg-light-primary float-right" th:text="${rates.EUR}"></span>
+                                            <span class="badge bg-light-primary float-right" th:text="${#numbers.formatDecimal(rates.EUR , 1, 2)}"></span>
                                         </li>
                                         <li class="list-group-item">
                                             <span>British Pound</span>
-                                            <span class="badge bg-light-info float-right">3.7k</span>
+                                            <span class="badge bg-light-info float-right" th:text="${#numbers.formatDecimal(rates.GBP , 1, 2)}" ></span>
                                         </li>
                                         <li class="list-group-item">
                                             <span>Canadian Dollar</span>
-                                            <span class="badge bg-light-warning float-right">2.3k</span>
+                                            <span class="badge bg-light-warning float-right" th:text="${#numbers.formatDecimal(rates.CAD , 1, 2)}"></span>
                                         </li>
                                         <li class="list-group-item">
                                             <span>Indian Rupee</span>
-                                            <span class="badge bg-light-success float-right">4.1k</span>
+                                            <span class="badge bg-light-success float-right" th:text="${#numbers.formatDecimal(rates.INR , 1, 2)}" ></span>
                                         </li>
                                     </ul>
                                     <button type="button" class="btn btn-primary mr-2">Profile</button>
