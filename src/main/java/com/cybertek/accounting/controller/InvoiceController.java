@@ -81,8 +81,10 @@ public class InvoiceController {
                 invoiceService.approve(invoiceNo);
             } else if (action.equals("delete")) {
                 invoiceService.delete(invoiceNo);
+            }else if (action.equals("archive")) {
+                invoiceService.archive(invoiceNo);
             }
-        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
+        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException | NotEnoughProductInStockException e) {
             e.printStackTrace();
         }
         return "redirect:/invoice/purchaseList";
@@ -169,7 +171,7 @@ public class InvoiceController {
             } else if (action.equals("archive")) {
                 invoiceService.archive(invoiceNo);
             }
-        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
+        } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException | NotEnoughProductInStockException e) {
             e.printStackTrace();
         }
         return "redirect:/invoice/salesList";

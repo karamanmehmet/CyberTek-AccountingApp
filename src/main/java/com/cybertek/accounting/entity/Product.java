@@ -21,7 +21,6 @@ public class Product extends BaseEntity {
 
     private String description;
     private int qty;
-    private double price;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -32,9 +31,6 @@ public class Product extends BaseEntity {
     private Unit unit;
 
     private int lowLimit;
-
-    @Column(nullable = false)
-    private double tax;
 
     @ManyToOne
     @JoinColumn(name = "company_id")

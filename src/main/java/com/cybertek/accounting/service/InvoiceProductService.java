@@ -26,7 +26,7 @@ public interface InvoiceProductService {
 
 //    InvoiceProductDto findById(long id);
 
-    List<InvoiceProductDto> findByInvoiceAndCompany(InvoiceDto invoice, CompanyDto company) throws CompanyNotFoundException, InvoiceNotFoundException;
-
     List<InvoiceProductDto> findByInvoiceStatusAndInvoiceTypeAndCompany(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus);
+
+    void checkStocks(InvoiceDto invoiceDto) throws NotEnoughProductInStockException;
 }

@@ -20,10 +20,14 @@ public class InvoiceProduct {
     private Long id;
 
     private int qty;
+
+    @Column(nullable = false)
     private double tax;
+
+    @Column(nullable = false)
     private double unitPrice;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "product_id", nullable = true)
     private Product product;
 
@@ -33,11 +37,12 @@ public class InvoiceProduct {
 
     private boolean enabled;
 
-    public InvoiceProduct( int qty, double tax, double unitPrice,Product product, Invoice invoice) {
+    public InvoiceProduct( int qty, double tax, double unitPrice,Product product, Invoice invoice, boolean enabled) {
         this.invoice = invoice;
         this.product = product;
         this.qty = qty;
         this.unitPrice = unitPrice;
         this.tax = tax;
+        this.enabled = enabled;
     }
 }

@@ -16,10 +16,8 @@ public class ProductDto {
     private String name;
     private String description;
     private int qty;
-    private double price;
     private CategoryDto category;
     private Unit unit;
-    private double tax;
     private CompanyDto company;
     private Boolean enabled;
 

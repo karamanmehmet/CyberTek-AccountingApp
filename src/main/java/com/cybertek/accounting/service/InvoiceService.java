@@ -5,10 +5,7 @@ import com.cybertek.accounting.dto.InvoiceDto;
 import com.cybertek.accounting.entity.Invoice;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
-import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
-import com.cybertek.accounting.exception.InvoiceNotFoundException;
-import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
+import com.cybertek.accounting.exception.*;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ public interface InvoiceService {
 
     boolean delete(String invoiceNo) throws InvoiceNotFoundException, CompanyNotFoundException;
 
-    InvoiceDto approve(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
+    InvoiceDto approve(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException, NotEnoughProductInStockException;
 
     InvoiceDto archive(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException;
 

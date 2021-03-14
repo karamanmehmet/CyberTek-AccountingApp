@@ -8,18 +8,13 @@ import com.cybertek.accounting.entity.InvoiceNumber;
 import com.cybertek.accounting.entity.User;
 import com.cybertek.accounting.enums.InvoiceStatus;
 import com.cybertek.accounting.enums.InvoiceType;
-import com.cybertek.accounting.exception.CompanyNotFoundException;
-import com.cybertek.accounting.exception.InvoiceAlreadyExistsException;
-import com.cybertek.accounting.exception.InvoiceNotFoundException;
-import com.cybertek.accounting.exception.InvoiceProductNotFoundException;
+import com.cybertek.accounting.exception.*;
 import com.cybertek.accounting.mapper.MapperGeneric;
 import com.cybertek.accounting.repository.CompanyRepository;
+import com.cybertek.accounting.repository.InvoiceProductRepository;
 import com.cybertek.accounting.repository.InvoiceRepository;
 import com.cybertek.accounting.repository.UserRepository;
-import com.cybertek.accounting.service.CompanyService;
-import com.cybertek.accounting.service.InvoiceMonetaryDetailService;
-import com.cybertek.accounting.service.InvoiceNumberService;
-import com.cybertek.accounting.service.InvoiceService;
+import com.cybertek.accounting.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +35,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final CompanyService companyService;
+    private final InvoiceProductService invoiceProductService;
 
 
     @Override
@@ -119,18 +115,30 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceDto approve(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
+    public InvoiceDto approve(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException, NotEnoughProductInStockException {
+
         InvoiceDto foundedInvoiceDto = findByInvoiceNo(invoiceNo);
+
+        if (invoiceProductService.findByInvoice(foundedInvoiceDto).size() == 0) {
+           throw new InvoiceProductNotFoundException("To be able to approve there needs to be at least one invoice product");
+        }
+
         foundedInvoiceDto.setInvoiceStatus(InvoiceStatus.APPROVED);
         update(foundedInvoiceDto);
+
+        invoiceProductService.checkStocks(foundedInvoiceDto);
+
         return foundedInvoiceDto;
     }
 
     @Override
     public InvoiceDto archive(String invoiceNo) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
+
         InvoiceDto foundedInvoiceDto = findByInvoiceNo(invoiceNo);
         foundedInvoiceDto.setInvoiceStatus(InvoiceStatus.ARCHIVED);
+
         update(foundedInvoiceDto);
+
         return foundedInvoiceDto;
     }
 
