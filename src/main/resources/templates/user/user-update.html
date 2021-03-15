@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="loading" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN : Head-->
+
+
+<!-- BEGIN : Head-->
+<head th:replace="fragments :: page_head"></head>
+
+<!-- END : Head-->
+
+<!-- BEGIN : Body-->
+
+<body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns  navbar-sticky" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<div th:replace="fragments :: page_header"></div>
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+<div class="wrapper">
+    <div th:replace="fragments :: page_menu" />
+
+
+
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <section class="users-list-wrapper">
+                    <!-- Filter starts -->
+                    <div class="users-list-filter px-2">
+
+
+
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                            <a th:href="@{/user/list}" class="btn btn-primary bg-light-primary mb-1" href="user-list.html"><i class="fa fa-list mr-1"></i>User List</a>
+                        </div>
+                    </div>
+
+            </div>
+            <!-- Filter ends -->
+
+            <!-- Table starts -->
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+
+                                <div class="tab-content">
+                                    <!-- Account content starts -->
+                                    <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+
+                                        <!-- Account form starts -->
+                                        <form novalidate th:action="@{/user/update/{userEmail}(userEmail=${user.email})}" method="post" th:object="${user}" >
+                                            <div class="row">
+                                                <div class="col-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="users-edit-username">Firstname</label>
+                                                            <input th:field="*{firstname}" type="text" id="users-edit-username" class="form-control" placeholder="Username" value="dean3004" required aria-invalid="false">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="users-edit-password">Password</label>
+                                                            <input th:field="*{password}"type="password" id="users-edit-password" class="form-control" placeholder="Password" value="deanstanley@gmail.com" required aria-invalid="false">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="users-edit-email">E-mail</label>
+                                                            <input th:field="*{email}" type="email" id="users-edit-email" class="form-control" placeholder="Email" value="deanstanley@gmail.com" required aria-invalid="false">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label>Company</label>
+                                                            <select th:field="*{company}" class="form-control" required>
+                                                                <option th:each="company : ${companies}"
+                                                                        th:value="${company.id}"
+                                                                        th:text="${company.title}"
+                                                                        th:selected="${company.id == user.company.id}"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="users-edit-lastname">Lastname</label>
+                                                            <input th:field="*{lastname}" type="text" id="users-edit-lastname" class="form-control" placeholder="Lastname">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label for="users-edit-phone">Phone</label>
+                                                            <input th:field="*{phone}" type="text" id="users-edit-phone" class="form-control" placeholder="9734157843">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label>Role</label>
+                                                            <select th:field="*{role}" class="form-control" required>
+                                                                <option th:each="role : ${roles}"
+                                                                        th:value="${role.name}"
+                                                                        th:text="${role.name}"
+                                                                        ></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label>Status</label>
+                                                            <select th:field="*{active}" class="form-control" required>
+                                                                <option th:value="${true}">Active</option>
+                                                                <option th:value="${false}">Close</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+
+                                                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                    <button name="action" value="save" type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Changes</button>
+                                                    <button name="action" value="delete" type="submit" class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete Company</button>
+                                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- Account form ends -->
+                                    </div>
+                                    <!-- Account content ends -->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Table ends -->
+        </section>
+
+    </div>
+</div>
+<!-- END : End Main Content-->
+<!-- END : End Main Content-->
+
+<!-- BEGIN : Footer-->
+<footer th:replace="fragments :: page_footer"></footer>
+<!-- End : Footer-->
+<!-- Scroll to top button -->
+<button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
+
+</div>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+
+<div class="sidenav-overlay"></div>
+
+
+<!-- BEGIN PAGE LEVEL JS-->
+<script th:src="@{/js/dashboard2.js}"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN: Custom CSS-->
+<script th:src="@{/assets/js/scripts.js}"></script>
+<!-- END: Custom CSS-->
+
+
+</body>
+<!-- END : Body-->
+
+</html>

@@ -40,9 +40,30 @@ public class UserController {
     }
     //
     @GetMapping("/list")
-    public String listUsers(Model model){
+    public String listUsers(Model model) throws UserNotFound {
         model.addAttribute("users",userService.findAll());
         return "user/user-list";
+    }
+
+    @GetMapping("/update/{userEmail}")
+    public String editUser(Model model, @PathVariable String userEmail){
+
+        model.addAttribute("user",userService.findByEmail(userEmail));
+        model.addAttribute("roles",roleService.findAll());
+        model.addAttribute("companies",companyService.findAll());
+
+        return "/user/user-update";
+    }
+
+    @PostMapping("/update/{userEmail}")
+    public String updateUser(@PathVariable String userEmail, @ModelAttribute("user") UserDto userDto,
+                             @RequestParam(value="action", required = true) String action) throws Exception {
+
+        if (action.equals("save")) userService.update(userDto);
+
+        if (action.equals("delete")) userService.delete(userService.findByEmail(userEmail));
+
+        return "redirect:/user/list";
     }
 
 }

@@ -27,9 +27,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) throws UserAlreadyExist {
         User user = userRepository.findByEmail(userDto.getEmail());
-        if (user != null) throw new UserAlreadyExist("This user already exists");
+        if (user == null) throw new UserAlreadyExist("This user already exists");
 
-        return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
+        return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto, new User())), userDto);
 
 
     }
@@ -38,7 +38,9 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAll() {
         List<User> list = userRepository.findAll();
         return list.stream()
-                .map(obj-> { return mapper.convert(obj,new UserDto()); })
+                .map(obj -> {
+                    return mapper.convert(obj, new UserDto());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -49,38 +51,50 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserNotFound("The user is not exist");
         }
-        userRepository.saveAndFlush(mapper.convert(userDto,new User()));
-        return mapper.convert(userRepository.saveAndFlush(mapper.convert(userDto,new User())),userDto);
+
+        user.setFirstname(userDto.getFirstname());
+        user.setLastname(userDto.getLastname());
+        user.setPassword(userDto.getPassword());
+        user.setActive(userDto.isActive());
+        user.setPhone(userDto.getPhone());
+        user.setEnabled(user.isEnabled());
+        user.setCompany(user.getCompany());
+        //user.setRoles(userDto.getRole());
+
+        User savedUser = userRepository.saveAndFlush(user);
+
+        return mapper.convert(savedUser,new UserDto());
     }
 
     @Override
     public void delete(UserDto userDto) throws Exception {
-       User user = userRepository.findByEmail(userDto.getEmail());
+        User user = userRepository.findByEmail(userDto.getEmail());
 
-       if (user == null) {
-           throw new Exception("this email is not exist");
-       }
+        if (user == null) {
+            throw new UserNotFound("The user is not exist");
+        }
 
-       user.setEmail(userDto.getEmail());
-       user.setEnabled(false);
-       userRepository.saveAndFlush(user);
+        user.setEmail(userDto.getEmail());
+        user.setEnabled(false);
+        userRepository.saveAndFlush(user);
     }
 
     @Override
     public List<UserDto> findByCompanyAndEnabled(CompanyDto companyDto, Boolean enabled) {
-        Company company = mapper.convert(companyDto,new Company());
+        Company company = mapper.convert(companyDto, new Company());
 
-        List<User> list = userRepository.findByCompanyAndEnabled(company,enabled);
+        List<User> list = userRepository.findByCompanyAndEnabled(company, enabled);
 
         return list.stream()
-                .map(obj ->{ return mapper.convert(obj,new UserDto());})
+                .map(obj -> {
+                    return mapper.convert(obj, new UserDto());
+                })
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        return mapper.convert(user, new UserDto());
+        return mapper.convert(userRepository.findByEmail(email), new UserDto());
     }
 
 }

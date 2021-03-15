@@ -33,7 +33,7 @@
 
 
                                     <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-									<a class="btn btn-primary bg-light-primary mb-1" href="user-list.html"><i class="fa fa-list mr-1"></i>User List</a>
+									<a th:href="@{/user/list}" class="btn btn-primary bg-light-primary mb-1" href="user-list.html"><i class="fa fa-list mr-1"></i>User List</a>
                                     </div>
                                 </div>
                             
@@ -90,14 +90,14 @@
                                                             <div class="col-12 col-md-6">
 															    <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-company">Lastname</label>
-                                                                        <input th:field="*{lastname}" type="text" id="users-edit-company" class="form-control" placeholder="Lastname">
+                                                                        <label for="users-edit-lastname">Lastname</label>
+                                                                        <input th:field="*{lastname}" type="text" id="users-edit-lastname" class="form-control" placeholder="Lastname">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="controls">
-                                                                        <label for="users-edit-company">Phone</label>
-                                                                        <input th:field="*{phone}" type="text" id="users-edit-company" class="form-control" placeholder="9734157843">
+                                                                        <label for="users-edit-phone">Phone</label>
+                                                                        <input th:field="*{phone}" type="text" id="users-edit-phone" class="form-control" placeholder="9734157843">
                                                                     </div>
                                                                 </div>																	
                                                                 <div class="form-group">
@@ -125,7 +125,6 @@
        
                                                             <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
                                                                 <button type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Save Changes</button>
-																<button type="submit" class="btn btn-danger mb-2 mb-sm-0 mr-sm-2">Delete Company</button>
                                                                 <button type="reset" class="btn btn-secondary">Cancel</button>
                                                             </div>
                                                         </div>
