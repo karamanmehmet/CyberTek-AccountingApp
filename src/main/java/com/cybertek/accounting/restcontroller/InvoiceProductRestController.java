@@ -30,17 +30,17 @@ public class InvoiceProductRestController {
     }
 
     @PostMapping
-    public InvoiceProductDto createInvoiceProduct(@RequestBody InvoiceProductDto invoiceProductDto) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
+    public InvoiceProductDto createInvoiceProduct(@RequestBody InvoiceProductDto invoiceProductDto) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException, InvoiceAlreadyApprovedException {
         return invoiceProductService.create(invoiceProductDto);
     }
 
     @PutMapping
-    public InvoiceProductDto updateInvoiceProduct(@RequestBody InvoiceProductDto invoiceProductDto) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
+    public InvoiceProductDto updateInvoiceProduct(@RequestBody InvoiceProductDto invoiceProductDto) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException, InvoiceAlreadyApprovedException {
         return invoiceProductService.update(invoiceProductDto);
     }
 
     @DeleteMapping
-    public void deleteInvoiceProduct(@RequestBody InvoiceProductDto invoiceProductDto) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
+    public void deleteInvoiceProduct(@RequestBody InvoiceProductDto invoiceProductDto) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException, InvoiceAlreadyApprovedException {
         invoiceProductService.delete(invoiceProductDto);
     }
 
