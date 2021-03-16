@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
         User user = userRepository.findByEmail(username);
         Company company = user.getCompany();
 
-        List<Product> list = repository.findAllByCompany(company);
+        List<Product> list = repository.findAllByCompanyOrderById(company);
 
         return list.stream()
                 .map(obj->
@@ -137,7 +137,7 @@ public class ProductServiceImpl implements ProductService {
 
      //   Company foundedCategory = companyRepository.findByEmail(companyDto.getEmail()).orElseThrow(() -> new CompanyNotFoundException("No Company Found"));
 
-        List<Product> list = repository.findAllByCompany(mapper.convert(companyDto,new Company()));
+        List<Product> list = repository.findAllByCompanyOrderById(mapper.convert(companyDto,new Company()));
 
         return list.stream()
                 .map(obj->

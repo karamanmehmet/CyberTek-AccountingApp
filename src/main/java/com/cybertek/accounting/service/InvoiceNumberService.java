@@ -17,6 +17,6 @@ public interface InvoiceNumberService {
 
    List<InvoiceNumber> findInvoiceNumberByCompany(CompanyDto company) throws CompanyNotFoundException, InvoiceNumberNotFoundException;
 
-   InvoiceNumber findFirstByCompanyOrderByInvoiceNumberDesc(CompanyDto company) throws CompanyNotFoundException;
+   InvoiceNumber findLastInvoiceNumber(CompanyDto company) throws CompanyNotFoundException;
 
 }

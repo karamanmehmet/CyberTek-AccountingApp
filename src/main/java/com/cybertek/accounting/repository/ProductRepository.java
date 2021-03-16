@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findAllByCompany(Company company);
+    List<Product> findAllByCompanyOrderById(Company company);
 
     List<Product> findAllByCategoryAndCompany(Category category, Company company);
 

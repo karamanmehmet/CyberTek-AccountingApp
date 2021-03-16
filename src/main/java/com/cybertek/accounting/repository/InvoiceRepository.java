@@ -21,7 +21,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Long> {
 
     List<Invoice> findAllByCompanyOrderByInvoiceDateAsc(Company company);
 
-    List<Invoice> findAllByCompanyAndInvoiceType(Company company, InvoiceType invoiceType);
+    List<Invoice> findAllByCompanyAndInvoiceTypeOrderByInvoiceNo(Company company, InvoiceType invoiceType);
 
     List<Invoice> findAllByCompanyAndInvoiceStatus(Company company, InvoiceStatus invoiceStatus);
 

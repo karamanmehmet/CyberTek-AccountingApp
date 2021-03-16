@@ -109,7 +109,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
             throw new InvoiceNotFoundException("No invoice found");
         }
 
-        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceAndInvoiceCompany(foundInvoice, company);
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceAndInvoiceCompanyOrderById(foundInvoice, company);
 
         return invoiceProductList.stream().map(invoiceProduct -> {
             return mapper.convert(invoiceProduct, new InvoiceProductDto());
@@ -142,7 +142,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         Company company = getCompanyFromSecurity();
         Invoice invoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceDto.getInvoiceNo(), company);
-        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceAndInvoiceCompany(invoice, company);
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceAndInvoiceCompanyOrderById(invoice, company);
 
         invoiceProductList.forEach(invoiceProduct -> {
             Product product = invoiceProduct.getProduct();

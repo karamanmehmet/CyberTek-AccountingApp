@@ -60,7 +60,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         InvoiceNumber createdInvoiceNumber = invoiceNumberService.create(invoice, invoice.getCompany());
 
-        createdInvoice.setInvoiceNo(generateInvoiceNumber(createdInvoiceNumber));
+        createdInvoice.setInvoiceNo(generateInvoiceNumber(createdInvoiceNumber, createdInvoice));
 
         repository.saveAndFlush(createdInvoice);
 
@@ -202,7 +202,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDto> findAllByCompanyAndInvoiceType(CompanyDto company, InvoiceType invoiceType) throws InvoiceNotFoundException, InvoiceProductNotFoundException, CompanyNotFoundException {
 
-        List<InvoiceDto> invoiceDtoList =  repository.findAllByCompanyAndInvoiceType(mapper.convert(company, new Company()), invoiceType).stream()
+        List<InvoiceDto> invoiceDtoList =  repository.findAllByCompanyAndInvoiceTypeOrderByInvoiceNo(mapper.convert(company, new Company()), invoiceType).stream()
                 .map(invoice -> mapper.convert(invoice, new InvoiceDto()))
                 .collect(Collectors.toList());
 
@@ -218,7 +218,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         User loggedInUser = userRepository.findByEmail(email);
         Company company = loggedInUser.getCompany();
 
-        List<Invoice> list = repository.findAllByCompanyAndInvoiceType(company, invoiceType);
+        List<Invoice> list = repository.findAllByCompanyAndInvoiceTypeOrderByInvoiceNo(company, invoiceType);
 
         List<InvoiceDto> invoiceDtoList = list.stream().map(invoice -> {return mapper.convert(invoice, new InvoiceDto());}).collect(Collectors.toList());
 
@@ -263,7 +263,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     }
 
-    private String generateInvoiceNumber(InvoiceNumber invoiceNumber) {
+    private String generateInvoiceNumber(InvoiceNumber invoiceNumber, Invoice invoice) {
 
         String invoiceNo = String.valueOf(invoiceNumber.getInvoiceNumber());
 
@@ -271,7 +271,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoiceNo = "0".concat(invoiceNo);
         }
 
-        String invoiceNumberString = "INV-" + invoiceNo;
+        String invoiceNumberString = "INV-" + invoiceNo + "-" + invoice.getInvoiceDate().getYear();
 
         return invoiceNumberString;
 

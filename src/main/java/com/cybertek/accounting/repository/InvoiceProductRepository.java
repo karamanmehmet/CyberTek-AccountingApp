@@ -30,7 +30,7 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct,L
     //will do in future find by Company, Incovice Type / Status and Order By Invoice Date
     //anyone can do with Native / Query will be appreciated
 
-    List<InvoiceProduct> findByInvoiceAndInvoiceCompany(Invoice invoice, Company company);
+    List<InvoiceProduct> findByInvoiceAndInvoiceCompanyOrderById(Invoice invoice, Company company);
 
     @Query(" SELECT u FROM InvoiceProduct u Where u.invoice.company=:company and u.invoice.invoiceType=:invoiceType and u.invoice.invoiceStatus=:invoiceStatus order by u.invoice.invoiceDate asc")
     List<InvoiceProduct>  findByInvoiceStatusAndInvoiceTypeAndCompany(Company company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) ;

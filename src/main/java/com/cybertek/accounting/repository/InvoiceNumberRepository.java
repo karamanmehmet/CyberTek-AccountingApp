@@ -17,6 +17,6 @@ public interface InvoiceNumberRepository extends JpaRepository<InvoiceNumber,Lon
 
     List<InvoiceNumber> findInvoiceNumberByCompany(Company company);
 
-    Optional<InvoiceNumber> findFirstByCompanyOrderByInvoiceNumberDesc(Company company);
+    Optional<InvoiceNumber> findFirstByCompanyOrderByIdDesc(Company company);
 
 }

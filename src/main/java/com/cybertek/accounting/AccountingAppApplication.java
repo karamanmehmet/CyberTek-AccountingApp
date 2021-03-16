@@ -63,10 +63,10 @@ public class AccountingAppApplication {
 
 			//Create InvoiceNumber for Company
 
-			InvoiceNumber invoiceNumber = new InvoiceNumber(crustyCompany,2021,1);
+			InvoiceNumber invoiceNumber = new InvoiceNumber(crustyCompany,2020,1);
 			invoiceNumber = invoiceNumberRepository.save(invoiceNumber);
 
-			InvoiceNumber invoiceNumber2 = new InvoiceNumber(crustyCompany,2020,2);
+			InvoiceNumber invoiceNumber2 = new InvoiceNumber(crustyCompany,2021,1);
 			invoiceNumber2 = invoiceNumberRepository.save(invoiceNumber2);
 
 
@@ -134,12 +134,12 @@ public class AccountingAppApplication {
 
 		//Create Invoice
 
-			Invoice invoiceSales = new Invoice("INV-001", InvoiceStatus.OPEN, InvoiceType.SALES,LocalDate.now().minusDays(1),
+			Invoice invoiceSales = new Invoice("INV-001-2020", InvoiceStatus.OPEN, InvoiceType.SALES,LocalDate.now().minusYears(1),
 					clientSP,crustyCompany,true);
 
 			invoiceSales=	invoiceRepository.saveAndFlush(invoiceSales);
 
-			Invoice invoicePurchase = new Invoice("INV-002", InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
+			Invoice invoicePurchase = new Invoice("INV-001-2021", InvoiceStatus.OPEN, InvoiceType.PURCHASE,LocalDate.now().minusDays(2),
 					vendorSP,crustyCompany,true);
 
 		invoiceRepository.saveAndFlush(invoicePurchase);

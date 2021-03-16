@@ -30,14 +30,19 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
     public InvoiceNumber create(InvoiceDto invoiceDto, CompanyDto companyDto) throws CompanyNotFoundException, InvoiceAlreadyExistsException {
 
         Company foundCompany = companyRepository.findById(companyDto.getId()).orElseThrow(() -> new CompanyNotFoundException("No company found"));
-
         Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceDto.getInvoiceNo(), foundCompany);
 
         if (foundInvoice != null) {
             throw new InvoiceAlreadyExistsException("An invoice with this invoice number is already exist.");
         }
 
-        InvoiceNumber createdInvoiceNumber = generate(companyDto);
+        InvoiceNumber createdInvoiceNumber;
+        if (LocalDate.now().getYear() == findLastInvoiceNumber(companyDto).getYear()) {
+            createdInvoiceNumber = findLastInvoiceNumber(companyDto);
+            createdInvoiceNumber.setInvoiceNumber(createdInvoiceNumber.getInvoiceNumber() + 1);
+        }else {
+            createdInvoiceNumber = generate(companyDto);
+        }
 
         invoiceNumberRepository.saveAndFlush(createdInvoiceNumber);
 
@@ -74,17 +79,15 @@ public class InvoiceNumberServiceImpl implements InvoiceNumberService {
     }
 
     @Override
-    public InvoiceNumber findFirstByCompanyOrderByInvoiceNumberDesc(CompanyDto company) throws CompanyNotFoundException {
-
+    public InvoiceNumber findLastInvoiceNumber(CompanyDto company) throws CompanyNotFoundException {
         Company foundCompany = companyRepository.findByEmail(company.getEmail()).orElseThrow(() -> new CompanyNotFoundException("No company found"));
-
-        return invoiceNumberRepository.findFirstByCompanyOrderByInvoiceNumberDesc(foundCompany).orElse(null);
+        return invoiceNumberRepository.findFirstByCompanyOrderByIdDesc(foundCompany).orElse(null);
 
     }
 
     private InvoiceNumber generate(CompanyDto company) throws CompanyNotFoundException {
 
-        InvoiceNumber lastInvoiceNumber = findFirstByCompanyOrderByInvoiceNumberDesc(company);
+        InvoiceNumber lastInvoiceNumber = findLastInvoiceNumber(company);
 
         Company foundCompany = companyRepository.findByEmail(company.getEmail()).orElseThrow(() -> new CompanyNotFoundException("No company found"));
 
