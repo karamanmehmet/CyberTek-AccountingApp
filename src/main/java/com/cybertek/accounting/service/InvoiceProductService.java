@@ -9,6 +9,8 @@ import com.cybertek.accounting.enums.InvoiceType;
 import com.cybertek.accounting.exception.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 public interface InvoiceProductService {
 
@@ -31,4 +33,9 @@ public interface InvoiceProductService {
     List<InvoiceProductDto> findByInvoiceStatusAndInvoiceTypeAndCompany(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus);
 
     void checkStocks(InvoiceDto invoiceDto) throws NotEnoughProductInStockException;
+
+    Map<ProductDto, Queue<InvoiceProductDto>> findBySalesAndInvoiceStatus(InvoiceStatus invoiceStatus) throws CompanyNotFoundException;
+
+    Map<ProductDto, Queue<InvoiceProductDto>> findByPurchaseAndInvoiceStatus(InvoiceStatus invoiceStatus) throws CompanyNotFoundException;
+
 }

@@ -16,7 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final MapperGeneric mapper;
+    private final HttpSession httpSession;
 
     @Override
     public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException, InvoiceAlreadyApprovedException {
@@ -96,7 +98,9 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     @Override
     public List<InvoiceProductDto> findAll() {
         List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceCompanyOrderByInvoiceInvoiceNo(getCompanyFromSecurity());
-        return invoiceProductList.stream().map(invoiceProduct -> {return mapper.convert(invoiceProduct, new InvoiceProductDto());}).collect(Collectors.toList());
+        return invoiceProductList.stream().map(invoiceProduct -> {
+            return mapper.convert(invoiceProduct, new InvoiceProductDto());
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -130,7 +134,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     @Override
     public List<InvoiceProductDto> findByInvoiceStatusAndInvoiceTypeAndCompany(CompanyDto company, InvoiceType invoiceType, InvoiceStatus invoiceStatus) {
 
-        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceStatusAndInvoiceTypeAndCompany(mapper.convert(company,new Company()), invoiceType,invoiceStatus);
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceStatusAndInvoiceTypeAndCompany(mapper.convert(company, new Company()), invoiceType, invoiceStatus);
 
         return invoiceProductList.stream().map(invoiceProduct -> {
             return mapper.convert(invoiceProduct, new InvoiceProductDto());
@@ -152,14 +156,60 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                 } catch (NotEnoughProductInStockException e) {
                     e.printStackTrace();
                 }
-            }else if (product.getQty() >= invoiceProduct.getQty() && invoice.getInvoiceType() == InvoiceType.SALES) {
+            } else if (product.getQty() >= invoiceProduct.getQty() && invoice.getInvoiceType() == InvoiceType.SALES) {
                 product.setQty(product.getQty() - (invoiceProduct.getQty()));
                 productRepository.saveAndFlush(product);
-            }else {
+            } else {
                 product.setQty(product.getQty() + (invoiceProduct.getQty()));
                 productRepository.saveAndFlush(product);
             }
         });
+    }
+
+    @Override
+    public Map<ProductDto, Queue<InvoiceProductDto>> findBySalesAndInvoiceStatus(InvoiceStatus invoiceStatus) throws CompanyNotFoundException {
+
+        CompanyDto company = (CompanyDto) httpSession.getAttribute("company");
+        Company foundCompany = companyRepository.findByEmail(company.getEmail()).orElseThrow(() -> new CompanyNotFoundException("No company found found"));
+
+        List<InvoiceProductDto> salesList = convertToDto(invoiceProductRepository.findAllByInvoiceInvoiceTypeAndInvoiceCompanyAndInvoiceInvoiceStatusOrderByInvoiceInvoiceDate(InvoiceType.SALES, foundCompany, InvoiceStatus.APPROVED));
+
+        //get all selled
+        Map<ProductDto, Queue<InvoiceProductDto>> salesMap = new HashMap<>();
+
+        for (InvoiceProductDto sales : salesList) {
+            Queue<InvoiceProductDto> salesQueue = salesMap.getOrDefault(sales.getProduct(), new LinkedList<>());
+            salesQueue.add(sales);
+            salesMap.put(sales.getProduct(), salesQueue);
+        }
+
+        return salesMap;
+    }
+
+    @Override
+    public Map<ProductDto, Queue<InvoiceProductDto>> findByPurchaseAndInvoiceStatus(InvoiceStatus invoiceStatus) throws CompanyNotFoundException {
+
+        CompanyDto company = (CompanyDto) httpSession.getAttribute("company");
+        Company foundCompany = companyRepository.findByEmail(company.getEmail()).orElseThrow(() -> new CompanyNotFoundException("No company found found"));
+
+        List<InvoiceProductDto> purchaseList = convertToDto(invoiceProductRepository.findAllByInvoiceInvoiceTypeAndInvoiceCompanyAndInvoiceInvoiceStatusOrderByInvoiceInvoiceDate(InvoiceType.PURCHASE, foundCompany, InvoiceStatus.APPROVED));
+
+        //get all purchased
+        Map<ProductDto, Queue<InvoiceProductDto>> purchaseMap = new HashMap<>();
+
+        for (InvoiceProductDto purchase : purchaseList) {
+            Queue<InvoiceProductDto> purchaseQueue = purchaseMap.getOrDefault(purchase.getProduct(), new LinkedList<>());
+            purchaseQueue.add(purchase);
+            purchaseMap.put(purchase.getProduct(), purchaseQueue);
+        }
+
+        return purchaseMap;
+    }
+
+    private List<InvoiceProductDto> convertToDto(List<InvoiceProduct> list) {
+        return list.stream().map(invoiceProduct -> {
+            return mapper.convert(invoiceProduct, new InvoiceProductDto());
+        }).collect(Collectors.toList());
     }
 
     private Invoice checkInvoice(InvoiceProductDto invoiceProductDto, Company company) throws InvoiceNotFoundException, InvoiceAlreadyApprovedException {
@@ -168,7 +218,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
         if (foundInvoice == null) {
             throw new InvoiceNotFoundException("No invoice found");
-        }else if (foundInvoice.getInvoiceStatus() != InvoiceStatus.OPEN) {
+        } else if (foundInvoice.getInvoiceStatus() != InvoiceStatus.OPEN) {
             throw new InvoiceAlreadyApprovedException("This invoice already approved or archived, it is not possible to make changes on it");
         }
         return foundInvoice;
