@@ -87,7 +87,7 @@ public class AccountingAppApplication {
 
 			User userEmployee = new User("employee","Mike","employee@crustycloud.com" , true, "+1954784236",
 					"$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK",crustyCompany);
-			userManager.addRole(roleEmployee);
+			userEmployee.addRole(roleEmployee);
 			userRepository.saveAndFlush(userEmployee);
 
 
