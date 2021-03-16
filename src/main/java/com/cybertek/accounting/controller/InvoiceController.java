@@ -110,7 +110,7 @@ public class InvoiceController {
         try {
             invoiceProductDto.setInvoice(invoiceService.findByInvoiceNo(invoiceNo));
             invoiceProductService.create(invoiceProductDto);
-        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | ProductNotFoundException | NotEnoughProductInStockException | CompanyNotFoundException e) {
+        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | ProductNotFoundException | NotEnoughProductInStockException | CompanyNotFoundException | InvoiceAlreadyApprovedException e) {
             e.printStackTrace();
         }
         return "redirect:/invoice/purchaseAddItem/" + invoiceNo;
@@ -122,7 +122,7 @@ public class InvoiceController {
             InvoiceProductDto invoiceProductDto = invoiceProductService.findById(id);
             invoiceProductService.delete(invoiceProductDto);
             return "redirect:/invoice/purchaseAddItem/" + invoiceProductDto.getInvoice().getInvoiceNo();
-        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | NotEnoughProductInStockException | ProductNotFoundException | CompanyNotFoundException e) {
+        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | NotEnoughProductInStockException | ProductNotFoundException | CompanyNotFoundException | InvoiceAlreadyApprovedException e) {
             e.printStackTrace();
         }
         return "redirect:/invoice/purchaseList";
@@ -199,7 +199,7 @@ public class InvoiceController {
         try {
             invoiceProductDto.setInvoice(invoiceService.findByInvoiceNo(invoiceNo));
             invoiceProductService.create(invoiceProductDto);
-        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | ProductNotFoundException | NotEnoughProductInStockException | CompanyNotFoundException e) {
+        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | ProductNotFoundException | NotEnoughProductInStockException | CompanyNotFoundException | InvoiceAlreadyApprovedException e) {
             e.printStackTrace();
         }
         return "redirect:/invoice/salesAddItem/" + invoiceNo;
@@ -211,7 +211,7 @@ public class InvoiceController {
             InvoiceProductDto invoiceProductDto = invoiceProductService.findById(id);
             invoiceProductService.delete(invoiceProductDto);
             return "redirect:/invoice/salesAddItem/" + invoiceProductDto.getInvoice().getInvoiceNo();
-        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | NotEnoughProductInStockException | ProductNotFoundException | CompanyNotFoundException e) {
+        } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | NotEnoughProductInStockException | ProductNotFoundException | CompanyNotFoundException | InvoiceAlreadyApprovedException e) {
             e.printStackTrace();
         }
         return "redirect:/invoice/salesList";

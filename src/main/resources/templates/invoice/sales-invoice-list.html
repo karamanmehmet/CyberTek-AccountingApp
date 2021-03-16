@@ -78,7 +78,7 @@
                                                         <td class="text-truncate"
                                                             th:text="${salesInvoice.monetaryDetailDto.totalCost}"></td>
                                                         <td>
-                                                            <a th:href="@{/invoice/salesAddItem/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}">
+                                                            <a th:if="${salesInvoice.invoiceStatus.name() != 'APPROVED'}" th:href="@{/invoice/salesAddItem/{invoiceNo}(invoiceNo=${salesInvoice.invoiceNo})}">
                                                                 <i class="ft-list"></i>
                                                             </a>
                                                         </td>

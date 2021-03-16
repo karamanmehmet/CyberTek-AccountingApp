@@ -31,7 +31,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     private final MapperGeneric mapper;
 
     @Override
-    public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
+    public InvoiceProductDto create(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException, InvoiceAlreadyApprovedException {
 
         Company foundCompany = getCompanyFromSecurity();
         Invoice foundInvoice = checkInvoice(invoiceProduct, foundCompany);
@@ -56,7 +56,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public InvoiceProductDto update(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
+    public InvoiceProductDto update(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException, InvoiceAlreadyApprovedException {
 
         Company foundCompany = getCompanyFromSecurity();
         Invoice foundInvoice = checkInvoice(invoiceProduct, foundCompany);
@@ -72,7 +72,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public void delete(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException {
+    public void delete(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException, InvoiceAlreadyApprovedException {
 
         Company foundCompany = getCompanyFromSecurity();
         Invoice foundInvoice = checkInvoice(invoiceProduct, foundCompany);
@@ -162,12 +162,14 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         });
     }
 
-    private Invoice checkInvoice(InvoiceProductDto invoiceProductDto, Company company) throws InvoiceNotFoundException {
+    private Invoice checkInvoice(InvoiceProductDto invoiceProductDto, Company company) throws InvoiceNotFoundException, InvoiceAlreadyApprovedException {
 
         Invoice foundInvoice = invoiceRepository.findByInvoiceNoAndCompany(invoiceProductDto.getInvoice().getInvoiceNo(), company);
 
         if (foundInvoice == null) {
             throw new InvoiceNotFoundException("No invoice found");
+        }else if (foundInvoice.getInvoiceStatus() != InvoiceStatus.OPEN) {
+            throw new InvoiceAlreadyApprovedException("This invoice already approved or archived, it is not possible to make changes on it");
         }
         return foundInvoice;
     }
