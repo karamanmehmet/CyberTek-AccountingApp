@@ -110,7 +110,7 @@
                                                       th:object="${invoiceProduct}">
                                                     <div class="row">
 
-                                                        <div class="col-12 col-md-4">
+                                                        <div class="col-12 col-md-3">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="users-edit-role">Product</label>
@@ -124,7 +124,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-4">
+                                                        <div class="col-12 col-md-3">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="quantity">Quantity</label>
@@ -136,7 +136,21 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="col-12 col-md-4">
+
+                                                        <div class="col-12 col-md-3">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="tax">Tax</label>
+                                                                    <input type="text" id="tax"
+                                                                           class="form-control" placeholder="Tax"
+                                                                           th:field="*{tax}"
+                                                                           required aria-invalid="false">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-12 col-md-3">
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="price">Price</label>
@@ -183,13 +197,11 @@
                                                                     <td class="text-truncate" th:text="${theInvoiceProduct.unitPrice}"></td>
                                                                     <td class="text-truncate" th:text="${theInvoiceProduct.tax}"></td>
                                                                     <td class="text-truncate" th:text="${theInvoiceProduct.qty}"></td>
-                                                                    <td class="text-truncate" th:text="${(theInvoiceProduct.unitPrice * theInvoiceProduct.qty) + (theInvoiceProduct.unitPrice * theInvoiceProduct.qty) * (theInvoiceProduct.tax / 100)}"></td>
+                                                                    <td class="text-truncate" th:text="${#numbers.formatDecimal((theInvoiceProduct.unitPrice * theInvoiceProduct.qty) + (theInvoiceProduct.unitPrice * theInvoiceProduct.qty) * (theInvoiceProduct.tax / 100) , 1, 2)}"></td>
                                                                     <td class="text-truncate">
-                                                                        <form th:action="@{/invoice/purchaseRemoveItem/{id}(id=${theInvoiceProduct.id})}" method="post" th:object="${theInvoiceProduct}">
-                                                                            <button class="danger">
-                                                                                <i class="ft-trash font-medium-3"></i>
-                                                                            </button>
-                                                                        </form>
+                                                                        <a th:href="@{/invoice/purchaseRemoveItem/{id}(id=${theInvoiceProduct.id})}" class="danger">
+                                                                            <i class="ft-trash font-medium-3"></i>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                                 </tbody>

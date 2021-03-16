@@ -55,7 +55,7 @@ public class InvoiceController {
     public String createPurchaseInvoice(Model model) {
         model.addAttribute("invoice", new InvoiceDto());
         model.addAttribute("localDate", LocalDate.now());
-        model.addAttribute("vendors", clientVendorService.findAllByType(ClientVendorType.VENDOR));
+        model.addAttribute("vendors", clientVendorService.findAllByTypeIsNot(ClientVendorType.CLIENT));
         return "/invoice/purchase-invoice-add";
 
     }
@@ -97,7 +97,7 @@ public class InvoiceController {
             model.addAttribute("invoiceProduct", new InvoiceProductDto());
             model.addAttribute("products", productService.findAll());
             model.addAttribute("invoiceProductList", invoiceProductService.findByInvoice(invoiceService.findByInvoiceNo(invoiceNo)));
-            model.addAttribute("vendors", clientVendorService.findAllByType(ClientVendorType.VENDOR));
+            model.addAttribute("vendors", clientVendorService.findAllByTypeIsNot(ClientVendorType.CLIENT));
             model.addAttribute("invoiceDate", invoiceService.findByInvoiceNo(invoiceNo).getInvoiceDate());
         } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
@@ -116,14 +116,16 @@ public class InvoiceController {
         return "redirect:/invoice/purchaseAddItem/" + invoiceNo;
     }
 
-    @PostMapping("/purchaseRemoveItem/{id}")
-    public String removePurchaseItem(@PathVariable("id") long id, @ModelAttribute InvoiceProductDto invoiceProductDto) {
+    @GetMapping("/purchaseRemoveItem/{id}")
+    public String removePurchaseItem(@PathVariable("id") long id) {
         try {
+            InvoiceProductDto invoiceProductDto = invoiceProductService.findById(id);
             invoiceProductService.delete(invoiceProductDto);
+            return "redirect:/invoice/purchaseAddItem/" + invoiceProductDto.getInvoice().getInvoiceNo();
         } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | NotEnoughProductInStockException | ProductNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
         }
-        return "redirect:/invoice/purchaseAddItem/" + invoiceProductDto.getInvoice().getInvoiceNo();
+        return "redirect:/invoice/purchaseList";
     }
 
     @GetMapping("/salesList")
@@ -143,7 +145,7 @@ public class InvoiceController {
     public String createSalesInvoice(Model model) {
         model.addAttribute("invoice", new InvoiceDto());
         model.addAttribute("localDate", LocalDate.now());
-        model.addAttribute("clients", clientVendorService.findAllByType(ClientVendorType.CLIENT));
+        model.addAttribute("clients", clientVendorService.findAllByTypeIsNot(ClientVendorType.VENDOR));
         return "/invoice/sales-invoice-add";
     }
 
@@ -184,7 +186,7 @@ public class InvoiceController {
             model.addAttribute("invoiceProduct", new InvoiceProductDto());
             model.addAttribute("products", productService.findAll());
             model.addAttribute("invoiceProductList", invoiceProductService.findByInvoice(invoiceService.findByInvoiceNo(invoiceNo)));
-            model.addAttribute("clients", clientVendorService.findAllByType(ClientVendorType.CLIENT));
+            model.addAttribute("clients", clientVendorService.findAllByTypeIsNot(ClientVendorType.VENDOR));
             model.addAttribute("invoiceDate", invoiceService.findByInvoiceNo(invoiceNo).getInvoiceDate());
         } catch (InvoiceNotFoundException | InvoiceProductNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
@@ -203,14 +205,16 @@ public class InvoiceController {
         return "redirect:/invoice/salesAddItem/" + invoiceNo;
     }
 
-    @PostMapping("/salesRemoveItem/{id}")
-    public String removeSalesItem(@PathVariable("id") long id, @ModelAttribute InvoiceProductDto invoiceProductDto) {
+    @GetMapping("/salesRemoveItem/{id}")
+    public String removeSalesItem(@PathVariable("id") long id) {
         try {
+            InvoiceProductDto invoiceProductDto = invoiceProductService.findById(id);
             invoiceProductService.delete(invoiceProductDto);
+            return "redirect:/invoice/salesAddItem/" + invoiceProductDto.getInvoice().getInvoiceNo();
         } catch (InvoiceProductNotFoundException | InvoiceNotFoundException | NotEnoughProductInStockException | ProductNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
         }
-        return "redirect:/invoice/salesAddItem/" + invoiceProductDto.getInvoice().getInvoiceNo();
+        return "redirect:/invoice/salesList";
     }
 
 }

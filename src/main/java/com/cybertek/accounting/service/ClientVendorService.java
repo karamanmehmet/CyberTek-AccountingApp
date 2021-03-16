@@ -24,6 +24,8 @@ public interface ClientVendorService {
 
     List<ClientVendorDto> findAllByType(ClientVendorType type);
 
+    List<ClientVendorDto> findAllByTypeIsNot(ClientVendorType type);
+
     List<ClientVendorDto> findAllByStateAndType(String state, ClientVendorType type);
 
     List<ClientVendorDto> findAllByCompany(CompanyDto company);

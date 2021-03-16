@@ -38,20 +38,14 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         Product foundProduct = checkProduct(invoiceProduct);
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProductAndInvoiceCompany(foundInvoice, foundProduct, foundCompany).orElse(null);
 
-        productRepository.saveAndFlush(foundProduct);
-
         if (foundInvoiceProduct != null) {
             foundInvoiceProduct.setQty(foundInvoiceProduct.getQty() + invoiceProduct.getQty());
             foundInvoiceProduct.setUnitPrice(invoiceProduct.getUnitPrice());
+            foundInvoiceProduct.setEnabled(true);
         } else {
-            foundInvoiceProduct = new InvoiceProduct();
-
-            foundInvoiceProduct.setProduct(foundProduct);
+            foundInvoiceProduct = mapper.convert(invoiceProduct, new InvoiceProduct());
             foundInvoiceProduct.setInvoice(foundInvoice);
-
-            foundInvoiceProduct.setQty(invoiceProduct.getQty());
-            foundInvoiceProduct.setTax(invoiceProduct.getTax());
-            foundInvoiceProduct.setUnitPrice(invoiceProduct.getUnitPrice());
+            foundInvoiceProduct.setProduct(foundProduct);
             foundInvoiceProduct.setEnabled(true);
         }
 
@@ -69,11 +63,8 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         Product foundProduct = checkProduct(invoiceProduct);
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProductAndInvoiceCompany(foundInvoice, foundProduct, foundCompany).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
-        productRepository.saveAndFlush(foundProduct);
-
-        foundInvoiceProduct.setQty(invoiceProduct.getQty());
-        foundInvoiceProduct.setTax(invoiceProduct.getTax());
-        foundInvoiceProduct.setUnitPrice(invoiceProduct.getUnitPrice());
+        foundInvoiceProduct = mapper.convert(invoiceProduct, new InvoiceProduct());
+        foundInvoiceProduct.setEnabled(true);
 
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
 
@@ -88,20 +79,23 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         Product foundProduct = checkProduct(invoiceProduct);
         InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findByInvoiceAndProductAndInvoiceCompany(foundInvoice, foundProduct, foundCompany).orElseThrow(() -> new InvoiceProductNotFoundException("No invoice product found"));
 
-        productRepository.saveAndFlush(foundProduct);
-
         foundInvoiceProduct.setQty(0);
         foundInvoiceProduct.setUnitPrice(0);
         foundInvoiceProduct.setTax(0);
         foundInvoiceProduct.setEnabled(false);
 
-        productRepository.saveAndFlush(foundProduct);
         invoiceProductRepository.saveAndFlush(foundInvoiceProduct);
     }
 
     @Override
+    public InvoiceProductDto findById(long id) throws InvoiceProductNotFoundException {
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findById(id).orElseThrow(() -> new InvoiceProductNotFoundException("No InvoiceProduct Found"));
+        return mapper.convert(foundInvoiceProduct, new InvoiceProductDto());
+    }
+
+    @Override
     public List<InvoiceProductDto> findAll() {
-        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceCompany(getCompanyFromSecurity());
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceCompanyOrderByInvoiceInvoiceNo(getCompanyFromSecurity());
         return invoiceProductList.stream().map(invoiceProduct -> {return mapper.convert(invoiceProduct, new InvoiceProductDto());}).collect(Collectors.toList());
     }
 

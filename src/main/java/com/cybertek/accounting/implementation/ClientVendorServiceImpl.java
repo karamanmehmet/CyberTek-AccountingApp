@@ -138,6 +138,15 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
+    public List<ClientVendorDto> findAllByTypeIsNot(ClientVendorType type) {
+        Company company = getCompanyFromSecurity();
+
+        List<ClientVendor> list = repository.findAllByCompanyAndTypeIsNot(company, type);
+
+        return list.stream().map(clientVendor -> {return mapper.convert(clientVendor, new ClientVendorDto());}).collect(Collectors.toList());
+    }
+
+    @Override
     public List<ClientVendorDto> findAllByCompany(CompanyDto company) {
 
         //Company company = getCompanyFromSecurity();

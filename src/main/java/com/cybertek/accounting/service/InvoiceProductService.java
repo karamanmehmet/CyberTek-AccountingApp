@@ -18,6 +18,8 @@ public interface InvoiceProductService {
 
     void delete(InvoiceProductDto invoiceProduct) throws InvoiceProductNotFoundException, InvoiceNotFoundException, ProductNotFoundException, NotEnoughProductInStockException, CompanyNotFoundException;
 
+    InvoiceProductDto findById(long id) throws InvoiceProductNotFoundException;
+
     List<InvoiceProductDto> findAll();
 
     List<InvoiceProductDto> findByInvoice(InvoiceDto invoiceDto) throws CompanyNotFoundException, InvoiceNotFoundException;

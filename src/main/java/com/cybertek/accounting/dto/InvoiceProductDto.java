@@ -13,8 +13,8 @@ public class InvoiceProductDto {
 
     private long id;
     private int qty;
-    private double unitPrice;
     private double tax;
+    private double unitPrice;
     private ProductDto product;
     private InvoiceDto invoice;
 

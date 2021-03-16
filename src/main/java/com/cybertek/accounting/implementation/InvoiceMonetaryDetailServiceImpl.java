@@ -45,7 +45,7 @@ public class InvoiceMonetaryDetailServiceImpl implements InvoiceMonetaryDetailSe
             throw new InvoiceNotFoundException("No invoice found");
         }
 
-        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoice(invoice);
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findByInvoiceAndInvoiceCompany(invoice, foundCompany);
 
         if (invoiceProductList.size() == 0) {
             return new InvoiceMonetaryDetailDto(tax, cost, totalCost, balanceDue);
